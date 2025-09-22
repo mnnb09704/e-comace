@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>টেলিগ্রাম নাম্বার ভেরিফায়ার</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            background: #f0f2f5; /* Light gray background */
+        }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        
+        .tab-btn.active {
+            border-bottom: 3px solid #4f46e5; /* A indigo accent */
+            color: #4f46e5;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .btn-3d {
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+        }
+        .btn-3d:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+        }
+        .btn-3d:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-md bg-white min-h-screen md:min-h-0 md:rounded-2xl md:shadow-2xl md:overflow-hidden relative">
+        <div id="app-container" class="p-4 md:p-6">
+
+            <!-- ======================== Loading Screen ======================== -->
+            <div id="loading-screen" class="screen active flex items-center justify-center h-full min-h-[80vh] md:min-h-0">
+                <div class="loader" style="width: 40px; height: 40px; border-width: 4px; border-color: #4f46e5; border-bottom-color: transparent;"></div>
+            </div>
+
+            <!-- ======================== Welcome Screen ======================== -->
+            <div id="welcome-screen" class="screen">
+                <div class="flex flex-col justify-center items-center h-full min-h-[80vh] md:min-h-0 p-4">
+                    <div class="text-center w-full">
+                         <div class="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg border-4 border-white">
+                             <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                         </div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">স্বাগতম!</h1>
+                        <p class="text-slate-500 mb-8">অনুগ্রহ করে আপনার নাম লিখুন।</p>
+                        <div class="w-full max-w-sm mx-auto">
+                             <input type="text" id="user-name-input" class="w-full px-4 py-3 border border-slate-300 rounded-lg text-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition" placeholder="আপনার নাম">
+                             <p id="name-error" class="text-red-500 text-sm mt-2 hidden">অনুগ্রহ করে একটি নাম লিখুন।</p>
+                             <button id="continue-name-btn" class="btn-3d w-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 text-lg flex items-center justify-center">এগিয়ে যান</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================== Dashboard Screen ======================== -->
+            <div id="dashboard-screen" class="screen">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-slate-800">Dashboard</h1>
+                    <button id="logout-btn-placeholder" class="text-slate-500 hover:text-indigo-600 transition-colors">
+                        <!-- Placeholder for potential logout button -->
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center p-4 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mr-4 shrink-0 border-2 border-white/30"><svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg></div>
+                        <div>
+                            <p id="dashboard-user-name" class="font-bold text-white text-xl">Loading...</p>
+                            <p id="dashboard-user-id" class="text-indigo-200 text-xs"></p>
+                        </div>
+                    </div>
+                    <div id="withdraw-btn" class="flex items-center p-4 bg-white rounded-xl shadow-md border border-slate-200 cursor-pointer hover:shadow-lg hover:border-indigo-300 transition-all">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-4 shrink-0 shadow-md"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                        <div class="flex-grow">
+                            <p class="font-semibold text-slate-800 text-lg">Withdraw Money</p>
+                            <p id="dashboard-balance" class="text-slate-500">0.00 USDT</p>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <div id="send-accounts-btn" class="flex items-center p-4 bg-white rounded-xl shadow-md border border-slate-200 cursor-pointer hover:shadow-lg hover:border-indigo-300 transition-all">
+                        <div class="w-12 h-12 bg-gradient-to-br from-sky-400 to-blue-500 rounded-full flex items-center justify-center mr-4 shrink-0 shadow-md"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                        <div class="flex-grow">
+                            <p class="font-semibold text-slate-800 text-lg">Send Accounts</p>
+                            <p id="dashboard-accounts" class="text-slate-500">0 approved</p>
+                        </div>
+                         <span id="submission-status-badge" class="text-xs font-bold px-2.5 py-1 rounded-full"></span>
+                    </div>
+                    <div id="channel-btn" class="flex items-center p-4 bg-white rounded-xl shadow-md border border-slate-200 cursor-pointer hover:shadow-lg hover:border-indigo-300 transition-all">
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center mr-4 shrink-0 shadow-md"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></div>
+                        <div class="flex-grow">
+                            <p class="font-semibold text-slate-800 text-lg">Channel</p>
+                            <p class="text-slate-500">Check our channel for latest updates</p>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================== Send Accounts Screen ======================== -->
+            <div id="send-accounts-screen" class="screen">
+                 <div class="flex items-center mb-4">
+                    <button id="back-to-dashboard-btn" class="p-2 -ml-2 text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h1 class="text-xl font-bold text-slate-800 flex-grow text-center">Send Accounts</h1>
+                     <div class="w-6"></div> <!-- Spacer -->
+                </div>
+                <div class="flex border-b border-slate-200">
+                    <button data-tab="pending" class="tab-btn flex-1 py-3 font-semibold text-slate-500 active">Pending</button>
+                    <button data-tab="approved" class="tab-btn flex-1 py-3 font-semibold text-slate-500">Approved</button>
+                    <button data-tab="rejected" class="tab-btn flex-1 py-3 font-semibold text-slate-500">Rejected</button>
+                </div>
+                <div class="mt-4 space-y-3 pb-24 h-[calc(100vh-200px)] md:h-auto overflow-y-auto">
+                    <div id="pending-list" class="tab-content active"></div>
+                    <div id="approved-list" class="tab-content"></div>
+                    <div id="rejected-list" class="tab-content"></div>
+                </div>
+                 <button id="add-number-btn" class="btn-3d absolute bottom-6 left-1/2 -translate-x-1/2 w-11/12 bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold py-3 px-4 rounded-lg text-lg">Login New Account</button>
+            </div>
+
+            <!-- ======================== Phone Number Input Screen ======================== -->
+            <div id="phone-screen" class="screen">
+                <div class="flex items-center mb-4">
+                    <button id="back-to-send-accounts-btn" class="p-2 -ml-2 text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                </div>
+                <div class="text-center mt-8">
+                    <h1 class="text-2xl font-bold text-slate-800 mb-2">Login Account</h1>
+                    <p class="text-slate-500 mb-6">Please enter your account phone number</p>
+                </div>
+                <div class="flex items-center border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-indigo-400 focus-within:border-indigo-400 transition">
+                    <select id="country-code-select" class="bg-slate-50 border-r border-slate-300 rounded-l-lg py-3 px-2 text-lg text-slate-700 focus:outline-none"></select>
+                    <input type="tel" id="phone-number" class="w-full px-4 py-3 text-lg focus:outline-none rounded-r-lg" placeholder="Phone number">
+                </div>
+                <p id="phone-error" class="text-red-500 text-sm mt-2 hidden">Please enter a valid phone number.</p>
+                <button id="continue-phone" class="btn-3d w-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 text-lg flex items-center justify-center">Continue</button>
+            </div>
+
+            <!-- ======================== OTP Screen ======================== -->
+            <div id="otp-screen" class="screen">
+                 <div class="flex items-center mb-4">
+                      <button id="back-to-phone-btn" class="p-2 -ml-2 text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                 </div>
+                 <div class="text-center mt-8">
+                       <h1 class="text-2xl font-bold text-slate-800 mb-2">Enter code</h1>
+                       <p class="text-slate-500 mb-6" id="otp-message">We've sent the code to the Telegram app for your number.</p>
+                 </div>
+                 <div>
+                       <input type="text" id="otp-code" class="w-full px-4 py-3 border border-slate-300 rounded-lg text-lg text-center tracking-[0.5em] focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition" placeholder="OTP code" maxlength="6">
+                       <p id="otp-error" class="text-red-500 text-sm mt-2 text-center hidden">Invalid OTP code. Please try again.</p>
+                 </div>
+                 <button id="continue-otp" class="btn-3d w-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 text-lg flex items-center justify-center">Continue</button>
+            </div>
+
+            <!-- ======================== Withdraw Screens (HTML Unchanged) ======================== -->
+            <div id="withdraw-screen" class="screen">
+                <div class="flex items-center mb-4">
+                    <button id="back-to-dashboard-from-withdraw-btn" class="p-2 -ml-2 text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h1 class="text-xl font-bold text-slate-800 flex-grow text-center">Withdraw History</h1>
+                    <div class="w-6"></div>
+                </div>
+                <div id="withdrawal-list" class="space-y-3 pb-24"></div>
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-full px-4">
+                    <button id="initiate-withdraw-btn" class="btn-3d w-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg">Withdraw</button>
+                    <p id="min-withdraw-text" class="text-center text-slate-500 text-sm mt-2">Minimum payment is 3.50 USDT</p>
+                </div>
+            </div>
+            <div id="withdraw-details-screen" class="screen">
+                 <div class="flex items-center mb-4">
+                       <button id="back-to-withdraw-history-btn" class="p-2 -ml-2 text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                       <h1 class="text-xl font-bold text-slate-800 flex-grow text-center">Withdraw Funds</h1>
+                       <div class="w-6"></div>
+                 </div>
+                 <div class="mt-8 space-y-6">
+                       <div>
+                            <label for="withdraw-address" class="block mb-2 text-sm font-medium text-slate-700">Withdrawal Address</label>
+                            <input type="text" id="withdraw-address" class="w-full px-4 py-3 border border-slate-300 rounded-lg text-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition" placeholder="Enter your wallet address">
+                            <p id="withdraw-address-error" class="text-red-500 text-sm mt-1 hidden">Address cannot be empty.</p>
+                       </div>
+                       <div>
+                            <label for="withdraw-amount" class="block mb-2 text-sm font-medium text-slate-700">Amount (USDT)</label>
+                            <div class="relative">
+                                 <input type="number" id="withdraw-amount" class="w-full px-4 py-3 border border-slate-300 rounded-lg text-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition" placeholder="0.00">
+                                 <p class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-semibold">USDT</p>
+                            </div>
+                            <p id="withdraw-balance-info" class="text-sm text-slate-500 mt-2">Available balance: 0.00 USDT</p>
+                            <p id="withdraw-amount-error" class="text-red-500 text-sm mt-1 hidden">Please enter a valid amount.</p>
+                       </div>
+                 </div>
+                 <button id="confirm-withdraw-btn" class="btn-3d w-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-8 text-lg flex items-center justify-center">Confirm Withdrawal</button>
+            </div>
+        </div>
+        
+        <!-- ======================== Modal ======================== -->
+        <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div id="modal-box" class="bg-white rounded-lg p-6 w-full max-w-sm transform scale-95 opacity-0 transition-all duration-300">
+                <h3 id="modal-title" class="text-lg font-bold">Message</h3>
+                <p id="modal-body" class="mt-2 text-sm text-slate-600">Coming soon...</p>
+                <div class="mt-4 text-right">
+                    <button id="modal-ok-btn" class="px-4 py-2 bg-indigo-500 text-white rounded-md">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, addDoc, query, where, Timestamp, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // --- IMPORTANT ---
+        // This configuration is for demonstration. Replace with your actual Firebase config.
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtFNGqxHYRIlGFggwiyIUvs2EGv_CtWXQ",
+            authDomain: "come-hobei.firebaseapp.com",
+            databaseURL: "https://come-hobei-default-rtdb.firebaseio.com",
+            projectId: "come-hobei",
+            storageBucket: "come-hobei.appspot.com",
+            messagingSenderId: "635487421984",
+            appId: "1:635487421984:web:288b97a2efea9068b05e45"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- Country Code Data ---
+        const countryCodes = { "AF":{name:"Afghanistan",prefix:"+93"},"AL":{name:"Albania",prefix:"+355"},"DZ":{name:"Algeria",prefix:"+213"},"AD":{name:"Andorra",prefix:"+376"},"AO":{name:"Angola",prefix:"+244"},"AG":{name:"Antigua and Barbuda",prefix:"+1-268"},"AR":{name:"Argentina",prefix:"+54"},"AM":{name:"Armenia",prefix:"+374"},"AU":{name:"Australia",prefix:"+61"},"AT":{name:"Austria",prefix:"+43"},"AZ":{name:"Azerbaijan",prefix:"+994"},"BS":{name:"Bahamas",prefix:"+1-242"},"BH":{name:"Bahrain",prefix:"+973"},"BD":{name:"Bangladesh",prefix:"+880"},"BB":{name:"Barbados",prefix:"+1-246"},"BY":{name:"Belarus",prefix:"+375"},"BE":{name:"Belgium",prefix:"+32"},"BZ":{name:"Belize",prefix:"+501"},"BJ":{name:"Benin",prefix:"+229"},"BT":{name:"Bhutan",prefix:"+975"},"BO":{name:"Bolivia",prefix:"+591"},"BA":{name:"Bosnia and Herzegovina",prefix:"+387"},"BW":{name:"Botswana",prefix:"+267"},"BR":{name:"Brazil",prefix:"+55"},"BN":{name:"Brunei Darussalam",prefix:"+673"},"BG":{name:"Bulgaria",prefix:"+359"},"BF":{name:"Burkina Faso",prefix:"+226"},"BI":{name:"Burundi",prefix:"+257"},"KH":{name:"Cambodia",prefix:"+855"},"CM":{name:"Cameroon",prefix:"+237"},"CA":{name:"Canada",prefix:"+1"},"CV":{name:"Cape Verde",prefix:"+238"},"CF":{name:"Central African Republic",prefix:"+236"},"TD":{name:"Chad",prefix:"+235"},"CL":{name:"Chile",prefix:"+56"},"CN":{name:"China",prefix:"+86"},"CO":{name:"Colombia",prefix:"+57"},"KM":{name:"Comoros",prefix:"+269"},"CG":{name:"Congo",prefix:"+242"},"CD":{name:"Congo, Democratic Republic of the",prefix:"+243"},"CR":{name:"Costa Rica",prefix:"+506"},"HR":{name:"Croatia",prefix:"+385"},"CU":{name:"Cuba",prefix:"+53"},"CY":{name:"Cyprus",prefix:"+357"},"CZ":{name:"Czech Republic",prefix:"+420"},"DK":{name:"Denmark",prefix:"+45"},"DJ":{name:"Djibouti",prefix:"+253"},"DM":{name:"Dominica",prefix:"+1-767"},"DO":{name:"Dominican Republic",prefix:"+1-809"},"EC":{name:"Ecuador",prefix:"+593"},"EG":{name:"Egypt",prefix:"+20"},"SV":{name:"El Salvador",prefix:"+503"},"GQ":{name:"Equatorial Guinea",prefix:"+240"},"ER":{name:"Eritrea",prefix:"+291"},"EE":{name:"Estonia",prefix:"+372"},"ET":{name:"Ethiopia",prefix:"+251"},"FJ":{name:"Fiji",prefix:"+679"},"FI":{name:"Finland",prefix:"+358"},"FR":{name:"France",prefix:"+33"},"GA":{name:"Gabon",prefix:"+241"},"GM":{name:"Gambia",prefix:"+220"},"GE":{name:"Georgia",prefix:"+995"},"DE":{name:"Germany",prefix:"+49"},"GH":{name:"Ghana",prefix:"+233"},"GR":{name:"Greece",prefix:"+30"},"GD":{name:"Grenada",prefix:"+1-473"},"GT":{name:"Guatemala",prefix:"+502"},"GN":{name:"Guinea",prefix:"+224"},"GW":{name:"Guinea-Bissau",prefix:"+245"},"GY":{name:"Guyana",prefix:"+592"},"HT":{name:"Haiti",prefix:"+509"},"HN":{name:"Honduras",prefix:"+504"},"HU":{name:"Hungary",prefix:"+36"},"IS":{name:"Iceland",prefix:"+354"},"IN":{name:"India",prefix:"+91"},"ID":{name:"Indonesia",prefix:"+62"},"IR":{name:"Iran, Islamic Republic of",prefix:"+98"},"IQ":{name:"Iraq",prefix:"+964"},"IE":{name:"Ireland",prefix:"+353"},"IL":{name:"Israel",prefix:"+972"},"IT":{name:"Italy",prefix:"+39"},"JM":{name:"Jamaica",prefix:"+1-876"},"JP":{name:"Japan",prefix:"+81"},"JO":{name:"Jordan",prefix:"+962"},"KZ":{name:"Kazakhstan",prefix:"+7"},"KE":{name:"Kenya",prefix:"+254"},"KW":{name:"Kuwait",prefix:"+965"},"KG":{name:"Kyrgyzstan",prefix:"+996"},"LA":{name:"Lao People's Democratic Republic",prefix:"+856"},"LV":{name:"Latvia",prefix:"+371"},"LB":{name:"Lebanon",prefix:"+961"},"LS":{name:"Lesotho",prefix:"+266"},"LR":{name:"Liberia",prefix:"+231"},"LY":{name:"Libyan Arab Jamahiriya",prefix:"+218"},"LI":{name:"Liechtenstein",prefix:"+423"},"LT":{name:"Lithuania",prefix:"+370"},"LU":{name:"Luxembourg",prefix:"+352"},"MG":{name:"Madagascar",prefix:"+261"},"MW":{name:"Malawi",prefix:"+265"},"MY":{name:"Malaysia",prefix:"+60"},"MV":{name:"Maldives",prefix:"+960"},"ML":{name:"Mali",prefix:"+223"},"MT":{name:"Malta",prefix:"+356"},"MR":{name:"Mauritania",prefix:"+222"},"MU":{name:"Mauritius",prefix:"+230"},"MX":{name:"Mexico",prefix:"+52"},"MD":{name:"Moldova, Republic of",prefix:"+373"},"MC":{name:"Monaco",prefix:"+377"},"MN":{name:"Mongolia",prefix:"+976"},"ME":{name:"Montenegro",prefix:"+382"},"MA":{name:"Morocco",prefix:"+212"},"MZ":{name:"Mozambique",prefix:"+258"},"MM":{name:"Myanmar",prefix:"+95"},"NA":{name:"Namibia",prefix:"+264"},"NP":{name:"Nepal",prefix:"+977"},"NL":{name:"Netherlands",prefix:"+31"},"NZ":{name:"New Zealand",prefix:"+64"},"NI":{name:"Nicaragua",prefix:"+505"},"NE":{name:"Niger",prefix:"+227"},"NG":{name:"Nigeria",prefix:"+234"},"NO":{name:"Norway",prefix:"+47"},"OM":{name:"Oman",prefix:"+968"},"PK":{name:"Pakistan",prefix:"+92"},"PA":{name:"Panama",prefix:"+507"},"PG":{name:"Papua New Guinea",prefix:"+675"},"PY":{name:"Paraguay",prefix:"+595"},"PE":{name:"Peru",prefix:"+51"},"PH":{name:"Philippines",prefix:"+63"},"PL":{name:"Poland",prefix:"+48"},"PT":{name:"Portugal",prefix:"+351"},"QA":{name:"Qatar",prefix:"+974"},"RO":{name:"Romania",prefix:"+40"},"RU":{name:"Russian Federation",prefix:"+7"},"RW":{name:"Rwanda",prefix:"+250"},"KN":{name:"Saint Kitts and Nevis",prefix:"+1-869"},"LC":{name:"Saint Lucia",prefix:"+1-758"},"VC":{name:"Saint Vincent and the Grenadines",prefix:"+1-784"},"SM":{name:"San Marino",prefix:"+378"},"ST":{name:"Sao Tome and Principe",prefix:"+239"},"SA":{name:"Saudi Arabia",prefix:"+966"},"SN":{name:"Senegal",prefix:"+221"},"RS":{name:"Serbia",prefix:"+381"},"SC":{name:"Seychelles",prefix:"+248"},"SL":{name:"Sierra Leone",prefix:"+232"},"SG":{name:"Singapore",prefix:"+65"},"SK":{name:"Slovakia",prefix:"+421"},"SI":{name:"Slovenia",prefix:"+386"},"SB":{name:"Solomon Islands",prefix:"+677"},"SO":{name:"Somalia",prefix:"+252"},"ZA":{name:"South Africa",prefix:"+27"},"ES":{name:"Spain",prefix:"+34"},"LK":{name:"Sri Lanka",prefix:"+94"},"SD":{name:"Sudan",prefix:"+249"},"SR":{name:"Suriname",prefix:"+597"},"SE":{name:"Sweden",prefix:"+46"},"CH":{name:"Switzerland",prefix:"+41"},"SY":{name:"Syrian Arab Republic",prefix:"+963"},"TW":{name:"Taiwan, Province of China",prefix:"+886"},"TJ":{name:"Tajikistan",prefix:"+992"},"TZ":{name:"Tanzania, United Republic of",prefix:"+255"},"TH":{name:"Thailand",prefix:"+66"},"TG":{name:"Togo",prefix:"+228"},"TO":{name:"Tonga",prefix:"+676"},"TT":{name:"Trinidad and Tobago",prefix:"+1-868"},"TN":{name:"Tunisia",prefix:"+216"},"TR":{name:"Turkey",prefix:"+90"},"TM":{name:"Turkmenistan",prefix:"+993"},"UG":{name:"Uganda",prefix:"+256"},"UA":{name:"Ukraine",prefix:"+380"},"AE":{name:"United Arab Emirates",prefix:"+971"},"GB":{name:"United Kingdom",prefix:"+44"},"US":{name:"United States",prefix:"+1"},"UY":{name:"Uruguay",prefix:"+598"},"UZ":{name:"Uzbekistan",prefix:"+998"},"VE":{name:"Venezuela",prefix:"+58"},"VN":{name:"Viet Nam",prefix:"+84"},"YE":{name:"Yemen",prefix:"+967"},"ZM":{name:"Zambia",prefix:"+260"},"ZW":{name:"Zimbabwe",prefix:"+263"}};
+
+        // --- Global State ---
+        const BACKEND_URL = "http://127.0.0.1:8000"; // Corrected IP Address
+        let currentUser = {};
+        let currentPhoneNumber = '';
+        let appSettings = {};
+        let userId;
+        let unsubscribeUser, unsubscribeNumbers, unsubscribeWithdrawals, unsubscribeSettings;
+
+        // --- All Element Selectors ---
+        const allElements = {
+            screens: document.querySelectorAll('.screen'), modal: document.getElementById('modal'), modalBox: document.getElementById('modal-box'),
+            modalOkBtn: document.getElementById('modal-ok-btn'), sendAccountsBtn: document.getElementById('send-accounts-btn'),
+            withdrawBtn: document.getElementById('withdraw-btn'), channelBtn: document.getElementById('channel-btn'),
+            backToDashboardBtn: document.getElementById('back-to-dashboard-btn'),
+            backToDashboardFromWithdrawBtn: document.getElementById('back-to-dashboard-from-withdraw-btn'),
+            addNumberBtn: document.getElementById('add-number-btn'), backToSendAccountsBtn: document.getElementById('back-to-send-accounts-btn'),
+            continuePhoneBtn: document.getElementById('continue-phone'), phoneNumberInput: document.getElementById('phone-number'),
+            phoneError: document.getElementById('phone-error'), backToPhoneBtn: document.getElementById('back-to-phone-btn'),
+            continueOtpBtn: document.getElementById('continue-otp'), otpCodeInput: document.getElementById('otp-code'),
+            otpError: document.getElementById('otp-error'), otpMessage: document.getElementById('otp-message'),
+            dashboardUserName: document.getElementById('dashboard-user-name'), dashboardUserId: document.getElementById('dashboard-user-id'),
+            dashboardBalance: document.getElementById('dashboard-balance'), dashboardAccounts: document.getElementById('dashboard-accounts'),
+            tabButtons: document.querySelectorAll('.tab-btn'), tabContents: document.querySelectorAll('.tab-content'),
+            initiateWithdrawBtn: document.getElementById('initiate-withdraw-btn'),
+            backToWithdrawHistoryBtn: document.getElementById('back-to-withdraw-history-btn'),
+            confirmWithdrawBtn: document.getElementById('confirm-withdraw-btn'),
+            withdrawAddressInput: document.getElementById('withdraw-address'), withdrawAmountInput: document.getElementById('withdraw-amount'),
+            withdrawAddressError: document.getElementById('withdraw-address-error'),
+            withdrawAmountError: document.getElementById('withdraw-amount-error'), withdrawBalanceInfo: document.getElementById('withdraw-balance-info'),
+            minWithdrawText: document.getElementById('min-withdraw-text'), countryCodeSelect: document.getElementById('country-code-select'),
+            submissionStatusBadge: document.getElementById('submission-status-badge'),
+            userNameInput: document.getElementById('user-name-input'), nameError: document.getElementById('name-error'),
+            continueNameBtn: document.getElementById('continue-name-btn')
+        };
+
+        // --- UI Functions ---
+        let onModalOkCallback = null;
+
+        function showScreen(screenId) {
+            allElements.screens.forEach(screen => screen.classList.toggle('active', screen.id === screenId));
+        }
+
+        function showModal(title, body, onOk) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').textContent = body;
+            onModalOkCallback = onOk || null;
+            allElements.modal.classList.remove('hidden');
+            setTimeout(() => allElements.modalBox.classList.remove('scale-95', 'opacity-0'), 10);
+        }
+        
+        function hideModal() {
+            allElements.modalBox.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => allElements.modal.classList.add('hidden'), 300);
+        }
+
+        function renderList(listId, data, emptyMessage) {
+            const listContainer = document.getElementById(listId);
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+
+            if (data.length === 0) {
+                listContainer.innerHTML = `<p class="text-center text-slate-500 mt-10">${emptyMessage}</p>`;
+                return;
+            }
+            
+            data.sort((a, b) => (b.addedAt?.toMillis() || 0) - (a.addedAt?.toMillis() || 0));
+
+            data.forEach(item => {
+                let tag;
+                switch(item.status) {
+                    case 'pending': tag = {text: 'PENDING', bg: 'bg-yellow-100', text_color: 'text-yellow-800'}; break;
+                    case 'approved': tag = {text: 'APPROVED', bg: 'bg-green-100', text_color: 'text-green-800'}; break;
+                    case 'rejected': tag = {text: 'REJECTED', bg: 'bg-red-100', text_color: 'text-red-800'}; break;
+                    default: tag = {text: 'UNKNOWN', bg: 'bg-slate-100', text_color: 'text-slate-800'};
+                }
+                const itemDate = item.addedAt ? item.addedAt.toDate().toLocaleString('en-GB') : '';
+                
+                listContainer.innerHTML += `
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <p class="font-bold text-slate-800">${item.number}</p>
+                        <p class="text-sm text-slate-500">${itemDate}</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-sm font-semibold text-indigo-600">${item.price ? `${parseFloat(item.price).toFixed(2)} USDT` : '0.00 USDT'}</p>
+                        <div><span class="text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full ${tag.bg} ${tag.text_color}">${tag.text}</span></div>
+                    </div>
+                </div>`;
+            });
+        }
+        
+        function renderWithdrawals(data) {
+            const listContainer = document.getElementById('withdrawal-list');
+            if (!listContainer) return;
+            listContainer.innerHTML = data.length === 0 ? '<p class="text-center text-slate-500 mt-10">No withdrawal history.</p>' : '';
+            
+            data.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
+
+            data.forEach(item => {
+                let statusTag;
+                switch (item.status) {
+                    case 'pending': statusTag = `<span class="text-xs font-bold px-2.5 py-1 rounded-full bg-yellow-100 text-yellow-800">PENDING</span>`; break;
+                    case 'approved': statusTag = `<span class="text-xs font-bold px-2.5 py-1 rounded-full bg-green-100 text-green-800">CONFIRMED</span>`; break;
+                    case 'rejected': statusTag = `<span class="text-xs font-bold px-2.5 py-1 rounded-full bg-red-100 text-red-800">REJECTED</span>`; break;
+                    default: statusTag = '';
+                }
+                const itemDate = item.timestamp ? item.timestamp.toDate().toLocaleString('en-GB') : '';
+                listContainer.innerHTML += `
+                <div class="bg-white p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <p class="font-bold text-lg text-slate-800">${(item.amount || 0).toFixed(2)} USDT</p>
+                        <p class="text-sm text-slate-500 mt-1 truncate">To: ${item.address || 'N/A'}</p>
+                        <p class="text-xs text-slate-400 mt-1">${itemDate}</p>
+                        <div class="mt-2">${statusTag}</div>
+                    </div>
+                </div>`;
+            });
+        }
+        
+        function showLoading(button) {
+            button.disabled = true;
+            button.innerHTML = `<span class="loader"></span>`;
+        }
+
+        function hideLoading(button, text) {
+            button.disabled = false;
+            button.innerHTML = text;
+        }
+
+        // --- Core App Logic Functions (FIXED) ---
+
+        function updateUI() {
+            if (!currentUser || !allElements.dashboardUserName) return;
+            allElements.dashboardUserName.textContent = currentUser.name || 'User';
+            allElements.dashboardUserId.textContent = `ID: ${userId || 'N/A'}`;
+            allElements.dashboardBalance.textContent = `${(currentUser.balance || 0).toFixed(2)} USDT`;
+            allElements.withdrawBalanceInfo.textContent = `Available balance: ${(currentUser.balance || 0).toFixed(2)} USDT`;
+
+            const minWithdraw = appSettings.minWithdrawal || 3.50;
+            allElements.minWithdrawText.textContent = `Minimum payment is ${minWithdraw.toFixed(2)} USDT`;
+            
+            if (appSettings.allowSubmissions) {
+                allElements.submissionStatusBadge.textContent = 'AVAILABLE';
+                allElements.submissionStatusBadge.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-green-100 text-green-800';
+            } else {
+                allElements.submissionStatusBadge.textContent = 'CLOSED';
+                allElements.submissionStatusBadge.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-red-100 text-red-800';
+            }
+        }
+
+        function populateCountryCodes() {
+            const select = allElements.countryCodeSelect;
+            if (!select) return;
+            select.innerHTML = '';
+            if (appSettings.allowedCountries && appSettings.allowedCountries.length > 0) {
+                appSettings.allowedCountries.forEach(code => {
+                    if(countryCodes[code]) {
+                        const option = document.createElement('option');
+                        option.value = countryCodes[code].prefix;
+                        option.textContent = `${countryCodes[code].name} (${countryCodes[code].prefix})`;
+                        select.appendChild(option);
+                    }
+                });
+            } else {
+                const option = document.createElement('option');
+                option.textContent = 'Not Available';
+                option.disabled = true;
+                select.appendChild(option);
+            }
+        }
+        
+        function setupListeners() {
+            if (!userId) return;
+            
+            // Set initial loading state for the badge to prevent infinite spinner
+            allElements.submissionStatusBadge.textContent = '...';
+            allElements.submissionStatusBadge.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-slate-200 text-slate-600';
+
+            // --- User Data Listener ---
+            if (unsubscribeUser) unsubscribeUser();
+            unsubscribeUser = onSnapshot(doc(db, "users", userId), (doc) => {
+                if (doc.exists()) {
+                    currentUser = doc.data();
+                    allElements.dashboardAccounts.textContent = `${currentUser.approvedNumberCount || 0} approved`;
+                    updateUI();
+                }
+            });
+
+            // --- Numbers Data Listener ---
+            if (unsubscribeNumbers) unsubscribeNumbers();
+            const numbersQuery = collection(db, "users", userId, "numbers");
+            unsubscribeNumbers = onSnapshot(query(numbersQuery), (snapshot) => {
+                const allNumbers = snapshot.docs.map(d => ({...d.data(), id: d.id }));
+                renderList('pending-list', allNumbers.filter(n => n.status === 'pending'), 'No pending numbers.');
+                renderList('approved-list', allNumbers.filter(n => n.status === 'approved'), 'No approved numbers.');
+                renderList('rejected-list', allNumbers.filter(n => n.status === 'rejected'), 'No rejected numbers.');
+            });
+
+            // --- Withdrawals Data Listener (Re-enabled) ---
+            if (unsubscribeWithdrawals) unsubscribeWithdrawals();
+            const withdrawalsQuery = query(collection(db, "withdrawals"), where("userId", "==", userId));
+            unsubscribeWithdrawals = onSnapshot(withdrawalsQuery, (snapshot) => {
+                const withdrawals = snapshot.docs.map(doc => doc.data());
+                renderWithdrawals(withdrawals);
+            }, (error) => {
+                console.error("CRITICAL ERROR fetching withdrawals: ", error);
+                const listContainer = document.getElementById('withdrawal-list');
+                if (listContainer) {
+                    listContainer.innerHTML = `<p class="text-center text-slate-500 mt-10 p-4 bg-red-50 border border-red-200 rounded-lg">Could not load withdrawal history. There might be a database configuration issue. Please check the browser console for details.</p>`;
+                }
+            });
+        }
+        
+        // --- Authentication and Initialization ---
+
+        let authInitialized = false;
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                if (authInitialized) return;
+                authInitialized = true;
+                
+                userId = user.uid;
+                const userDocRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userDocRef);
+
+                if (!userDoc.exists()) {
+                    await setDoc(userDocRef, {
+                        name: 'New User',
+                        balance: 0,
+                        approvedNumberCount: 0,
+                        createdAt: Timestamp.now(),
+                        status: 'active'
+                    });
+                    showScreen('welcome-screen');
+                } else {
+                    const userData = userDoc.data();
+                    if (userData.name && userData.name !== 'New User') {
+                        showScreen('dashboard-screen');
+                    } else {
+                        showScreen('welcome-screen');
+                    }
+                }
+                setupListeners();
+            } else if (!authInitialized) {
+                authInitialized = true;
+                try {
+                    await signInAnonymously(auth);
+                } catch (error) {
+                    console.error("Firebase sign-in failed:", error);
+                    const loadingScreen = document.getElementById('loading-screen');
+                    loadingScreen.innerHTML = `
+                        <div class="text-center p-4">
+                            <h3 class="text-lg font-bold text-red-600">সংযোগ ত্রুটি</h3>
+                            <p class="mt-2 text-sm text-slate-600">সার্ভারে সংযোগ করা যাচ্ছে না। অনুগ্রহ করে আপনার ইন্টারনেট সংযোগ পরীক্ষা করে পৃষ্ঠাটি রিফ্রেশ করুন।</p>
+                        </div>
+                    `;
+                }
+            }
+        });
+        
+        unsubscribeSettings = onSnapshot(doc(db, "settings", "appSettings"), (doc) => {
+            if (doc.exists()) {
+                appSettings = doc.data();
+            } else {
+                console.warn("Warning: 'appSettings' document not found in Firestore. Using default values.");
+                appSettings = {
+                    allowSubmissions: true,
+                    allowedCountries: ['BD', 'IN', 'PK', 'US'],
+                    minWithdrawal: 3.5,
+                    channelLink: 'https://t.me/your_channel_link',
+                    numberPrice: 0.50 // Added default numberPrice
+                };
+            }
+            populateCountryCodes();
+            updateUI();
+        }, (error) => {
+            console.error("Error fetching app settings:", error);
+            // On error, default to submissions being closed to be safe
+            appSettings = { allowSubmissions: false };
+            populateCountryCodes();
+            updateUI();
+        });
+
+        // --- Event Listeners ---
+        allElements.modalOkBtn.addEventListener('click', () => {
+            hideModal();
+            if (onModalOkCallback) {
+                onModalOkCallback();
+                onModalOkCallback = null; // Reset after use
+            }
+        });
+
+        allElements.continueNameBtn.addEventListener('click', async () => {
+            const userName = allElements.userNameInput.value.trim();
+            if (userName.length < 3) {
+                allElements.nameError.textContent = 'অনুগ্রহ করে কমপক্ষে ৩ অক্ষরের একটি নাম লিখুন।';
+                allElements.nameError.classList.remove('hidden');
+                return;
+            }
+            allElements.nameError.classList.add('hidden');
+            showLoading(allElements.continueNameBtn);
+            try {
+                const userDocRef = doc(db, "users", userId);
+                await setDoc(userDocRef, { name: userName }, { merge: true });
+                showScreen('dashboard-screen');
+            } catch (error) {
+                console.error("Error updating name: ", error);
+                showModal("Error", "Could not save your name. Please try again.");
+            } finally {
+                hideLoading(allElements.continueNameBtn, 'এগিয়ে যান');
+            }
+        });
+        
+        allElements.sendAccountsBtn.addEventListener('click', () => {
+            if (!appSettings.allowSubmissions) {
+                showModal("Submissions Closed", "Sorry, we are not accepting new number submissions at this time.");
+                return;
+            }
+            if (!appSettings.allowedCountries || appSettings.allowedCountries.length === 0) {
+                 showModal("Not Available", "Number submission is not available for any country at the moment.");
+                 return;
+            }
+            showScreen('send-accounts-screen');
+        });
+        
+        allElements.withdrawBtn.addEventListener('click', () => showScreen('withdraw-screen'));
+        allElements.channelBtn.addEventListener('click', () => {
+             if (appSettings.channelLink) {
+                   window.open(appSettings.channelLink, '_blank');
+             } else {
+                   showModal("Info", "Channel link is not available.");
+             }
+        });
+
+        document.querySelectorAll('#back-to-dashboard-btn, #back-to-dashboard-from-withdraw-btn').forEach(btn => btn.addEventListener('click', () => showScreen('dashboard-screen')));
+
+        allElements.addNumberBtn.addEventListener('click', () => showScreen('phone-screen'));
+        allElements.backToSendAccountsBtn.addEventListener('click', () => showScreen('send-accounts-screen'));
+        allElements.backToPhoneBtn.addEventListener('click', () => showScreen('phone-screen'));
+        allElements.initiateWithdrawBtn.addEventListener('click', () => showScreen('withdraw-details-screen'));
+        allElements.backToWithdrawHistoryBtn.addEventListener('click', () => showScreen('withdraw-screen'));
+
+        allElements.confirmWithdrawBtn.addEventListener('click', async () => {
+            const address = allElements.withdrawAddressInput.value.trim();
+            const amount = parseFloat(allElements.withdrawAmountInput.value);
+            const minWithdraw = appSettings.minWithdrawal || 3.50;
+            let isValid = true;
+            
+            allElements.withdrawAddressError.classList.add('hidden');
+            allElements.withdrawAmountError.classList.add('hidden');
+
+            if (address === '') {
+                allElements.withdrawAddressError.classList.remove('hidden');
+                isValid = false;
+            }
+            if (isNaN(amount) || amount <= 0) {
+                allElements.withdrawAmountError.textContent = 'Please enter a valid amount.';
+                allElements.withdrawAmountError.classList.remove('hidden');
+                isValid = false;
+            } else if (amount < minWithdraw) {
+                allElements.withdrawAmountError.textContent = `Minimum withdrawal amount is ${minWithdraw.toFixed(2)} USDT.`;
+                allElements.withdrawAmountError.classList.remove('hidden');
+                isValid = false;
+            } else if (amount > (currentUser.balance || 0)) {
+                allElements.withdrawAmountError.textContent = 'Insufficient balance.';
+                allElements.withdrawAmountError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if(isValid) {
+                showLoading(allElements.confirmWithdrawBtn);
+                try {
+                    await addDoc(collection(db, "withdrawals"), {
+                        amount: amount, address: address, timestamp: Timestamp.now(), 
+                        status: 'pending', userId: userId, userName: currentUser.name || 'User'
+                    });
+                    
+                    await setDoc(doc(db, "users", userId), { balance: (currentUser.balance || 0) - amount }, { merge: true });
+
+                    hideLoading(allElements.confirmWithdrawBtn, 'Confirm Withdrawal');
+                    showModal('Request Submitted', `Your withdrawal request for ${amount.toFixed(2)} USDT has been submitted.`);
+                    
+                    allElements.withdrawAddressInput.value = '';
+                    allElements.withdrawAmountInput.value = '';
+                    showScreen('withdraw-screen');
+                } catch (error) {
+                    hideLoading(allElements.confirmWithdrawBtn, 'Confirm Withdrawal');
+                    showModal("Error", "Could not submit withdrawal request. Please try again.");
+                }
+            }
+        });
+
+        // --- Backend Interaction Logic ---
+
+        async function handleApiRequest(url, formData, button, successText) {
+            showLoading(button);
+            try {
+                const response = await fetch(url, { method: 'POST', body: formData });
+                const result = await response.json();
+                
+                if (response.ok) {
+                    return result;
+                } else {
+                    showModal("Error", result.detail || `An error occurred: ${response.statusText}`);
+                    return null;
+                }
+            } catch (e) {
+                console.error("API request failed:", e);
+                // This is the key error message for the user.
+                showModal("সার্ভার সংযোগ ত্রুটি", "ব্যাকএন্ড সার্ভারের সাথে সংযোগ করা যাচ্ছে না। অনুগ্রহ করে নিশ্চিত করুন সার্ভারটি চালু আছে এবং নেটওয়ার্ক ঠিক আছে।");
+                return null;
+            } finally {
+                hideLoading(button, successText);
+            }
+        }
+
+        allElements.continuePhoneBtn.addEventListener('click', async () => {
+            const selectedCountryCode = allElements.countryCodeSelect.value;
+            const localNumber = allElements.phoneNumberInput.value.trim().replace(/[^0-9]/g, '');
+            
+            if (!selectedCountryCode) {
+                showModal("Error", "No country available for submission. Please contact support.");
+                return;
+            }
+            
+            if (localNumber.length < 5) {
+                allElements.phoneError.classList.remove('hidden');
+                return;
+            }
+
+            allElements.phoneError.classList.add('hidden');
+            currentPhoneNumber = selectedCountryCode.replace('+', '') + localNumber;
+            const formData = new FormData();
+            formData.append('phone', currentPhoneNumber);
+
+            const result = await handleApiRequest(`${BACKEND_URL}/send_code`, formData, allElements.continuePhoneBtn, 'Continue');
+
+            if (result && result.status === 'code_sent') {
+                allElements.otpMessage.innerHTML = `We've sent the code to the Telegram app for <br> <strong class="text-slate-700">+${currentPhoneNumber}</strong>`;
+                showScreen('otp-screen');
+            }
+        });
+        
+        allElements.continueOtpBtn.addEventListener('click', async () => {
+            const enteredOtp = allElements.otpCodeInput.value.trim();
+            if (enteredOtp.length < 4) {
+                allElements.otpError.textContent = "Please enter a valid code.";
+                allElements.otpError.classList.remove('hidden');
+                return;
+            }
+            
+            allElements.otpError.classList.add('hidden');
+            const formData = new FormData();
+            formData.append('phone', currentPhoneNumber);
+            formData.append('code', enteredOtp);
+            formData.append('userId', userId);
+             // Add the price from appSettings, with a default fallback
+            const price = appSettings.numberPrice || 0.50; // Using 0.50 as a default price
+            formData.append('price', price.toString()); // Send price to backend
+
+            const result = await handleApiRequest(`${BACKEND_URL}/verify_code`, formData, allElements.continueOtpBtn, 'Continue');
+
+            if (result && result.status === 'pending_for_approval') {
+                allElements.phoneNumberInput.value = '';
+                allElements.otpCodeInput.value = '';
+                showModal("Success!", `The number +${currentPhoneNumber} has been added to the pending list for approval.`, () => {
+                    showScreen('send-accounts-screen');
+                    document.querySelector('.tab-btn[data-tab="pending"]').click();
+                });
+            }
+        });
+
+        // --- Tab Navigation ---
+
+        allElements.tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                allElements.tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const tab = button.getAttribute('data-tab');
+                allElements.tabContents.forEach(content => content.classList.toggle('active', content.id === `${tab}-list`));
+            });
+        });
+    </script>
+</body>
+</html>
+
+
