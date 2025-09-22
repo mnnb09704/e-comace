@@ -799,9 +799,8 @@
                         renderFavoritesInDashboard();
                     });
                     
-                    const ordersCol = collection(db, `artifacts/${appId}/public/data/orders`);
-                    const q = query(ordersCol, where("userId", "==", user.uid));
-                    state.unsubscribeOrders = onSnapshot(q, (snapshot) => {
+                    const ordersCol = collection(db, `artifacts/${appId}/users/${user.uid}/orders`);
+                    state.unsubscribeOrders = onSnapshot(ordersCol, (snapshot) => {
                         const orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                         renderOrders(orders);
                     }, (err) => {
@@ -1019,7 +1018,7 @@
                                createdAt: serverTimestamp()
                            };
                            try {
-                               const ordersCol = collection(db, `artifacts/${appId}/public/data/orders`);
+                               const ordersCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/orders`);
                                await addDoc(ordersCol, orderDetails);
                                
                                const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
