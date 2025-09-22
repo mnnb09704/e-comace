@@ -852,15 +852,23 @@
 
                     document.getElementById('checkout-btn').addEventListener('click', () => {
                         const paymentModal = document.getElementById('payment-modal');
-                        if (!paymentModal) {
-                            console.error('Payment modal not found!');
-                            showNotification('একটি ত্রুটি ঘটেছে।', 'error');
+                        const cartModalInstance = document.getElementById('cart-modal');
+
+                        if (!paymentModal || !cartModalInstance) {
+                            console.error('Modal element not found!');
+                            showNotification('একটি সাইট ত্রুটি ঘটেছে। অনুগ্রহ করে রিফ্রেশ করুন।', 'error');
                             return;
                         }
+
                         if (state.cart && state.cart.length > 0) {
-                            cartModal.classList.remove('active');
-                            document.getElementById('payment-amount').innerText = `৳${state.totalCartAmount.toLocaleString('bn-BD')}`;
-                            paymentModal.classList.add('active');
+                            if (typeof state.totalCartAmount === 'number') {
+                                cartModalInstance.classList.remove('active');
+                                document.getElementById('payment-amount').innerText = `৳${state.totalCartAmount.toLocaleString('bn-BD')}`;
+                                paymentModal.classList.add('active');
+                            } else {
+                                console.error('Checkout failed: totalCartAmount is not a number.', state.totalCartAmount);
+                                showNotification('কার্টের মোট মূল্য গণনা করা যায়নি।', 'error');
+                            }
                         } else {
                             showNotification('আপনার কার্ট খালি।', 'error');
                         }
