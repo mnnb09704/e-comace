@@ -174,15 +174,15 @@
             <div class="slide active">
                 <img src="https://placehold.co/1920x1080/000000/FBBF24?text=50%25+OFF" alt="Ad 1">
                 <div class="slide-content">
-                    <h2 class="text-3xl font-bold" data-lang-key="slide1_title">সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!</h2>
-                    <p data-lang-key="slide1_desc">আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।</p>
+                    <h2 class="text-3xl font-bold" data-lang-key="slide1_title">সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!</h2>
+                    <p data-lang-key="slide1_desc">আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।</p>
                 </div>
             </div>
             <div class="slide">
                 <img src="https://placehold.co/1920x1080/111827/34D399?text=New+Arrivals" alt="Ad 2">
                 <div class="slide-content">
                     <h2 class="text-3xl font-bold" data-lang-key="slide2_title">এসে গেছে নতুন গ্রাফিক্স ডিজাইন কালেকশন</h2>
-                    <p data-lang-key="slide2_desc">আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।</p>
+                    <p data-lang-key="slide2_desc">আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।</p>
                 </div>
             </div>
             <div class="slider-nav">
@@ -194,8 +194,8 @@
         <!-- Hero Section -->
         <main class="hero-gradient">
             <section class="container mx-auto px-6 py-24 text-center">
-                <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight" data-lang-key="hero_title">আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস</h2>
-                <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-8" data-lang-key="hero_subtitle">ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।</p>
+                <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight" data-lang-key="hero_title">আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস</h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-8" data-lang-key="hero_subtitle">ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।</p>
                 <a href="#products" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-8 rounded-lg text-lg transition duration-300" data-lang-key="hero_button">প্রোডাক্ট দেখুন</a>
             </section>
         </main>
@@ -258,11 +258,21 @@
                     </div>
                      <div id="settings" class="dashboard-content hidden">
                         <h3 class="text-2xl font-semibold mb-4" data-lang-key="settings_title">অ্যাকাউন্ট সেটিংস</h3>
-                         <div class="glass-effect p-6 rounded-lg">
-                            <p id="user-email" class="text-gray-300 mb-4"></p>
-                            <h4 class="text-xl font-semibold mb-3" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h4>
+                          <div class="glass-effect p-6 rounded-lg">
+                            <div id="profile-display" class="mb-6">
+                                <h4 id="profile-full-name" class="text-xl font-bold"></h4>
+                                <p id="profile-email" class="text-gray-400"></p>
+                                <p id="profile-mobile" class="text-gray-400"></p>
+                            </div>
+                            <h4 class="text-xl font-semibold mb-3" data-lang-key="payout_title">প্রোফাইল ও পেমেন্ট তথ্য</h4>
                             <p class="text-sm text-gray-400 mb-4" data-lang-key="payout_desc">আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।</p>
-                            <form id="payout-form" class="space-y-4">
+                            <form id="settings-form" class="space-y-4">
+                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2" data-lang-key="settings_optional_title">ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)</h5>
+                                <textarea id="settings-address" placeholder="আপনার ঠিকানা" rows="3" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
+                                <input id="settings-house" type="text" placeholder="বাড়ির নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                <input id="settings-zip" type="text" placeholder="জিপ কোড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                
+                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2 pt-4" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h5>
                                 <select id="payout-method" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
                                     <option value="bKash">বিকাশ</option>
                                     <option value="Nagad">নগদ</option>
@@ -299,7 +309,7 @@
                  <h3 class="text-2xl font-bold text-center mb-6" data-lang-key="login_title">স্বাগতম!</h3>
                  <form id="login-form" class="space-y-4">
                      <input id="login-email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                     <input id="login-password" type="password" placeholder="আপনার পাসওয়ার্ড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                     <input id="login-password" type="password" placeholder="আপনার পাসওয়ার্ড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
                      <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="login_form_btn">লগইন করুন</button>
                  </form>
                  <div class="mt-6 text-center">
@@ -310,9 +320,16 @@
             <div id="register-view" class="hidden">
                 <h3 class="text-2xl font-bold text-center mb-6" data-lang-key="register_title">অ্যাকাউন্ট তৈরি করুন</h3>
                  <form id="register-form" class="space-y-4">
-                     <input id="register-email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                     <input id="register-password" type="password" placeholder="একটি পাসওয়ার্ড দিন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                     <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="register_form_btn">রেজিস্টার করুন</button>
+                    <input id="register-name" type="text" placeholder="আপনার পুরো নাম" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                    <input id="register-mobile" type="tel" placeholder="আপনার মোবাইল নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                    <input id="register-email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                    <input id="register-password" type="password" placeholder="একটি পাসওয়ার্ড দিন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                    <input id="register-confirm-password" type="password" placeholder="পাসওয়ার্ডটি আবার দিন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="register-terms" class="h-4 w-4 bg-gray-800 border-gray-600 text-yellow-500 focus:ring-yellow-600" required>
+                        <label for="register-terms" class="text-sm text-gray-400" data-lang-key="register_terms_agree">আমি <a href="#" id="register-terms-link" class="text-yellow-400 hover:underline">শর্তাবলীতে</a> সম্মত।</label>
+                    </div>
+                    <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="register_form_btn">রেজিস্টার করুন</button>
                  </form>
                  <div class="mt-6 text-center">
                     <p class="text-sm text-gray-400" data-lang-key="register_has_account">ইতিমধ্যে অ্যাকাউন্ট আছে?</p>
@@ -351,7 +368,7 @@
                 <p class="text-sm text-gray-400" data-lang-key="payment_instruction_2">(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)</p>
             </div>
             <form id="payment-form" class="space-y-4 mt-6">
-                 <input id="payment-phone" type="text" placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                 <input id="payment-phone" type="text" placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
                  <input id="payment-trxid" type="text" placeholder="ট্রানজকশন আইডি (TrxID)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
                  <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition" data-lang-key="payment_confirm_btn">অর্ডার কনফার্ম করুন</button>
             </form>
@@ -364,8 +381,8 @@
             <button id="close-terms-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold text-center mb-6" data-lang-key="terms_title">টার্মস এন্ড কন্ডিশনস</h3>
             <div class="text-gray-300 space-y-4 max-h-96 overflow-y-auto pr-4">
-                <p data-lang-key="terms_p1">আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।</p>
-                <p data-lang-key="terms_p2">যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।</p>
+                <p data-lang-key="terms_p1">আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।</p>
+                <p data-lang-key="terms_p2">যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।</p>
             </div>
         </div>
     </div>
@@ -376,7 +393,19 @@
         import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, setDoc, getDoc, query, where, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const firebaseConfigString = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+        
+        const firebaseConfig = firebaseConfigString ? JSON.parse(firebaseConfigString) : {
+            apiKey: "AIzaSyB6rH8V0TClZ_aigoUBPrS8BFzscG9_Dz8",
+            authDomain: "e-site-62560.firebaseapp.com",
+            databaseURL: "https://e-site-62560-default-rtdb.firebaseio.com",
+            projectId: "e-site-62560",
+            storageBucket: "e-site-62560.firebasestorage.app",
+            messagingSenderId: "823317877501",
+            appId: "1:823317877501:web:112d400e1f45533613a494",
+            measurementId: "G-V5933K4NYK"
+        };
+
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         
         let notificationTimeout;
@@ -390,8 +419,8 @@
             notificationTimeout = setTimeout(() => el.classList.remove('show'), 3000);
         }
 
-        if (!firebaseConfig) {
-            console.error("Firebase config is not available.");
+        if (!firebaseConfig || !firebaseConfig.apiKey) {
+            console.error("Firebase config is not available or invalid.");
             const loadingIndicator = document.getElementById('loading-indicator');
             if (loadingIndicator) loadingIndicator.querySelector('p').innerText = "সাইট লোড করা যায়নি।";
             showNotification("সাইট লোড হতে একটি গুরুতর সমস্যা হয়েছে।", "error");
@@ -403,13 +432,13 @@
             let state = {
                 products: [], cart: [], favorites: [], user: null,
                 currentCategory: 'All', searchTerm: '',
-                unsubscribeCart: () => {}, unsubscribeFavorites: () => {},
+                unsubscribeProducts: () => {}, unsubscribeCart: () => {}, unsubscribeFavorites: () => {},
                 totalCartAmount: 0
             };
             
             const translations = {
-                bn: { site_title: "ইসমত কোড", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_sell: "পণ্য সেল করুন", nav_account: "আমার অ্যাকাউন্ট", search_placeholder: "প্রোডাক্ট খুঁজুন...", login_btn: "লগইন", logout_btn: "লগআউট", hero_title: "আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস", hero_subtitle: "ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।", hero_button: "প্রোডাক্ট দেখুন", products_title: "আমাদের সেরা প্রোডাক্টস", footer_terms: "টার্মস এন্ড কন্ডিশনস", footer_copyright: "© ২০২৫ ইসমত ২ হাজার কোড। সর্বসত্ত্ব সংরক্ষিত।", terms_title: "টার্মস এন্ড কন্ডিশনস", terms_p1: "আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।", terms_p2: "যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।", slide1_title: "সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!", slide1_desc: "আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।", slide2_title: "এসে গেছে নতুন গ্রাফিক্স ডিজাইন কালেকশন", slide2_desc: "আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।", login_title: "স্বাগতম!", login_form_btn: "লগইন করুন", login_no_account: "অ্যাকাউন্ট নেই?", login_create_account: "এখনি তৈরি করুন", register_title: "অ্যাকাউন্ট তৈরি করুন", register_form_btn: "রেজিস্টার করুন", register_has_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?", register_login: "লগইন করুন", dashboard_title: "আমার অ্যাকাউন্ট ড্যাশবোর্ড", dashboard_nav_orders: "আমার অর্ডার", dashboard_nav_favorites: "ফেভারিট পণ্য", dashboard_nav_upload: "আপনার পণ্য আপলোড করুন", dashboard_nav_settings: "সেটিংস", orders_title: "অর্ডার হিস্টোরি", orders_none: "আপনার কোনো অর্ডার নেই।", favorites_title: "আপনার ফেভারিট পণ্য", favorites_none: "আপনার পছন্দের তালিকা খালি।", upload_title: "নতুন পণ্য যোগ করুন", upload_button: "পণ্য আপলোড করুন", settings_title: "অ্যাকাউন্ট সেটিংস", payout_title: "পেমেন্ট পাওয়ার তথ্য", payout_desc: "আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।", payout_save_btn: "তথ্য সেভ করুন", add_to_cart_btn: "কার্টে যোগ করুন", buy_now_btn: "এখনই কিনুন", cart_title: "আপনার কার্ট", cart_total: "সর্বমোট:", cart_checkout: "চেকআউট করুন", cart_empty: "আপনার কার্ট খালি।", payment_title: "পেমেন্ট সম্পন্ন করুন", payment_instruction_1: "নিচের নম্বরে সর্বমোট", payment_instruction_2: "(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)", payment_confirm_btn: "অর্ডার কনফার্ম করুন", loading_text: "লোড হচ্ছে...", critical_error: "একটি গুরুতর সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।" },
-                en: { site_title: "Ismat Code", nav_home: "Home", nav_products: "Products", nav_sell: "Sell Product", nav_account: "My Account", search_placeholder: "Search for products...", login_btn: "Login", logout_btn: "Logout", hero_title: "All The Digital Products You Need", hero_subtitle: "Web templates, graphic designs, software, and much more, all in one place.", hero_button: "Browse Products", products_title: "Our Best Products", footer_terms: "Terms & Conditions", footer_copyright: "© 2025 Ismat 2 Thousand Code. All rights reserved.", terms_title: "Terms & Conditions", terms_p1: "Welcome to our website. By using this site, you agree to our terms and conditions.", terms_p2: "Please read the product descriptions carefully before purchasing. As these are digital products, there are no refunds. Copying our content is prohibited.", slide1_title: "50% Off On All Web Templates!", slide1_desc: "Build your dream website with our premium templates.", slide2_title: "New Graphics Design Collection Arrived", slide2_desc: "Elevate your project with a fresh new look.", login_title: "Welcome!", login_form_btn: "Log In", login_no_account: "No account?", login_create_account: "Create one now", register_title: "Create Account", register_form_btn: "Register", register_has_account: "Already have an account?", register_login: "Log In", dashboard_title: "My Account Dashboard", dashboard_nav_orders: "My Orders", dashboard_nav_favorites: "Favorite Products", dashboard_nav_upload: "Upload Your Product", dashboard_nav_settings: "Settings", orders_title: "Order History", orders_none: "You have no orders.", favorites_title: "Your Favorite Products", favorites_none: "Your favorites list is empty.", upload_title: "Add New Product", upload_button: "Upload Product", settings_title: "Account Settings", payout_title: "Payout Information", payout_desc: "When your product sells, we will send the payment to the details below.", payout_save_btn: "Save Information", add_to_cart_btn: "Add to Cart", buy_now_btn: "Buy Now", cart_title: "Your Cart", cart_total: "Total:", cart_checkout: "Checkout", cart_empty: "Your cart is empty.", payment_title: "Complete Payment", payment_instruction_1: "Please send a total of", payment_instruction_2: "(This is a merchant number, please use the Payment option)", payment_confirm_btn: "Confirm Order", loading_text: "Loading...", critical_error: "A critical error has occurred. Please refresh the page." }
+                bn: { site_title: "ইসমত কোড", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_sell: "পণ্য সেল করুন", nav_account: "আমার অ্যাকাউন্ট", search_placeholder: "প্রোডাক্ট খুঁজুন...", login_btn: "লগইন", logout_btn: "লগআউট", hero_title: "আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস", hero_subtitle: "ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।", hero_button: "প্রোডাক্ট দেখুন", products_title: "আমাদের সেরা প্রোডাক্টস", footer_terms: "টার্মস এন্ড কন্ডিশনস", footer_copyright: "© ২০২৫ ইসমত ২ হাজার কোড। সর্বসত্ত্ব সংরক্ষিত।", terms_title: "টার্মস এন্ড কন্ডিশনস", terms_p1: "আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।", terms_p2: "যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।", slide1_title: "সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!", slide1_desc: "আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।", slide2_title: "এসে গেছে নতুন গ্রাফিক্স ডিজাইন কালেকশন", slide2_desc: "আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।", login_title: "স্বাগতম!", login_form_btn: "লগইন করুন", login_no_account: "অ্যাকাউন্ট নেই?", login_create_account: "এখনি তৈরি করুন", register_title: "অ্যাকাউন্ট তৈরি করুন", register_form_btn: "রেজিস্টার করুন", register_has_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?", register_login: "লগইন করুন", register_terms_agree: "আমি", dashboard_title: "আমার অ্যাকাউন্ট ড্যাশবোর্ড", dashboard_nav_orders: "আমার অর্ডার", dashboard_nav_favorites: "ফেভারিট পণ্য", dashboard_nav_upload: "আপনার পণ্য আপলোড করুন", dashboard_nav_settings: "সেটিংস", orders_title: "অর্ডার হিস্টোরি", orders_none: "আপনার কোনো অর্ডার নেই।", favorites_title: "আপনার ফেভারিট পণ্য", favorites_none: "আপনার পছন্দের তালিকা খালি।", upload_title: "নতুন পণ্য যোগ করুন", upload_button: "পণ্য আপলোড করুন", settings_title: "অ্যাকাউন্ট সেটিংস", settings_optional_title: "ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)", payout_title: "পেমেন্ট পাওয়ার তথ্য", payout_desc: "আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।", payout_save_btn: "তথ্য সেভ করুন", add_to_cart_btn: "কার্টে যোগ করুন", buy_now_btn: "এখনই কিনুন", cart_title: "আপনার কার্ট", cart_total: "সর্বমোট:", cart_checkout: "চেকআউট করুন", cart_empty: "আপনার কার্ট খালি।", payment_title: "পেমেন্ট সম্পন্ন করুন", payment_instruction_1: "নিচের নম্বরে সর্বমোট", payment_instruction_2: "(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)", payment_confirm_btn: "অর্ডার কনফার্ম করুন", loading_text: "লোড হচ্ছে...", critical_error: "একটি গুরুতর সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।" },
+                en: { site_title: "Ismat Code", nav_home: "Home", nav_products: "Products", nav_sell: "Sell Product", nav_account: "My Account", search_placeholder: "Search for products...", login_btn: "Login", logout_btn: "Logout", hero_title: "All The Digital Products You Need", hero_subtitle: "Web templates, graphic designs, software, and much more, all in one place.", hero_button: "Browse Products", products_title: "Our Best Products", footer_terms: "Terms & Conditions", footer_copyright: "© 2025 Ismat 2 Thousand Code. All rights reserved.", terms_title: "Terms & Conditions", terms_p1: "Welcome to our website. By using this site, you agree to our terms and conditions.", terms_p2: "Please read the product descriptions carefully before purchasing. As these are digital products, there are no refunds. Copying our content is prohibited.", slide1_title: "50% Off On All Web Templates!", slide1_desc: "Build your dream website with our premium templates.", slide2_title: "New Graphics Design Collection Arrived", slide2_desc: "Elevate your project with a fresh new look.", login_title: "Welcome!", login_form_btn: "Log In", login_no_account: "No account?", login_create_account: "Create one now", register_title: "Create Account", register_form_btn: "Register", register_has_account: "Already have an account?", register_login: "Log In", register_terms_agree: "I agree to the", dashboard_title: "My Account Dashboard", dashboard_nav_orders: "My Orders", dashboard_nav_favorites: "Favorite Products", dashboard_nav_upload: "Upload Your Product", dashboard_nav_settings: "Settings", orders_title: "Order History", orders_none: "You have no orders.", favorites_title: "Your Favorite Products", favorites_none: "Your favorites list is empty.", upload_title: "Add New Product", upload_button: "Upload Product", settings_title: "Account Settings", settings_optional_title: "Optional Info (Complete Profile)", payout_title: "Payout Information", payout_desc: "When your product sells, we will send the payment to the details below.", payout_save_btn: "Save Information", add_to_cart_btn: "Add to Cart", buy_now_btn: "Buy Now", cart_title: "Your Cart", cart_total: "Total:", cart_checkout: "Checkout", cart_empty: "Your cart is empty.", payment_title: "Complete Payment", payment_instruction_1: "Please send a total of", payment_instruction_2: "(This is a merchant number, please use the Payment option)", payment_confirm_btn: "Confirm Order", loading_text: "Loading...", critical_error: "A critical error has occurred. Please refresh the page." }
             };
 
             function setLanguage(lang) {
@@ -422,6 +451,9 @@
                         : translations[lang][key];
                     if (text) {
                         if (el.placeholder) el.placeholder = text;
+                        else if (key === 'register_terms_agree') {
+                             el.innerHTML = `${text} <a href="#" id="register-terms-link" class="text-yellow-400 hover:underline">${lang === 'bn' ? 'শর্তাবলীতে' : 'Terms & Conditions'}</a>`;
+                        }
                         else el.innerText = text;
                     }
                 });
@@ -439,7 +471,7 @@
                 listEl.innerHTML = '';
                 const filtered = state.products.filter(p => (state.currentCategory === 'All' || p.category === state.currentCategory) && p.name.toLowerCase().includes(state.searchTerm.toLowerCase()));
                 if (filtered.length === 0) {
-                     listEl.innerHTML = `<p class="text-center text-gray-400 col-span-full">কোনো প্রোডাক্ট পাওয়া যায়নি।</p>`;
+                     listEl.innerHTML = `<p class="text-center text-gray-400 col-span-full">কোনো প্রোডাক্ট পাওয়া যায়নি।</p>`;
                      return;
                 }
                 filtered.forEach(p => {
@@ -523,24 +555,34 @@
                 setLanguage(localStorage.getItem('language') || 'bn');
             }
 
-            async function fetchAndRenderData() {
-                try {
-                    const productsCol = collection(db, `artifacts/${appId}/public/data/products`);
-                    const productSnapshot = await getDocs(productsCol);
-                    state.products = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            // --- CORRECTED REAL-TIME DATA FETCHING ---
+            function listenForProductUpdates() {
+                const productsCol = collection(db, `artifacts/${appId}/public/data/products`);
+                // Unsubscribe from previous listener if it exists
+                if (state.unsubscribeProducts) {
+                    state.unsubscribeProducts();
+                }
+                state.unsubscribeProducts = onSnapshot(productsCol, (snapshot) => {
+                    state.products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                     
-                    const categories = ['All', ...new Set(state.products.map(p => p.category))];
-                    document.getElementById('category-filters').innerHTML = categories.map(c => `<button class="category-btn px-4 py-2 rounded-full text-sm font-semibold transition ${c === 'All' ? 'active' : ''}" data-category="${c}">${c}</button>`).join('');
+                    // Re-render categories only if they have changed
+                    const newCategories = ['All', ...new Set(state.products.map(p => p.category))];
+                    const categoryContainer = document.getElementById('category-filters');
+                    if (categoryContainer.children.length !== newCategories.length) {
+                        categoryContainer.innerHTML = newCategories.map(c => `<button class="category-btn px-4 py-2 rounded-full text-sm font-semibold transition ${c === state.currentCategory ? 'active' : ''}" data-category="${c}">${c}</button>`).join('');
+                    }
                     
                     renderProducts();
-                } catch (error) {
-                    console.error("Error fetching data:", error);
-                    showNotification("ডেটা লোড করা সম্ভব হয়নি।", "error");
-                    const loadingIndicator = document.getElementById('loading-indicator');
-                    if(loadingIndicator) loadingIndicator.style.display = 'none';
-                    document.getElementById('product-list').innerHTML = `<p class="text-center text-red-400 col-span-full">প্রোডাক্ট লোড করা যায় নি।</p>`
-                }
+                    // If dashboard is visible, update favorites list as well
+                    if (!document.getElementById('dashboard').classList.contains('hidden')) {
+                        renderFavoritesInDashboard();
+                    }
+                }, (error) => {
+                    console.error("Error listening to product updates:", error);
+                    showNotification("প্রোডাক্টের তালিকা আপডেট করা সম্ভব হয়নি।", "error");
+                });
             }
+
 
             const handleUserAction = (action, productId) => {
                 if (!state.user || state.user.isAnonymous) {
@@ -559,8 +601,8 @@
                 try {
                     const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
                     await addDoc(cartCol, { productId, quantity: 1, addedAt: serverTimestamp() });
-                    showNotification('পণ্যটি কার্টে যোগ করা হয়েছে।');
-                } catch (e) { showNotification('কার্টে যোগ করতে সমস্যা হয়েছে।', 'error'); }
+                    showNotification('পণ্যটি কার্টে যোগ করা হয়েছে।');
+                } catch (e) { showNotification('কার্টে যোগ করতে সমস্যা হয়েছে।', 'error'); }
             }
             function buyNow(productId) {
                 addToCart(productId);
@@ -573,22 +615,28 @@
                     const snapshot = await getDocs(q);
                     if (snapshot.empty) {
                         await addDoc(favCol, { productId, addedAt: serverTimestamp() });
-                        showNotification('পণ্যটি ফেভারিটে যোগ করা হয়েছে।');
+                        showNotification('পণ্যটি ফেভারিটে যোগ করা হয়েছে।');
                     } else {
                         await deleteDoc(snapshot.docs[0].ref);
-                        showNotification('পণ্যটি ফেভারিট থেকে মুছে ফেলা হয়েছে।');
+                        showNotification('পণ্যটি ফেভারিট থেকে মুছে ফেলা হয়েছে।');
                     }
-                } catch (e) { console.error(e); showNotification('ফেভারিট পরিবর্তন করতে সমস্যা হয়েছে।', 'error'); }
+                } catch (e) { console.error(e); showNotification('ফেভারিট পরিবর্তন করতে সমস্যা হয়েছে।', 'error'); }
             }
             
-            async function fetchPayoutDetails() {
+            async function fetchUserProfile() {
                 if (!state.user || state.user.isAnonymous) return;
-                const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/payout/details`);
+                const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/profile/details`);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    document.getElementById('payout-method').value = data.method;
-                    document.getElementById('payout-number').value = data.number;
+                    document.getElementById('profile-full-name').innerText = data.fullName || '';
+                    document.getElementById('profile-email').innerText = data.email || '';
+                    document.getElementById('profile-mobile').innerText = data.mobile || '';
+                    document.getElementById('settings-address').value = data.address || '';
+                    document.getElementById('settings-house').value = data.houseNumber || '';
+                    document.getElementById('settings-zip').value = data.zipCode || '';
+                    document.getElementById('payout-method').value = data.payoutMethod || 'bKash';
+                    document.getElementById('payout-number').value = data.payoutNumber || '';
                 }
             }
 
@@ -596,8 +644,10 @@
                 state.unsubscribeCart();
                 state.unsubscribeFavorites();
                 state.user = user;
+                const authBtn = document.getElementById('auth-btn');
+                
                 if (user && !user.isAnonymous) {
-                    setLanguage(localStorage.getItem('language') || 'bn');
+                    setLanguage(localStorage.getItem('language') || 'bn'); // This will handle logout text
                     const cartCol = collection(db, `artifacts/${appId}/users/${user.uid}/cart`);
                     state.unsubscribeCart = onSnapshot(cartCol, s => {
                         state.cart = s.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -611,8 +661,8 @@
                         renderProducts();
                         renderFavoritesInDashboard();
                     });
-                    document.getElementById('user-email').innerText = `Email: ${user.email}`;
-                    fetchPayoutDetails();
+                    
+                    fetchUserProfile();
                 } else {
                     state.cart = []; state.favorites = [];
                     document.getElementById('cart-count').textContent = 0;
@@ -620,7 +670,7 @@
                     document.getElementById('main-content').classList.remove('hidden');
                     document.getElementById('dashboard').classList.add('hidden');
                     renderProducts();
-                    setLanguage(localStorage.getItem('language') || 'bn');
+                    setLanguage(localStorage.getItem('language') || 'bn'); // this will handle login text
                 }
             });
             
@@ -647,6 +697,15 @@
                     });
                     document.getElementById('cart-icon').addEventListener('click', () => cartModal.classList.add('active'));
                     document.getElementById('terms-link').addEventListener('click', e => { e.preventDefault(); termsModal.classList.add('active'); });
+                    
+                    // Open terms from register form
+                    document.body.addEventListener('click', e => {
+                        if (e.target.id === 'register-terms-link') {
+                            e.preventDefault();
+                            termsModal.classList.add('active');
+                        }
+                    });
+
                     document.getElementById('checkout-btn').addEventListener('click', () => {
                         if (state.cart.length > 0) {
                             cartModal.classList.remove('active');
@@ -679,69 +738,92 @@
                             await signInWithEmailAndPassword(auth, e.target['login-email'].value, e.target['login-password'].value);
                             authModal.classList.remove('active');
                             showNotification('সফলভাবে লগইন করেছেন।');
-                        } catch (err) { showNotification('ইমেইল বা পাসওয়ার্ড ভুল।', 'error'); }
+                        } catch (err) { showNotification('ইমেইল বা পাসওয়ার্ড ভুল।', 'error'); }
                     });
                     document.getElementById('register-form').addEventListener('submit', async e => {
                         e.preventDefault();
-                        try {
-                            await createUserWithEmailAndPassword(auth, e.target['register-email'].value, e.target['register-password'].value);
-                            authModal.classList.remove('active');
-                            showNotification('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।');
-                        } catch (err) { showNotification('রেজিস্ট্রেশন ব্যর্থ হয়েছে।', 'error'); }
-                    });
-                    document.getElementById('upload-form').addEventListener('submit', async e => {
-                        e.preventDefault();
-                        if(!state.user || state.user.isAnonymous) { showNotification('প্রথমে লগইন করুন।', 'error'); return; }
-                        try {
-                            const productsCol = collection(db, `artifacts/${appId}/public/data/products`);
-                            await addDoc(productsCol, { name: e.target['upload-name'].value, description: e.target['upload-desc'].value, price: parseFloat(e.target['upload-price'].value), category: e.target['upload-category'].value, image: e.target['upload-image'].value, sellerId: state.user.uid, createdAt: serverTimestamp() });
-                            showNotification('পণ্য সফলভাবে আপলোড হয়েছে।');
-                            e.target.reset();
-                            fetchAndRenderData();
-                        } catch(err) { showNotification('পণ্য আপলোড করা যায়নি।', 'error'); }
-                    });
-                     document.getElementById('payout-form').addEventListener('submit', async e => {
-                        e.preventDefault();
-                        if(!state.user || state.user.isAnonymous) { showNotification('প্রথমে লগইন করুন।', 'error'); return; }
-                        try {
-                            const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/payout/details`);
-                            await setDoc(docRef, {
-                                method: e.target['payout-method'].value,
-                                number: e.target['payout-number'].value,
-                                updatedAt: serverTimestamp()
-                            });
-                            showNotification('আপনার পেমেন্ট তথ্য সেভ করা হয়েছে।');
-                        } catch (err) { showNotification('তথ্য সেভ করা যায়নি।', 'error');}
-                     });
-                     document.getElementById('payment-form').addEventListener('submit', async e => {
-                        e.preventDefault();
-                        const orderDetails = {
-                            userId: state.user.uid,
-                            items: state.cart,
-                            totalAmount: state.totalCartAmount,
-                            paymentPhone: e.target['payment-phone'].value,
-                            paymentTrxId: e.target['payment-trxid'].value,
-                            status: 'pending',
-                            createdAt: serverTimestamp()
-                        };
-                        try {
-                            const ordersCol = collection(db, `artifacts/${appId}/public/data/orders`);
-                            await addDoc(ordersCol, orderDetails);
-                            
-                            const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
-                            const cartSnapshot = await getDocs(cartCol);
-                            const batch = writeBatch(db);
-                            cartSnapshot.docs.forEach(doc => batch.delete(doc.ref));
-                            await batch.commit();
+                        const name = e.target['register-name'].value;
+                        const mobile = e.target['register-mobile'].value;
+                        const email = e.target['register-email'].value;
+                        const password = e.target['register-password'].value;
+                        const confirmPassword = e.target['register-confirm-password'].value;
+                        const terms = e.target['register-terms'].checked;
 
-                            paymentModal.classList.remove('active');
-                            showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
-                            e.target.reset();
-
-                        } catch (err) {
-                            showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
+                        if (password !== confirmPassword) {
+                            showNotification('পাসওয়ার্ড মেলেনি।', 'error');
+                            return;
                         }
-                     });
+                        if (!terms) {
+                            showNotification('শর্তাবলীতে সম্মত হতে হবে।', 'error');
+                            return;
+                        }
+
+                        try {
+                            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                            const user = userCredential.user;
+
+                            // Create user profile
+                            const profileRef = doc(db, `artifacts/${appId}/users/${user.uid}/profile/details`);
+                            await setDoc(profileRef, {
+                                fullName: name,
+                                mobile: mobile,
+                                email: email,
+                                createdAt: serverTimestamp()
+                            });
+
+                            authModal.classList.remove('active');
+                            showNotification('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।');
+                        } catch (err) { 
+                            console.error("Registration error:", err);
+                            showNotification('রেজিস্ট্রেশন ব্যর্থ হয়েছে।', 'error'); 
+                        }
+                    });
+                    
+                    document.getElementById('settings-form').addEventListener('submit', async e => {
+                        e.preventDefault();
+                        if(!state.user || state.user.isAnonymous) { showNotification('প্রথমে লগইন করুন।', 'error'); return; }
+                        try {
+                            const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/profile/details`);
+                            await setDoc(docRef, {
+                                address: e.target['settings-address'].value,
+                                houseNumber: e.target['settings-house'].value,
+                                zipCode: e.target['settings-zip'].value,
+                                payoutMethod: e.target['payout-method'].value,
+                                payoutNumber: e.target['payout-number'].value,
+                            }, { merge: true }); // Merge to not overwrite required fields
+                            showNotification('আপনার তথ্য সেভ করা হয়েছে।');
+                        } catch (err) { showNotification('তথ্য সেভ করা যায়নি।', 'error');}
+                    });
+
+                     document.getElementById('payment-form').addEventListener('submit', async e => {
+                         e.preventDefault();
+                         const orderDetails = {
+                             userId: state.user.uid,
+                             items: state.cart,
+                             totalAmount: state.totalCartAmount,
+                             paymentPhone: e.target['payment-phone'].value,
+                             paymentTrxId: e.target['payment-trxid'].value,
+                             status: 'pending',
+                             createdAt: serverTimestamp()
+                         };
+                         try {
+                             const ordersCol = collection(db, `artifacts/${appId}/public/data/orders`);
+                             await addDoc(ordersCol, orderDetails);
+                             
+                             const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
+                             const cartSnapshot = await getDocs(cartCol);
+                             const batch = writeBatch(db);
+                             cartSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+                             await batch.commit();
+
+                             paymentModal.classList.remove('active');
+                             showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
+                             e.target.reset();
+
+                         } catch (err) {
+                             showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
+                         }
+                       });
                     
                     // --- EVENT DELEGATION ---
                     document.getElementById('product-list').addEventListener('click', e => {
@@ -751,17 +833,17 @@
                         }
                     });
                      document.getElementById('cart-items').addEventListener('click', async e => {
-                        const button = e.target.closest('button[data-cart-id]');
-                        if (button) {
-                            try {
-                                const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, button.dataset.cartId);
-                                await deleteDoc(docRef);
-                                showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
-                            } catch (err) {
-                                 showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
-                            }
-                        }
-                     });
+                         const button = e.target.closest('button[data-cart-id]');
+                         if (button) {
+                             try {
+                                 const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, button.dataset.cartId);
+                                 await deleteDoc(docRef);
+                                 showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
+                             } catch (err) {
+                                  showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
+                             }
+                         }
+                       });
 
                     // --- NAVIGATION AND FILTERS ---
                     document.getElementById('lang-bn').addEventListener('click', () => setLanguage('bn'));
@@ -831,13 +913,14 @@
                         if(totalSlides > 1) setInterval(next, 5000);
                     }
                     
-                    fetchAndRenderData();
+                    listenForProductUpdates();
+
                 } catch(e) {
                      console.error("A critical error occurred on DOMContentLoaded:", e);
                      const loadingIndicator = document.getElementById('loading-indicator');
                      if (loadingIndicator) {
-                        loadingIndicator.innerHTML = '<p class="text-lg text-red-500" data-lang-key="critical_error"></p>';
-                        setLanguage(localStorage.getItem('language') || 'bn');
+                         loadingIndicator.innerHTML = '<p class="text-lg text-red-500" data-lang-key="critical_error"></p>';
+                         setLanguage(localStorage.getItem('language') || 'bn');
                      }
                      showNotification("অ্যাপ্লিকেশন শুরু করা যায়নি।", "error");
                 }
