@@ -214,6 +214,7 @@
                         <button data-target="my-favorites" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_favorites">ফেভারিট পণ্য</button>
                         <button data-target="upload-product" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_upload">আপনার পণ্য আপলোড করুন</button>
                         <button data-target="settings" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_settings">সেটিংস</button>
+                        <button data-target="site-settings" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_site_settings">সাইট সেটিংস</button>
                     </nav>
                 </div>
                 <!-- Dashboard Content -->
@@ -270,6 +271,17 @@
                             </form>
                            </div>
                      </div>
+                     <div id="site-settings" class="dashboard-content hidden">
+                        <h3 class="text-2xl font-semibold mb-4" data-lang-key="site_settings_title">সাইট পেমেন্ট সেটিংস</h3>
+                          <div class="glass-effect p-6 rounded-lg">
+                           <p class="text-sm text-gray-400 mb-4" data-lang-key="site_settings_desc">গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।</p>
+                           <form id="site-settings-form" class="space-y-4">
+                               <input id="site-payment-gateway" type="text" placeholder="পেমেন্ট গেটওয়ের নাম (যেমন: বিকাশ)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                               <input id="site-payment-number" type="text" placeholder="মার্চেন্ট/এজেন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                               <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
+                           </form>
+                          </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -351,8 +363,8 @@
             <h3 class="text-2xl font-bold text-center mb-4" data-lang-key="payment_title">পেমেন্ট সম্পন্ন করুন</h3>
             <div class="text-center p-4 bg-gray-800 rounded-lg">
                 <p data-lang-key="payment_instruction_1">নিচের নম্বরে সর্বমোট <strong id="payment-amount" class="text-yellow-400"></strong> টাকা পাঠান।</p>
-                <p class="text-2xl font-bold my-2 text-green-400">01XXXXXXXXX (bKash/Nagad)</p>
-                <p class="text-sm text-gray-400" data-lang-key="payment_instruction_2">(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)</p>
+                <p id="gateway-number" class="text-2xl font-bold my-2 text-green-400">লোড হচ্ছে...</p>
+                <p class="text-sm text-gray-400" data-lang-key="payment_instruction_2">(এটি একটি <span id="gateway-name"></span> নম্বর, পেমেন্ট অপশন ব্যবহার করুন)</p>
             </div>
             <form id="payment-form" class="space-y-4 mt-6">
                  <input id="payment-phone" type="text" placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
@@ -417,15 +429,14 @@
             const db = getFirestore(app);
 
             let state = {
-                products: [], banners: [], cart: [], favorites: [], user: null,
+                products: [], banners: [], cart: [], favorites: [], user: null, siteSettings: null,
                 currentCategory: 'All', searchTerm: '',
-                unsubscribeProducts: () => {}, unsubscribeBanners: () => {}, unsubscribeCart: () => {}, unsubscribeFavorites: () => {}, unsubscribeOrders: () => {},
-                totalCartAmount: 0
+                unsubscribeProducts: () => {}, unsubscribeBanners: () => {}, unsubscribeCart: () => {}, unsubscribeFavorites: () => {}, unsubscribeOrders: () => {}, unsubscribeSiteSettings: () => {}
             };
             
             const translations = {
-                bn: { site_title: "ইসমত কোড", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_sell: "পণ্য সেল করুন", nav_account: "আমার অ্যাকাউন্ট", search_placeholder: "প্রোডাক্ট খুঁজুন...", login_btn: "লগইন", logout_btn: "লগআউট", hero_title: "আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস", hero_subtitle: "ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।", hero_button: "প্রোডাক্ট দেখুন", products_title: "আমাদের সেরা প্রোডাক্টস", footer_terms: "টার্মস এন্ড কন্ডিশনস", footer_copyright: "© ২০২৫ ইসমত ২ হাজার কোড। সর্বসত্ত্ব সংরক্ষিত।", terms_title: "টার্মস এন্ড কন্ডিশনস", terms_p1: "আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।", terms_p2: "যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।", slide1_title: "সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!", slide1_desc: "আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।", slide2_title: "এসে গেছে নতুন গ্রাফিক্স ডিজাইন কালেকশন", slide2_desc: "আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।", login_title: "স্বাগতম!", login_form_btn: "লগইন করুন", login_no_account: "অ্যাকাউন্ট নেই?", login_create_account: "এখনি তৈরি করুন", register_title: "অ্যাকাউন্ট তৈরি করুন", register_form_btn: "রেজিস্টার করুন", register_has_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?", register_login: "লগইন করুন", register_terms_agree: "আমি", dashboard_title: "আমার অ্যাকাউন্ট ড্যাশবোর্ড", dashboard_nav_orders: "আমার অর্ডার", dashboard_nav_favorites: "ফেভারিট পণ্য", dashboard_nav_upload: "আপনার পণ্য আপলোড করুন", dashboard_nav_settings: "সেটিংস", orders_title: "অর্ডার হিস্টোরি", orders_none: "আপনার কোনো অর্ডার নেই।", favorites_title: "আপনার ফেভারিট পণ্য", favorites_none: "আপনার পছন্দের তালিকা খালি।", upload_title: "নতুন পণ্য যোগ করুন", upload_button: "পণ্য আপলোড করুন", settings_title: "অ্যাকাউন্ট সেটিংস", settings_optional_title: "ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)", payout_title: "পেমেন্ট পাওয়ার তথ্য", payout_desc: "আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।", payout_save_btn: "তথ্য সেভ করুন", add_to_cart_btn: "কার্টে যোগ করুন", buy_now_btn: "এখনই কিনুন", cart_title: "আপনার কার্ট", cart_total: "সর্বমোট:", cart_checkout: "চেকআউট করুন", cart_empty: "আপনার কার্ট খালি।", payment_title: "পেমেন্ট সম্পন্ন করুন", payment_instruction_1: "নিচের নম্বরে সর্বমোট", payment_instruction_2: "(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)", payment_confirm_btn: "অর্ডার কনফার্ম করুন", loading_text: "লোড হচ্ছে...", critical_error: "একটি গুরুতর সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।" },
-                en: { site_title: "Ismat Code", nav_home: "Home", nav_products: "Products", nav_sell: "Sell Product", nav_account: "My Account", search_placeholder: "Search for products...", login_btn: "Login", logout_btn: "Logout", hero_title: "All The Digital Products You Need", hero_subtitle: "Web templates, graphic designs, software, and much more, all in one place.", hero_button: "Browse Products", products_title: "Our Best Products", footer_terms: "Terms & Conditions", footer_copyright: "© 2025 Ismat 2 Thousand Code. All rights reserved.", terms_title: "Terms & Conditions", terms_p1: "Welcome to our website. By using this site, you agree to our terms and conditions.", terms_p2: "Please read the product descriptions carefully before purchasing. As these are digital products, there are no refunds. Copying our content is prohibited.", slide1_title: "50% Off On All Web Templates!", slide1_desc: "Build your dream website with our premium templates.", slide2_title: "New Graphics Design Collection Arrived", slide2_desc: "Elevate your project with a fresh new look.", login_title: "Welcome!", login_form_btn: "Log In", login_no_account: "No account?", login_create_account: "Create one now", register_title: "Create Account", register_form_btn: "Register", register_has_account: "Already have an account?", register_login: "Log In", register_terms_agree: "I agree to the", dashboard_title: "My Account Dashboard", dashboard_nav_orders: "My Orders", dashboard_nav_favorites: "Favorite Products", dashboard_nav_upload: "Upload Your Product", dashboard_nav_settings: "Settings", orders_title: "Order History", orders_none: "You have no orders.", favorites_title: "Your Favorite Products", favorites_none: "Your favorites list is empty.", upload_title: "Add New Product", upload_button: "Upload Product", settings_title: "Account Settings", settings_optional_title: "Optional Info (Complete Profile)", payout_title: "Payout Information", payout_desc: "When your product sells, we will send the payment to the details below.", payout_save_btn: "Save Information", add_to_cart_btn: "Add to Cart", buy_now_btn: "Buy Now", cart_title: "Your Cart", cart_total: "Total:", cart_checkout: "Checkout", cart_empty: "Your cart is empty.", payment_title: "Complete Payment", payment_instruction_1: "Please send a total of", payment_instruction_2: "(This is a merchant number, please use the Payment option)", payment_confirm_btn: "Confirm Order", loading_text: "Loading...", critical_error: "A critical error has occurred. Please refresh the page." }
+                bn: { site_title: "ইসমত কোড", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_sell: "পণ্য সেল করুন", nav_account: "আমার অ্যাকাউন্ট", search_placeholder: "প্রোডাক্ট খুঁজুন...", login_btn: "লগইন", logout_btn: "লগআউট", hero_title: "আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস", hero_subtitle: "ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।", hero_button: "প্রোডাক্ট দেখুন", products_title: "আমাদের সেরা প্রোডাক্টস", footer_terms: "টার্মস এন্ড কন্ডিশনস", footer_copyright: "© ২০২৫ ইসমত ২ হাজার কোড। সর্বসত্ত্ব সংরক্ষিত।", terms_title: "টার্মস এন্ড কন্ডিশনস", terms_p1: "আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।", terms_p2: "যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।", slide1_title: "সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!", slide1_desc: "আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।", slide2_title: "এসে গেছে নতুন গ্রাফিক্স ডিজাইন কালেকশন", slide2_desc: "আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।", login_title: "স্বাগতম!", login_form_btn: "লগইন করুন", login_no_account: "অ্যাকাউন্ট নেই?", login_create_account: "এখনি তৈরি করুন", register_title: "অ্যাকাউন্ট তৈরি করুন", register_form_btn: "রেজিস্টার করুন", register_has_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?", register_login: "লগইন করুন", register_terms_agree: "আমি", dashboard_title: "আমার অ্যাকাউন্ট ড্যাশবোর্ড", dashboard_nav_orders: "আমার অর্ডার", dashboard_nav_favorites: "ফেভারিট পণ্য", dashboard_nav_upload: "আপনার পণ্য আপলোড করুন", dashboard_nav_settings: "সেটিংস", dashboard_nav_site_settings: "সাইট সেটিংস", site_settings_title: "সাইট পেমেন্ট সেটিংস", site_settings_desc: "গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।", orders_title: "অর্ডার হিস্টোরি", orders_none: "আপনার কোনো অর্ডার নেই।", favorites_title: "আপনার ফেভারিট পণ্য", favorites_none: "আপনার পছন্দের তালিকা খালি।", upload_title: "নতুন পণ্য যোগ করুন", upload_button: "পণ্য আপলোড করুন", settings_title: "অ্যাকাউন্ট সেটিংস", settings_optional_title: "ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)", payout_title: "পেমেন্ট পাওয়ার তথ্য", payout_desc: "আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।", payout_save_btn: "তথ্য সেভ করুন", add_to_cart_btn: "কার্টে যোগ করুন", buy_now_btn: "এখনই কিনুন", cart_title: "আপনার কার্ট", cart_total: "সর্বমোট:", cart_checkout: "চেকআউট করুন", cart_empty: "আপনার কার্ট খালি।", payment_title: "পেমেন্ট সম্পন্ন করুন", payment_instruction_1: "নিচের নম্বরে সর্বমোট", payment_instruction_2: "(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)", payment_confirm_btn: "অর্ডার কনফার্ম করুন", loading_text: "লোড হচ্ছে...", critical_error: "একটি গুরুতর সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।" },
+                en: { site_title: "Ismat Code", nav_home: "Home", nav_products: "Products", nav_sell: "Sell Product", nav_account: "My Account", search_placeholder: "Search for products...", login_btn: "Login", logout_btn: "Logout", hero_title: "All The Digital Products You Need", hero_subtitle: "Web templates, graphic designs, software, and much more, all in one place.", hero_button: "Browse Products", products_title: "Our Best Products", footer_terms: "Terms & Conditions", footer_copyright: "© 2025 Ismat 2 Thousand Code. All rights reserved.", terms_title: "Terms & Conditions", terms_p1: "Welcome to our website. By using this site, you agree to our terms and conditions.", terms_p2: "Please read the product descriptions carefully before purchasing. As these are digital products, there are no refunds. Copying our content is prohibited.", slide1_title: "50% Off On All Web Templates!", slide1_desc: "Build your dream website with our premium templates.", slide2_title: "New Graphics Design Collection Arrived", slide2_desc: "Elevate your project with a fresh new look.", login_title: "Welcome!", login_form_btn: "Log In", login_no_account: "No account?", login_create_account: "Create one now", register_title: "Create Account", register_form_btn: "Register", register_has_account: "Already have an account?", register_login: "Log In", register_terms_agree: "I agree to the", dashboard_title: "My Account Dashboard", dashboard_nav_orders: "My Orders", dashboard_nav_favorites: "Favorite Products", dashboard_nav_upload: "Upload Your Product", dashboard_nav_settings: "Settings", dashboard_nav_site_settings: "Site Settings", site_settings_title: "Site Payment Settings", site_settings_desc: "Provide your payment gateway information here to receive payments from customers.", orders_title: "Order History", orders_none: "You have no orders.", favorites_title: "Your Favorite Products", favorites_none: "Your favorites list is empty.", upload_title: "Add New Product", upload_button: "Upload Product", settings_title: "Account Settings", settings_optional_title: "Optional Info (Complete Profile)", payout_title: "Payout Information", payout_desc: "When your product sells, we will send the payment to the details below.", payout_save_btn: "Save Information", add_to_cart_btn: "Add to Cart", buy_now_btn: "Buy Now", cart_title: "Your Cart", cart_total: "Total:", cart_checkout: "Checkout", cart_empty: "Your cart is empty.", payment_title: "Complete Payment", payment_instruction_1: "Please send a total of", payment_instruction_2: "(This is a merchant number, please use the Payment option)", payment_confirm_btn: "Confirm Order", loading_text: "Loading...", critical_error: "A critical error has occurred. Please refresh the page." }
             };
 
             function setLanguage(lang) {
@@ -686,6 +697,27 @@
                     renderBanners();
                 }, (error) => {
                     console.error("Error fetching banners:", error);
+                });
+            }
+
+            function listenForSiteSettings() {
+                const settingsRef = doc(db, `artifacts/${appId}/public/data/site_settings/details`);
+                if (state.unsubscribeSiteSettings) state.unsubscribeSiteSettings();
+                state.unsubscribeSiteSettings = onSnapshot(settingsRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        state.siteSettings = docSnap.data();
+                        document.getElementById('site-payment-gateway').value = state.siteSettings.gatewayName || '';
+                        document.getElementById('site-payment-number').value = state.siteSettings.gatewayNumber || '';
+                        document.getElementById('gateway-number').innerText = state.siteSettings.gatewayNumber || 'N/A';
+                        document.getElementById('gateway-name').innerText = state.siteSettings.gatewayName || 'N/A';
+                    } else {
+                        document.getElementById('gateway-number').innerText = '01XXXXXXXXX';
+                        document.getElementById('gateway-name').innerText = 'bKash/Nagad';
+                    }
+                }, (error) => {
+                    console.error("Error fetching site settings:", error);
+                    document.getElementById('gateway-number').innerText = 'Unavailable';
+                    document.getElementById('gateway-name').innerText = 'Error';
                 });
             }
 
@@ -955,6 +987,25 @@
                         } catch (err) { showNotification('তথ্য সেভ করা যায়নি।', 'error');}
                     });
 
+                    document.getElementById('site-settings-form').addEventListener('submit', async e => {
+                        e.preventDefault();
+                        if (!state.user || state.user.isAnonymous) {
+                            showNotification('এই কাজটি করার জন্য আপনার অনুমতি নেই।', 'error');
+                            return;
+                        }
+                        const gatewayName = document.getElementById('site-payment-gateway').value;
+                        const gatewayNumber = document.getElementById('site-payment-number').value;
+
+                        try {
+                            const settingsRef = doc(db, `artifacts/${appId}/public/data/site_settings/details`);
+                            await setDoc(settingsRef, { gatewayName, gatewayNumber }, { merge: true });
+                            showNotification('সাইট সেটিংস সফলভাবে সেভ হয়েছে।');
+                        } catch (err) {
+                            console.error("Error saving site settings:", err);
+                            showNotification('সেটিংস সেভ করতে সমস্যা হয়েছে।', 'error');
+                        }
+                    });
+
                      document.getElementById('payment-form').addEventListener('submit', async e => {
                            e.preventDefault();
                            const paymentModal = document.getElementById('payment-modal');
@@ -1061,6 +1112,7 @@
                     
                     listenForProductUpdates();
                     listenForBannerUpdates();
+                    listenForSiteSettings();
 
                 } catch(e) {
                      console.error("A critical error occurred on DOMContentLoaded:", e);
