@@ -222,13 +222,13 @@
                     <div id="my-orders" class="dashboard-content">
                         <h3 class="text-2xl font-semibold mb-4" data-lang-key="orders_title">অর্ডার হিস্টোরি</h3>
                         <div class="glass-effect p-6 rounded-lg" id="orders-list">
-                           <!-- Orders will be rendered here -->
+                            <!-- Orders will be rendered here -->
                         </div>
                     </div>
                     <div id="my-favorites" class="dashboard-content hidden">
                          <h3 class="text-2xl font-semibold mb-4" data-lang-key="favorites_title">আপনার ফেভারিট পণ্য</h3>
                          <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                             <!-- Favorite items will be rendered here -->
+                              <!-- Favorite items will be rendered here -->
                          </div>
                     </div>
                     <div id="upload-product" class="dashboard-content hidden">
@@ -246,42 +246,42 @@
                     </div>
                      <div id="settings" class="dashboard-content hidden">
                          <h3 class="text-2xl font-semibold mb-4" data-lang-key="settings_title">অ্যাকাউন্ট সেটিংস</h3>
-                           <div class="glass-effect p-6 rounded-lg">
-                            <div id="profile-display" class="mb-6">
-                                <h4 id="profile-full-name" class="text-xl font-bold"></h4>
-                                <p id="profile-email" class="text-gray-400"></p>
-                                <p id="profile-mobile" class="text-gray-400"></p>
-                            </div>
-                            <h4 class="text-xl font-semibold mb-3" data-lang-key="payout_title">প্রোফাইল ও পেমেন্ট তথ্য</h4>
-                            <p class="text-sm text-gray-400 mb-4" data-lang-key="payout_desc">আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।</p>
-                            <form id="settings-form" class="space-y-4">
-                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2" data-lang-key="settings_optional_title">ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)</h5>
-                                <textarea id="settings-address" placeholder="আপনার ঠিকানা" rows="3" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
-                                <input id="settings-house" type="text" placeholder="বাড়ির নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                <input id="settings-zip" type="text" placeholder="জিপ কোড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                
-                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2 pt-4" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h5>
-                                <select id="payout-method" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                    <option value="bKash">বিকাশ</option>
-                                    <option value="Nagad">নগদ</option>
-                                    <option value="Rocket">রকেট</option>
-                                </select>
-                                <input id="payout-number" type="text" placeholder="আপনার অ্যাকাউন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
-                            </form>
+                          <div class="glass-effect p-6 rounded-lg">
+                           <div id="profile-display" class="mb-6">
+                               <h4 id="profile-full-name" class="text-xl font-bold"></h4>
+                               <p id="profile-email" class="text-gray-400"></p>
+                               <p id="profile-mobile" class="text-gray-400"></p>
                            </div>
+                           <h4 class="text-xl font-semibold mb-3" data-lang-key="payout_title">প্রোফাইল ও পেমেন্ট তথ্য</h4>
+                           <p class="text-sm text-gray-400 mb-4" data-lang-key="payout_desc">আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।</p>
+                           <form id="settings-form" class="space-y-4">
+                               <h5 class="text-lg font-semibold border-b border-gray-700 pb-2" data-lang-key="settings_optional_title">ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)</h5>
+                               <textarea id="settings-address" placeholder="আপনার ঠিকানা" rows="3" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
+                               <input id="settings-house" type="text" placeholder="বাড়ির নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                               <input id="settings-zip" type="text" placeholder="জিপ কোড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                               
+                               <h5 class="text-lg font-semibold border-b border-gray-700 pb-2 pt-4" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h5>
+                               <select id="payout-method" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                   <option value="bKash">বিকাশ</option>
+                                   <option value="Nagad">নগদ</option>
+                                   <option value="Rocket">রকেট</option>
+                               </select>
+                               <input id="payout-number" type="text" placeholder="আপনার অ্যাকাউন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                               <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
+                           </form>
+                          </div>
                      </div>
                      <div id="site-settings" class="dashboard-content hidden">
-                        <h3 class="text-2xl font-semibold mb-4" data-lang-key="site_settings_title">সাইট পেমেন্ট সেটিংস</h3>
-                          <div class="glass-effect p-6 rounded-lg">
+                         <h3 class="text-2xl font-semibold mb-4" data-lang-key="site_settings_title">সাইট পেমেন্ট সেটিংস</h3>
+                           <div class="glass-effect p-6 rounded-lg">
                            <p class="text-sm text-gray-400 mb-4" data-lang-key="site_settings_desc">গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।</p>
                            <form id="site-settings-form" class="space-y-4">
                                <input id="site-payment-gateway" type="text" placeholder="পেমেন্ট গেটওয়ের নাম (যেমন: বিকাশ)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
                                <input id="site-payment-number" type="text" placeholder="মার্চেন্ট/এজেন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
                            </form>
-                          </div>
-                    </div>
+                           </div>
+                     </div>
                 </div>
             </div>
         </div>
@@ -317,18 +317,18 @@
                  </div>
             </div>
             <div id="register-view" class="hidden">
-                <h3 class="text-2xl font-bold text-center mb-6" data-lang-key="register_title">অ্যাকাউন্ট তৈরি করুন</h3>
+                 <h3 class="text-2xl font-bold text-center mb-6" data-lang-key="register_title">অ্যাকাউন্ট তৈরি করুন</h3>
                  <form id="register-form" class="space-y-4">
-                    <input id="register-name" type="text" placeholder="আপনার পুরো নাম" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                    <input id="register-mobile" type="tel" placeholder="আপনার মোবাইল নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                    <input id="register-email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                    <input id="register-password" type="password" placeholder="একটি পাসওয়ার্ড দিন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                    <input id="register-confirm-password" type="password" placeholder="পাসওয়ার্ডটি আবার দিন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                    <div class="flex items-center space-x-2">
-                        <input type="checkbox" id="register-terms" class="h-4 w-4 bg-gray-800 border-gray-600 text-yellow-500 focus:ring-yellow-600" required>
-                        <label for="register-terms" class="text-sm text-gray-400" data-lang-key="register_terms_agree">আমি <a href="#" id="register-terms-link" class="text-yellow-400 hover:underline">শর্তাবলীতে</a> সম্মত।</label>
-                    </div>
-                    <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="register_form_btn">রেজিস্টার করুন</button>
+                     <input id="register-name" type="text" placeholder="আপনার পুরো নাম" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                     <input id="register-mobile" type="tel" placeholder="আপনার মোবাইল নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                     <input id="register-email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                     <input id="register-password" type="password" placeholder="একটি পাসওয়ার্ড দিন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                     <input id="register-confirm-password" type="password" placeholder="পাসওয়ার্ডটি আবার দিন" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                     <div class="flex items-center space-x-2">
+                         <input type="checkbox" id="register-terms" class="h-4 w-4 bg-gray-800 border-gray-600 text-yellow-500 focus:ring-yellow-600" required>
+                         <label for="register-terms" class="text-sm text-gray-400" data-lang-key="register_terms_agree">আমি <a href="#" id="register-terms-link" class="text-yellow-400 hover:underline">শর্তাবলীতে</a> সম্মত।</label>
+                     </div>
+                     <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="register_form_btn">রেজিস্টার করুন</button>
                  </form>
                  <div class="mt-6 text-center">
                      <p class="text-sm text-gray-400" data-lang-key="register_has_account">ইতিমধ্যে অ্যাকাউন্ট আছে?</p>
@@ -1014,34 +1014,34 @@
                     });
 
                      document.getElementById('payment-form').addEventListener('submit', async e => {
-                           e.preventDefault();
-                           const paymentModal = document.getElementById('payment-modal');
-                           const orderDetails = {
-                               userId: state.user.uid,
-                               items: state.cart,
-                               totalAmount: state.totalCartAmount,
-                               paymentPhone: e.target['payment-phone'].value,
-                               paymentTrxId: e.target['payment-trxid'].value,
-                               status: 'pending',
-                               createdAt: serverTimestamp()
-                           };
-                           try {
-                               const ordersCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/orders`);
-                               await addDoc(ordersCol, orderDetails);
-                               
-                               const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
-                               const cartSnapshot = await getDocs(cartCol);
-                               const batch = writeBatch(db);
-                               cartSnapshot.docs.forEach(doc => batch.delete(doc.ref));
-                               await batch.commit();
+                             e.preventDefault();
+                             const paymentModal = document.getElementById('payment-modal');
+                             const orderDetails = {
+                                 userId: state.user.uid,
+                                 items: state.cart,
+                                 totalAmount: state.totalCartAmount,
+                                 paymentPhone: e.target['payment-phone'].value,
+                                 paymentTrxId: e.target['payment-trxid'].value,
+                                 status: 'pending',
+                                 createdAt: serverTimestamp()
+                             };
+                             try {
+                                 const ordersCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/orders`);
+                                 await addDoc(ordersCol, orderDetails);
+                                 
+                                 const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
+                                 const cartSnapshot = await getDocs(cartCol);
+                                 const batch = writeBatch(db);
+                                 cartSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+                                 await batch.commit();
 
-                               paymentModal.classList.remove('active');
-                               showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
-                               e.target.reset();
+                                 paymentModal.classList.remove('active');
+                                 showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
+                                 e.target.reset();
 
-                           } catch (err) {
-                               showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
-                           }
+                             } catch (err) {
+                                 showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
+                             }
                          });
                     
                     document.getElementById('product-list').addEventListener('click', e => {
@@ -1051,16 +1051,16 @@
                         }
                     });
                      document.getElementById('cart-items').addEventListener('click', async e => {
-                           const button = e.target.closest('button[data-cart-id]');
-                           if (button) {
-                               try {
-                                   const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, button.dataset.cartId);
-                                   await deleteDoc(docRef);
-                                   showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
-                               } catch (err) {
-                                    showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
-                               }
-                           }
+                             const button = e.target.closest('button[data-cart-id]');
+                             if (button) {
+                                 try {
+                                     const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, button.dataset.cartId);
+                                     await deleteDoc(docRef);
+                                     showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
+                                 } catch (err) {
+                                      showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
+                                 }
+                             }
                          });
 
                     document.getElementById('lang-bn').addEventListener('click', () => setLanguage('bn'));
