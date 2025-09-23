@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ইসমত ২ হাজার কোড - ডিজিটাল প্রোডাক্ট শপ</title>
+    <title>ইসমত কোড - ডিজিটাল প্রোডাক্ট শপ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -83,6 +83,9 @@
         .dashboard-nav-item.active {
             background-color: #d97706; /* amber-600 */
             color: white;
+        }
+        .cart-item-checkbox {
+            accent-color: #f59e0b;
         }
         /* Slider Styles */
         .slider-container {
@@ -348,7 +351,7 @@
             </div>
             <div class="mt-6 border-t border-gray-700 pt-4">
                 <div class="flex justify-between items-center font-bold text-lg">
-                    <span data-lang-key="cart_total">সর্বমোট:</span>
+                    <span data-lang-key="cart_total">নির্বাচিত মোট:</span>
                     <span id="cart-total">৳০</span>
                 </div>
                 <button id="checkout-btn" class="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="cart_checkout">চেকআউট করুন</button>
@@ -430,13 +433,13 @@
 
             let state = {
                 products: [], banners: [], cart: [], favorites: [], user: null, siteSettings: null,
-                currentCategory: 'All', searchTerm: '', totalCartAmount: 0,
+                currentCategory: 'All', searchTerm: '', checkoutItems: [], selectedCartItemIds: new Set(),
                 unsubscribeProducts: () => {}, unsubscribeBanners: () => {}, unsubscribeCart: () => {}, unsubscribeFavorites: () => {}, unsubscribeOrders: () => {}, unsubscribeSiteSettings: () => {}
             };
             
             const translations = {
-                bn: { site_title: "ইসমত কোড", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_sell: "পণ্য সেল করুন", nav_account: "আমার অ্যাকাউন্ট", search_placeholder: "প্রোডাক্ট খুঁজুন...", login_btn: "লগইন", logout_btn: "লগআউট", hero_title: "আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস", hero_subtitle: "ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।", hero_button: "প্রোডাক্ট দেখুন", products_title: "আমাদের সেরা প্রোডাক্টস", footer_terms: "টার্মস এন্ড কন্ডিশনস", footer_copyright: "© ২০২৫ ইসমত ২ হাজার কোড। সর্বসত্ত্ব সংরক্ষিত।", terms_title: "টার্মস এন্ড কন্ডিশনস", terms_p1: "আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।", terms_p2: "যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।", slide1_title: "সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!", slide1_desc: "আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।", slide2_title: "এসে গেছে নতুন গ্রাফিক্স ডিজাইন কালেকশন", slide2_desc: "আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।", login_title: "স্বাগতম!", login_form_btn: "লগইন করুন", login_no_account: "অ্যাকাউন্ট নেই?", login_create_account: "এখনি তৈরি করুন", register_title: "অ্যাকাউন্ট তৈরি করুন", register_form_btn: "রেজিস্টার করুন", register_has_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?", register_login: "লগইন করুন", register_terms_agree: "আমি", dashboard_title: "আমার অ্যাকাউন্ট ড্যাশবোর্ড", dashboard_nav_orders: "আমার অর্ডার", dashboard_nav_favorites: "ফেভারিট পণ্য", dashboard_nav_upload: "আপনার পণ্য আপলোড করুন", dashboard_nav_settings: "সেটিংস", dashboard_nav_site_settings: "সাইট সেটিংস", site_settings_title: "সাইট পেমেন্ট সেটিংস", site_settings_desc: "গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।", orders_title: "অর্ডার হিস্টোরি", orders_none: "আপনার কোনো অর্ডার নেই।", favorites_title: "আপনার ফেভারিট পণ্য", favorites_none: "আপনার পছন্দের তালিকা খালি।", upload_title: "নতুন পণ্য যোগ করুন", upload_button: "পণ্য আপলোড করুন", settings_title: "অ্যাকাউন্ট সেটিংস", settings_optional_title: "ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)", payout_title: "পেমেন্ট পাওয়ার তথ্য", payout_desc: "আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।", payout_save_btn: "তথ্য সেভ করুন", add_to_cart_btn: "কার্টে যোগ করুন", buy_now_btn: "এখনই কিনুন", cart_title: "আপনার কার্ট", cart_total: "সর্বমোট:", cart_checkout: "চেকআউট করুন", cart_empty: "আপনার কার্ট খালি।", payment_title: "পেমেন্ট সম্পন্ন করুন", payment_instruction_1: "নিচের নম্বরে সর্বমোট", payment_instruction_2: "(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)", payment_confirm_btn: "অর্ডার কনফার্ম করুন", loading_text: "লোড হচ্ছে...", critical_error: "একটি গুরুতর সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।" },
-                en: { site_title: "Ismat Code", nav_home: "Home", nav_products: "Products", nav_sell: "Sell Product", nav_account: "My Account", search_placeholder: "Search for products...", login_btn: "Login", logout_btn: "Logout", hero_title: "All The Digital Products You Need", hero_subtitle: "Web templates, graphic designs, software, and much more, all in one place.", hero_button: "Browse Products", products_title: "Our Best Products", footer_terms: "Terms & Conditions", footer_copyright: "© 2025 Ismat 2 Thousand Code. All rights reserved.", terms_title: "Terms & Conditions", terms_p1: "Welcome to our website. By using this site, you agree to our terms and conditions.", terms_p2: "Please read the product descriptions carefully before purchasing. As these are digital products, there are no refunds. Copying our content is prohibited.", slide1_title: "50% Off On All Web Templates!", slide1_desc: "Build your dream website with our premium templates.", slide2_title: "New Graphics Design Collection Arrived", slide2_desc: "Elevate your project with a fresh new look.", login_title: "Welcome!", login_form_btn: "Log In", login_no_account: "No account?", login_create_account: "Create one now", register_title: "Create Account", register_form_btn: "Register", register_has_account: "Already have an account?", register_login: "Log In", register_terms_agree: "I agree to the", dashboard_title: "My Account Dashboard", dashboard_nav_orders: "My Orders", dashboard_nav_favorites: "Favorite Products", dashboard_nav_upload: "Upload Your Product", dashboard_nav_settings: "Settings", dashboard_nav_site_settings: "Site Settings", site_settings_title: "Site Payment Settings", site_settings_desc: "Provide your payment gateway information here to receive payments from customers.", orders_title: "Order History", orders_none: "You have no orders.", favorites_title: "Your Favorite Products", favorites_none: "Your favorites list is empty.", upload_title: "Add New Product", upload_button: "Upload Product", settings_title: "Account Settings", settings_optional_title: "Optional Info (Complete Profile)", payout_title: "Payout Information", payout_desc: "When your product sells, we will send the payment to the details below.", payout_save_btn: "Save Information", add_to_cart_btn: "Add to Cart", buy_now_btn: "Buy Now", cart_title: "Your Cart", cart_total: "Total:", cart_checkout: "Checkout", cart_empty: "Your cart is empty.", payment_title: "Complete Payment", payment_instruction_1: "Please send a total of", payment_instruction_2: "(This is a merchant number, please use the Payment option)", payment_confirm_btn: "Confirm Order", loading_text: "Loading...", critical_error: "A critical error has occurred. Please refresh the page." }
+                bn: { site_title: "ইসমত কোড", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_sell: "পণ্য সেল করুন", nav_account: "আমার অ্যাকাউন্ট", search_placeholder: "প্রোডাক্ট খুঁজুন...", login_btn: "লগইন", logout_btn: "লগআউট", hero_title: "আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস", hero_subtitle: "ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।", hero_button: "প্রোডাক্ট দেখুন", products_title: "আমাদের সেরা প্রোডাক্টস", footer_terms: "টার্মস এন্ড কন্ডিশনস", footer_copyright: "© ২০২৫ ইসমত ২ হাজার কোড। সর্বসত্ত্ব সংরক্ষিত।", terms_title: "টার্মস এন্ড কন্ডিশনস", terms_p1: "আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।", terms_p2: "যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।", slide1_title: "সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!", slide1_desc: "আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।", slide2_title: "এসে গেছে নতুন গ্রাফিক্স ডিজাইন কালেকশন", slide2_desc: "আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।", login_title: "স্বাগতম!", login_form_btn: "লগইন করুন", login_no_account: "অ্যাকাউন্ট নেই?", login_create_account: "এখনি তৈরি করুন", register_title: "অ্যাকাউন্ট তৈরি করুন", register_form_btn: "রেজিস্টার করুন", register_has_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?", register_login: "লগইন করুন", register_terms_agree: "আমি", dashboard_title: "আমার অ্যাকাউন্ট ড্যাশবোর্ড", dashboard_nav_orders: "আমার অর্ডার", dashboard_nav_favorites: "ফেভারিট পণ্য", dashboard_nav_upload: "আপনার পণ্য আপলোড করুন", dashboard_nav_settings: "সেটিংস", dashboard_nav_site_settings: "সাইট সেটিংস", site_settings_title: "সাইট পেমেন্ট সেটিংস", site_settings_desc: "গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।", orders_title: "অর্ডার হিস্টোরি", orders_none: "আপনার কোনো অর্ডার নেই।", favorites_title: "আপনার ফেভারিট পণ্য", favorites_none: "আপনার পছন্দের তালিকা খালি।", upload_title: "নতুন পণ্য যোগ করুন", upload_button: "পণ্য আপলোড করুন", settings_title: "অ্যাকাউন্ট সেটিংস", settings_optional_title: "ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)", payout_title: "পেমেন্ট পাওয়ার তথ্য", payout_desc: "আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।", payout_save_btn: "তথ্য সেভ করুন", add_to_cart_btn: "কার্টে যোগ করুন", buy_now_btn: "এখনই কিনুন", cart_title: "আপনার কার্ট", cart_total: "নির্বাচিত মোট:", cart_checkout: "চেকআউট করুন", cart_empty: "আপনার কার্ট খালি।", payment_title: "পেমেন্ট সম্পন্ন করুন", payment_instruction_1: "নিচের নম্বরে সর্বমোট", payment_instruction_2: "(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)", payment_confirm_btn: "অর্ডার কনফার্ম করুন", loading_text: "লোড হচ্ছে...", critical_error: "একটি গুরুতর সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।" },
+                en: { site_title: "Ismat Code", nav_home: "Home", nav_products: "Products", nav_sell: "Sell Product", nav_account: "My Account", search_placeholder: "Search for products...", login_btn: "Login", logout_btn: "Logout", hero_title: "All The Digital Products You Need", hero_subtitle: "Web templates, graphic designs, software, and much more, all in one place.", hero_button: "Browse Products", products_title: "Our Best Products", footer_terms: "Terms & Conditions", footer_copyright: "© 2025 Ismat 2 Thousand Code. All rights reserved.", terms_title: "Terms & Conditions", terms_p1: "Welcome to our website. By using this site, you agree to our terms and conditions.", terms_p2: "Please read the product descriptions carefully before purchasing. As these are digital products, there are no refunds. Copying our content is prohibited.", slide1_title: "50% Off On All Web Templates!", slide1_desc: "Build your dream website with our premium templates.", slide2_title: "New Graphics Design Collection Arrived", slide2_desc: "Elevate your project with a fresh new look.", login_title: "Welcome!", login_form_btn: "Log In", login_no_account: "No account?", login_create_account: "Create one now", register_title: "Create Account", register_form_btn: "Register", register_has_account: "Already have an account?", register_login: "Log In", register_terms_agree: "I agree to the", dashboard_title: "My Account Dashboard", dashboard_nav_orders: "My Orders", dashboard_nav_favorites: "Favorite Products", dashboard_nav_upload: "Upload Your Product", dashboard_nav_settings: "Settings", dashboard_nav_site_settings: "Site Settings", site_settings_title: "Site Payment Settings", site_settings_desc: "Provide your payment gateway information here to receive payments from customers.", orders_title: "Order History", orders_none: "You have no orders.", favorites_title: "Your Favorite Products", favorites_none: "Your favorites list is empty.", upload_title: "Add New Product", upload_button: "Upload Product", settings_title: "Account Settings", settings_optional_title: "Optional Info (Complete Profile)", payout_title: "Payout Information", payout_desc: "When your product sells, we will send the payment to the details below.", payout_save_btn: "Save Information", add_to_cart_btn: "Add to Cart", buy_now_btn: "Buy Now", cart_title: "Your Cart", cart_total: "Selected Total:", cart_checkout: "Checkout", cart_empty: "Your cart is empty.", payment_title: "Complete Payment", payment_instruction_1: "Please send a total of", payment_instruction_2: "(This is a merchant number, please use the Payment option)", payment_confirm_btn: "Confirm Order", loading_text: "Loading...", critical_error: "A critical error has occurred. Please refresh the page." }
             };
 
             function setLanguage(lang) {
@@ -504,32 +507,38 @@
                 const itemsEl = document.getElementById('cart-items');
                 const totalEl = document.getElementById('cart-total');
                 itemsEl.innerHTML = '';
-                let total = 0;
+                let selectedTotal = 0;
+
                 if (state.cart.length === 0) {
                     itemsEl.innerHTML = `<p class="text-gray-400" data-lang-key="cart_empty"></p>`;
-                    totalEl.innerText = '৳০';
-                    state.totalCartAmount = 0;
-                    setLanguage(localStorage.getItem('language') || 'bn');
-                    return;
+                } else {
+                    state.cart.forEach(item => {
+                        const product = state.products.find(p => p.id === item.productId);
+                        if (!product) return;
+
+                        const isSelected = state.selectedCartItemIds.has(item.id);
+                        if (isSelected) {
+                            selectedTotal += product.price * item.quantity;
+                        }
+
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'flex items-center gap-4 p-2 rounded-md hover:bg-gray-800 transition';
+                        itemEl.innerHTML = `
+                            <input type="checkbox" data-cart-item-id="${item.id}" class="cart-item-checkbox h-5 w-5 flex-shrink-0 rounded bg-gray-700 border-gray-600 text-yellow-500 focus:ring-yellow-600 cursor-pointer" ${isSelected ? 'checked' : ''}>
+                            <img src="${product.image}" class="w-16 h-16 object-cover rounded-md">
+                            <div class="flex-grow">
+                                <h5 class="font-semibold">${product.name}</h5>
+                                <p class="text-sm text-gray-400">${item.quantity} x ৳${product.price.toLocaleString('bn-BD')}</p>
+                            </div>
+                            <button data-cart-id="${item.id}" class="text-red-500 hover:text-red-400 text-2xl">&times;</button>
+                        `;
+                        itemsEl.appendChild(itemEl);
+                    });
                 }
-                state.cart.forEach(item => {
-                    const product = state.products.find(p => p.id === item.productId);
-                    if (!product) return;
-                    total += product.price * item.quantity;
-                    const itemEl = document.createElement('div');
-                    itemEl.className = 'flex items-center gap-4';
-                    itemEl.innerHTML = `
-                        <img src="${product.image}" class="w-16 h-16 object-cover rounded-md">
-                        <div class="flex-grow">
-                            <h5 class="font-semibold">${product.name}</h5>
-                            <p class="text-sm text-gray-400">${item.quantity} x ৳${product.price.toLocaleString('bn-BD')}</p>
-                        </div>
-                        <button data-cart-id="${item.id}" class="text-red-500 hover:text-red-400 text-2xl">&times;</button>
-                    `;
-                    itemsEl.appendChild(itemEl);
-                });
-                state.totalCartAmount = total;
-                totalEl.innerText = `৳${total.toLocaleString('bn-BD')}`;
+                
+                totalEl.innerText = `৳${selectedTotal.toLocaleString('bn-BD')}`;
+                document.getElementById('checkout-btn').disabled = state.selectedCartItemIds.size === 0;
+
                 setLanguage(localStorage.getItem('language') || 'bn');
             }
             
@@ -619,7 +628,7 @@
                 } else {
                     [...state.banners].reverse().forEach((banner, index) => {
                         const slideHTML = `
-                            <div class="slide ${index === (state.banners.length - 1) ? 'active' : ''}">
+                            <div class="slide ${index === 0 ? 'active' : ''}">
                                 <img src="${banner.image}" alt="${banner.title}" onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/1e293b/ffffff?text=Image+Error';">
                                 <div class="slide-content">
                                     <h2 class="text-3xl font-bold">${banner.title}</h2>
@@ -627,7 +636,7 @@
                                 </div>
                             </div>
                         `;
-                        sliderContainer.insertAdjacentHTML('afterbegin', slideHTML);
+                        sliderContainer.insertAdjacentHTML('beforeend', slideHTML);
                     });
                 }
                 initializeSlider();
@@ -741,10 +750,19 @@
                     showNotification('পণ্যটি কার্টে যোগ করা হয়েছে।');
                 } catch (e) { showNotification('কার্টে যোগ করতে সমস্যা হয়েছে।', 'error'); }
             }
+            
             function buyNow(productId) {
-                addToCart(productId);
-                document.getElementById('cart-modal').classList.add('active');
+                const product = state.products.find(p => p.id === productId);
+                if (product) {
+                    state.checkoutItems = [{ productId: product.id, quantity: 1, price: product.price }];
+                    const paymentModal = document.getElementById('payment-modal');
+                    document.getElementById('payment-amount').innerText = `৳${product.price.toLocaleString('bn-BD')}`;
+                    paymentModal.classList.add('active');
+                } else {
+                    showNotification('প্রোডাক্ট খুঁজে পাওয়া যায়নি।', 'error');
+                }
             }
+
             async function toggleFavorite(productId) {
                 try {
                     const favCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/favorites`);
@@ -775,6 +793,23 @@
                     document.getElementById('payout-method').value = data.payoutMethod || 'bKash';
                     document.getElementById('payout-number').value = data.payoutNumber || '';
                 }
+            }
+            
+            function showDashboardPage(targetPageId) {
+                document.getElementById('main-content').classList.add('hidden');
+                const dashboard = document.getElementById('dashboard');
+                dashboard.classList.remove('hidden');
+                
+                dashboard.querySelectorAll('.dashboard-nav-item').forEach(el => el.classList.remove('active'));
+                dashboard.querySelectorAll('.dashboard-content').forEach(el => el.classList.add('hidden'));
+
+                const navItem = dashboard.querySelector(`[data-target="${targetPageId}"]`);
+                const contentPane = document.getElementById(targetPageId);
+                
+                if (navItem) navItem.classList.add('active');
+                if (contentPane) contentPane.classList.remove('hidden');
+
+                dashboard.scrollIntoView({ behavior: 'smooth' });
             }
 
             onAuthStateChanged(auth, user => {
@@ -852,25 +887,22 @@
 
                     document.getElementById('checkout-btn').addEventListener('click', () => {
                         const paymentModal = document.getElementById('payment-modal');
-                        const cartModalInstance = document.getElementById('cart-modal');
+                        
+                        if (state.selectedCartItemIds.size > 0) {
+                            state.checkoutItems = state.cart.filter(item => state.selectedCartItemIds.has(item.id));
+                            
+                            const selectedTotal = state.checkoutItems.reduce((acc, item) => {
+                                 const product = state.products.find(p => p.id === item.productId);
+                                 return acc + (product ? product.price * item.quantity : 0);
+                            }, 0);
 
-                        if (!paymentModal || !cartModalInstance) {
-                            console.error('Modal element not found!');
-                            showNotification('একটি সাইট ত্রুটি ঘটেছে। অনুগ্রহ করে রিফ্রেশ করুন।', 'error');
-                            return;
-                        }
-
-                        if (state.cart && state.cart.length > 0) {
-                            if (typeof state.totalCartAmount === 'number') {
-                                cartModalInstance.classList.remove('active');
-                                document.getElementById('payment-amount').innerText = `৳${state.totalCartAmount.toLocaleString('bn-BD')}`;
+                            if (selectedTotal > 0) {
+                                cartModal.classList.remove('active');
+                                document.getElementById('payment-amount').innerText = `৳${selectedTotal.toLocaleString('bn-BD')}`;
                                 paymentModal.classList.add('active');
-                            } else {
-                                console.error('Checkout failed: totalCartAmount is not a number.', state.totalCartAmount);
-                                showNotification('কার্টের মোট মূল্য গণনা করা যায়নি।', 'error');
                             }
                         } else {
-                            showNotification('আপনার কার্ট খালি।', 'error');
+                            showNotification('অনুগ্রহ করে কেনার জন্য পণ্য নির্বাচন করুন।', 'error');
                         }
                     });
                     
@@ -971,7 +1003,7 @@
                             });
                             showNotification('আপনার পণ্য সফলভাবে আপলোড হয়েছে।');
                             e.target.reset();
-                            document.querySelector('[data-target="my-orders"]').click();
+                            showDashboardPage('my-orders');
                         } catch (err) {
                             console.error("Product upload error: ", err);
                             showNotification('পণ্য আপলোড করতে সমস্যা হয়েছে।', 'error');
@@ -1016,10 +1048,15 @@
                      document.getElementById('payment-form').addEventListener('submit', async e => {
                              e.preventDefault();
                              const paymentModal = document.getElementById('payment-modal');
+                             const totalAmountForOrder = state.checkoutItems.reduce((acc, item) => {
+                                const product = state.products.find(p => p.id === item.productId);
+                                return acc + (product ? product.price * item.quantity : 0);
+                             }, 0);
+
                              const orderDetails = {
                                  userId: state.user.uid,
-                                 items: state.cart,
-                                 totalAmount: state.totalCartAmount,
+                                 items: state.checkoutItems.map(item => ({productId: item.productId, quantity: item.quantity})),
+                                 totalAmount: totalAmountForOrder,
                                  paymentPhone: e.target['payment-phone'].value,
                                  paymentTrxId: e.target['payment-trxid'].value,
                                  status: 'pending',
@@ -1029,17 +1066,29 @@
                                  const ordersCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/orders`);
                                  await addDoc(ordersCol, orderDetails);
                                  
-                                 const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
-                                 const cartSnapshot = await getDocs(cartCol);
-                                 const batch = writeBatch(db);
-                                 cartSnapshot.docs.forEach(doc => batch.delete(doc.ref));
-                                 await batch.commit();
+                                 const purchasedCartItemIds = new Set(state.checkoutItems.map(item => item.id));
+                                 if (purchasedCartItemIds.size > 0) {
+                                     const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
+                                     const cartSnapshot = await getDocs(cartCol);
+                                     const batch = writeBatch(db);
+                                     cartSnapshot.docs.forEach(doc => {
+                                         if (purchasedCartItemIds.has(doc.id)) {
+                                             batch.delete(doc.ref);
+                                         }
+                                     });
+                                     await batch.commit();
+                                 }
+
+                                 state.checkoutItems = [];
+                                 state.selectedCartItemIds.clear();
 
                                  paymentModal.classList.remove('active');
                                  showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
                                  e.target.reset();
+                                 showDashboardPage('my-orders');
 
                              } catch (err) {
+                                 console.error("Order submission error:", err);
                                  showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
                              }
                          });
@@ -1050,12 +1099,27 @@
                             handleUserAction(button.dataset.action, button.closest('[data-product-id]').dataset.productId);
                         }
                     });
+
                      document.getElementById('cart-items').addEventListener('click', async e => {
+                             const checkbox = e.target.closest('.cart-item-checkbox');
+                             if (checkbox) {
+                                const cartItemId = checkbox.dataset.cartItemId;
+                                if (checkbox.checked) {
+                                    state.selectedCartItemIds.add(cartItemId);
+                                } else {
+                                    state.selectedCartItemIds.delete(cartItemId);
+                                }
+                                renderCart();
+                                return;
+                             }
+                             
                              const button = e.target.closest('button[data-cart-id]');
                              if (button) {
+                                 const cartId = button.dataset.cartId;
                                  try {
-                                     const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, button.dataset.cartId);
+                                     const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
                                      await deleteDoc(docRef);
+                                     state.selectedCartItemIds.delete(cartId);
                                      showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
                                  } catch (err) {
                                       showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
@@ -1065,43 +1129,48 @@
 
                     document.getElementById('lang-bn').addEventListener('click', () => setLanguage('bn'));
                     document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+                    
+                    const setupDashboardLink = (id) => {
+                         document.getElementById(id).addEventListener('click', e => {
+                            e.preventDefault();
+                            if(!state.user || state.user.isAnonymous) { 
+                                showNotification('অনুগ্রহ করে প্রথমে লগইন করুন।', 'error'); 
+                                authModal.classList.add('active'); 
+                                return; 
+                            }
+                            showDashboardPage(e.currentTarget.dataset.targetPage || 'my-orders');
+                        });
+                    }
+
                     document.getElementById('dashboard-link').addEventListener('click', e => {
                         e.preventDefault();
                         if(!state.user || state.user.isAnonymous) { showNotification('অনুগ্রহ করে প্রথমে লগইন করুন।', 'error'); authModal.classList.add('active'); return; }
-                        document.getElementById('main-content').classList.add('hidden');
-                        document.getElementById('dashboard').classList.remove('hidden');
+                        showDashboardPage('my-orders');
                     });
                     document.getElementById('sell-product-link').addEventListener('click', e => {
                         e.preventDefault();
                         if(!state.user || state.user.isAnonymous) { showNotification('আপনার পণ্য সেল করতে লগইন করুন।', 'error'); authModal.classList.add('active'); return; }
-                        document.getElementById('main-content').classList.add('hidden');
-                        document.getElementById('dashboard').classList.remove('hidden');
-                        document.querySelectorAll('.dashboard-nav-item').forEach(el => el.classList.remove('active'));
-                        document.querySelector('[data-target="upload-product"]').classList.add('active');
-                        document.querySelectorAll('.dashboard-content').forEach(el => el.classList.add('hidden'));
-                        document.getElementById('upload-product').classList.remove('hidden');
+                        showDashboardPage('upload-product');
                     });
                     document.getElementById('favorite-icon').addEventListener('click', e => {
                         e.preventDefault();
                         if(!state.user || state.user.isAnonymous) { showNotification('অনুগ্রহ করে প্রথমে লগইন করুন।', 'error'); authModal.classList.add('active'); return; }
-                        document.getElementById('main-content').classList.add('hidden');
-                        document.getElementById('dashboard').classList.remove('hidden');
-                        document.querySelectorAll('.dashboard-nav-item').forEach(el => el.classList.remove('active'));
-                        document.querySelector('[data-target="my-favorites"]').classList.add('active');
-                        document.querySelectorAll('.dashboard-content').forEach(el => el.classList.add('hidden'));
-                        document.getElementById('my-favorites').classList.remove('hidden');
+                        showDashboardPage('my-favorites');
                     });
+
                     document.getElementById('home-link').addEventListener('click', e => {
                         e.preventDefault();
                         document.getElementById('main-content').classList.remove('hidden');
                         document.getElementById('dashboard').classList.add('hidden');
                     });
+
                     document.getElementById('dashboard-nav').addEventListener('click', e => {
                         if(e.target.tagName === 'BUTTON') {
+                            const targetId = e.target.dataset.target;
                             document.querySelectorAll('.dashboard-nav-item').forEach(el => el.classList.remove('active'));
                             e.target.classList.add('active');
                             document.querySelectorAll('.dashboard-content').forEach(el => el.classList.add('hidden'));
-                            document.getElementById(e.target.dataset.target).classList.remove('hidden');
+                            document.getElementById(targetId).classList.remove('hidden');
                         }
                     });
                     document.getElementById('category-filters').addEventListener('click', e => {
