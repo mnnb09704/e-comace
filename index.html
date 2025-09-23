@@ -7,20 +7,51 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            /* Dark Theme Colors (Default) */
+            --color-bg: #121212;
+            --color-text: #f3f4f6;
+            --color-text-muted: #9ca3af;
+            --color-surface: #1f1f1f;
+            --color-glass-bg: rgba(31, 31, 31, 0.7);
+            --color-glass-border: rgba(255, 255, 255, 0.1);
+            --color-input-bg: #374151;
+            --color-primary: #f59e0b;
+            --color-primary-hover: #d97706;
+            --color-primary-text: #121212;
+            --color-primary-text-alt: #ffffff;
+        }
+
+        .light-mode {
+            /* Light Theme Colors */
+            --color-bg: #f9fafb;
+            --color-text: #111827;
+            --color-text-muted: #6b7281;
+            --color-surface: #ffffff;
+            --color-glass-bg: rgba(255, 255, 255, 0.7);
+            --color-glass-border: rgba(0, 0, 0, 0.1);
+            --color-input-bg: #e5e7eb;
+            --color-primary: #f59e0b;
+            --color-primary-hover: #d97706;
+            --color-primary-text: #ffffff;
+            --color-primary-text-alt: #121212;
+        }
+
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Hind Siliguri', sans-serif;
-            background-color: #121212; /* Darker background */
-            color: #f3f4f6;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            transition: background-color 0.3s, color 0.3s;
         }
         .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--color-glass-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--color-glass-border);
         }
         .hero-gradient {
-            background: radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.1), transparent 60%); /* Yellow gradient */
+            background: radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.1), transparent 60%);
         }
         .notification {
             position: fixed;
@@ -55,7 +86,7 @@
             visibility: visible;
         }
         .modal-content {
-            background: #1f1f1f;
+            background: var(--color-surface);
             padding: 2rem;
             border-radius: 12px;
             width: 90%;
@@ -76,17 +107,41 @@
              transform: translateX(0);
         }
         .category-btn.active {
-            background-color: #f59e0b; /* amber-500 */
-            color: #121212;
+            background-color: var(--color-primary);
+            color: var(--color-primary-text);
         }
         .favorite-btn.favorited { color: #ef4444; }
         .dashboard-nav-item.active {
-            background-color: #d97706; /* amber-600 */
+            background-color: var(--color-primary-hover);
             color: white;
         }
         .cart-item-checkbox {
             accent-color: #f59e0b;
         }
+        /* Color variable applications */
+        .text-gray-300, .text-gray-400 { color: var(--color-text-muted); }
+        h1, h2, h3, h4, h5, h6, .text-white { color: var(--color-text); }
+        .bg-gray-800, input.bg-gray-800, textarea.bg-gray-800, select.bg-gray-800 { 
+            background-color: var(--color-input-bg);
+            color: var(--color-text);
+        }
+        .bg-yellow-500 {
+            background-color: var(--color-primary);
+            color: var(--color-primary-text);
+        }
+        .text-yellow-500, .border-yellow-500 {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .hover\:bg-yellow-500:hover {
+            background-color: var(--color-primary);
+            color: var(--color-primary-text-alt) !important;
+        }
+         .hover\:bg-yellow-600:hover {
+            background-color: var(--color-primary-hover);
+        }
+        .text-yellow-400 { color: var(--color-primary); }
+
         /* Slider Styles */
         .slider-container {
             position: relative;
@@ -157,6 +212,15 @@
                     <button id="lang-bn" class="px-2 py-1 text-sm rounded-full bg-yellow-500 text-black">বাং</button>
                     <button id="lang-en" class="px-2 py-1 text-sm rounded-full">Eng</button>
                 </div>
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle-btn" class="text-gray-300 hover:text-white transition">
+                    <svg id="moon-icon" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                    </svg>
+                    <svg id="sun-icon" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+                    </svg>
+                </button>
                 <button id="favorite-icon" class="relative text-gray-300 hover:text-white transition">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
                     <span id="favorite-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
@@ -186,7 +250,7 @@
             <section class="container mx-auto px-6 py-24 text-center">
                 <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight" data-lang-key="hero_title">আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস</h2>
                 <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-8" data-lang-key="hero_subtitle">ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।</p>
-                <a href="#products" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-8 rounded-lg text-lg transition duration-300" data-lang-key="hero_button">প্রোডাক্ট দেখুন</a>
+                <a href="#products" class="bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-8 rounded-lg text-lg transition duration-300" data-lang-key="hero_button">প্রোডাক্ট দেখুন</a>
             </section>
         </main>
 
@@ -243,7 +307,7 @@
                                 <input id="upload-price" type="number" placeholder="পণ্যের মূল্য (৳)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
                                 <input id="upload-category" type="text" placeholder="ক্যাটেগরি (যেমন: Web Templates)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
                                 <input id="upload-image" type="text" placeholder="পণ্যের ছবির URL" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="upload_button">পণ্য আপলোড করুন</button>
+                                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="upload_button">পণ্য আপলোড করুন</button>
                             </form>
                         </div>
                     </div>
@@ -312,7 +376,7 @@
                  <form id="login-form" class="space-y-4">
                      <input id="login-email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
                      <input id="login-password" type="password" placeholder="আপনার পাসওয়ার্ড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                     <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="login_form_btn">লগইন করুন</button>
+                     <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="login_form_btn">লগইন করুন</button>
                  </form>
                  <div class="mt-6 text-center">
                      <p class="text-sm text-gray-400" data-lang-key="login_no_account">অ্যাকাউন্ট নেই?</p>
@@ -331,7 +395,7 @@
                          <input type="checkbox" id="register-terms" class="h-4 w-4 bg-gray-800 border-gray-600 text-yellow-500 focus:ring-yellow-600" required>
                          <label for="register-terms" class="text-sm text-gray-400" data-lang-key="register_terms_agree">আমি <a href="#" id="register-terms-link" class="text-yellow-400 hover:underline">শর্তাবলীতে</a> সম্মত।</label>
                      </div>
-                     <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="register_form_btn">রেজিস্টার করুন</button>
+                     <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="register_form_btn">রেজিস্টার করুন</button>
                  </form>
                  <div class="mt-6 text-center">
                      <p class="text-sm text-gray-400" data-lang-key="register_has_account">ইতিমধ্যে অ্যাকাউন্ট আছে?</p>
@@ -354,7 +418,7 @@
                     <span data-lang-key="cart_total">নির্বাচিত মোট:</span>
                     <span id="cart-total">৳০</span>
                 </div>
-                <button id="checkout-btn" class="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="cart_checkout">চেকআউট করুন</button>
+                <button id="checkout-btn" class="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="cart_checkout">চেকআউট করুন</button>
             </div>
         </div>
     </div>
@@ -495,7 +559,7 @@
                             </div>
                         </div>
                         <div class="mt-4 grid grid-cols-2 gap-2">
-                            <button data-action="addToCart" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="add_to_cart_btn"></button>
+                            <button data-action="addToCart" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="add_to_cart_btn"></button>
                             <button data-action="buyNow" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="buy_now_btn"></button>
                         </div>`;
                     listEl.appendChild(card);
@@ -582,7 +646,7 @@
                         return product ? `<li>${product.name} (x${item.quantity})</li>` : `<li>Product ID: ${item.productId}</li>`;
                     }).join('');
 
-                    const statusClass = order.status === 'pending' ? 'bg-yellow-500 text-black' : (order.status === 'completed' ? 'bg-green-500 text-white' : 'bg-red-500 text-white');
+                    const statusClass = order.status === 'pending' ? 'bg-yellow-500' : (order.status === 'completed' ? 'bg-green-500 text-white' : 'bg-red-500 text-white');
                     const statusText = order.status || 'N/A';
 
                     const orderEl = document.createElement('div');
@@ -888,6 +952,41 @@
             
             document.addEventListener('DOMContentLoaded', () => {
                 try {
+                    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+                    const sunIcon = document.getElementById('sun-icon');
+                    const moonIcon = document.getElementById('moon-icon');
+
+                    const updateThemeIcons = (theme) => {
+                        if (theme === 'light') {
+                            moonIcon.classList.add('hidden');
+                            sunIcon.classList.remove('hidden');
+                        } else {
+                            sunIcon.classList.add('hidden');
+                            moonIcon.classList.remove('hidden');
+                        }
+                    };
+
+                    const applyTheme = (theme) => {
+                        if (theme === 'light') {
+                            document.body.classList.add('light-mode');
+                        } else {
+                            document.body.classList.remove('light-mode');
+                        }
+                        updateThemeIcons(theme);
+                        localStorage.setItem('theme', theme);
+                    };
+
+                    const toggleTheme = () => {
+                        const currentTheme = localStorage.getItem('theme') || 'dark';
+                        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                        applyTheme(newTheme);
+                    };
+                    
+                    const savedTheme = localStorage.getItem('theme') || 'dark';
+                    applyTheme(savedTheme);
+
+                    themeToggleBtn.addEventListener('click', toggleTheme);
+
                     setLanguage(localStorage.getItem('language') || 'bn');
                     
                     const authModal = document.getElementById('auth-modal');
