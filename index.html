@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ইসমত কোড - ডিজিটাল প্রোডাক্ট শপ</title>
+    <title>ইসমত ২ হাজার কোড - ডিজিটাল প্রোডাক্ট শপ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -754,13 +754,36 @@
             function buyNow(productId) {
                 const product = state.products.find(p => p.id === productId);
                 if (product) {
-                    state.checkoutItems = [{ productId: product.id, quantity: 1, price: product.price }];
-                    const paymentModal = document.getElementById('payment-modal');
-                    document.getElementById('payment-amount').innerText = `৳${product.price.toLocaleString('bn-BD')}`;
-                    paymentModal.classList.add('active');
+                    const itemsToCheckout = [{ productId: product.id, quantity: 1 }];
+                    startCheckoutProcess(itemsToCheckout);
                 } else {
                     showNotification('প্রোডাক্ট খুঁজে পাওয়া যায়নি।', 'error');
                 }
+            }
+            
+            function startCheckoutProcess(items) {
+                if (!items || items.length === 0) {
+                    showNotification('চেকআউট করার জন্য কোনো পণ্য নেই।', 'error');
+                    return;
+                }
+
+                const totalAmount = items.reduce((acc, item) => {
+                    const product = state.products.find(p => p.id === item.productId);
+                    return acc + (product ? product.price * item.quantity : 0);
+                }, 0);
+
+                if (totalAmount <= 0) {
+                    showNotification('পেমেন্টের পরিমাণ গণনা করা যায়নি।', 'error');
+                    return;
+                }
+
+                state.checkoutItems = items;
+
+                document.getElementById('cart-modal').classList.remove('active');
+                
+                const paymentModal = document.getElementById('payment-modal');
+                document.getElementById('payment-amount').innerText = `৳${totalAmount.toLocaleString('bn-BD')}`;
+                paymentModal.classList.add('active');
             }
 
             async function toggleFavorite(productId) {
@@ -886,21 +909,9 @@
                     });
 
                     document.getElementById('checkout-btn').addEventListener('click', () => {
-                        const paymentModal = document.getElementById('payment-modal');
-                        
                         if (state.selectedCartItemIds.size > 0) {
-                            state.checkoutItems = state.cart.filter(item => state.selectedCartItemIds.has(item.id));
-                            
-                            const selectedTotal = state.checkoutItems.reduce((acc, item) => {
-                                 const product = state.products.find(p => p.id === item.productId);
-                                 return acc + (product ? product.price * item.quantity : 0);
-                            }, 0);
-
-                            if (selectedTotal > 0) {
-                                cartModal.classList.remove('active');
-                                document.getElementById('payment-amount').innerText = `৳${selectedTotal.toLocaleString('bn-BD')}`;
-                                paymentModal.classList.add('active');
-                            }
+                            const itemsToCheckout = state.cart.filter(item => state.selectedCartItemIds.has(item.id));
+                            startCheckoutProcess(itemsToCheckout);
                         } else {
                             showNotification('অনুগ্রহ করে কেনার জন্য পণ্য নির্বাচন করুন।', 'error');
                         }
@@ -1066,15 +1077,17 @@
                                  const ordersCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/orders`);
                                  await addDoc(ordersCol, orderDetails);
                                  
-                                 const purchasedCartItemIds = new Set(state.checkoutItems.map(item => item.id));
+                                 const purchasedCartItemIds = new Set(
+                                     state.checkoutItems
+                                         .filter(item => item.id)
+                                         .map(item => item.id)
+                                 );
+
                                  if (purchasedCartItemIds.size > 0) {
-                                     const cartCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/cart`);
-                                     const cartSnapshot = await getDocs(cartCol);
                                      const batch = writeBatch(db);
-                                     cartSnapshot.docs.forEach(doc => {
-                                         if (purchasedCartItemIds.has(doc.id)) {
-                                             batch.delete(doc.ref);
-                                         }
+                                     purchasedCartItemIds.forEach(cartId => {
+                                         const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
+                                         batch.delete(docRef);
                                      });
                                      await batch.commit();
                                  }
