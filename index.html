@@ -66,7 +66,7 @@
             z-index: 1050;
         }
         .notification.show { transform: translateY(0); }
-        .modal-overlay, .modal {
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -81,7 +81,7 @@
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
         }
-        .modal-overlay.active, .modal.active {
+        .modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
@@ -95,7 +95,7 @@
             transition: transform 0.3s;
             position: relative;
         }
-        .modal-overlay.active .modal-content, .modal.active .modal-content { transform: scale(1); }
+        .modal-overlay.active .modal-content { transform: scale(1); }
         #cart-modal .modal-content {
             margin-left: auto;
             margin-right: 0;
@@ -111,8 +111,9 @@
             color: var(--color-primary-text);
         }
         .favorite-btn.favorited { color: #ef4444; }
-        .dashboard-nav-item.active, .sidebar-item.active {
-             background-color: var(--color-primary-hover); color: white;
+        .dashboard-nav-item.active {
+            background-color: var(--color-primary-hover);
+            color: white;
         }
         .cart-item-checkbox {
             accent-color: #f59e0b;
@@ -197,382 +198,207 @@
             color: white;
             cursor: pointer;
         }
-         /* Admin Panel Styles */
-        .stat-card { background-color: #2d3748; }
-        .table-auto th, .table-auto td { white-space: nowrap; }
     </style>
 </head>
-<body class="flex h-screen">
+<body>
 
-    <!-- This container holds both customer and admin views -->
-    <div id="app-container" class="w-full h-full">
+    <!-- Header Section -->
+    <header class="glass-effect sticky top-0 z-50">
+        <nav class="container mx-auto px-4 lg:px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold" data-lang-key="site_title">পছন্দের শপ</h1>
+            <div class="hidden lg:flex items-center space-x-6">
+                <a href="#" data-action="showHome" class="hover:text-yellow-500 transition" data-lang-key="nav_home">হোম</a>
+                <a href="#products" class="hover:text-yellow-500 transition" data-lang-key="nav_products">প্রোডাক্টস</a>
+                <a href="#" data-action="showSellProduct" class="hover:text-yellow-500 transition" data-lang-key="nav_sell">পণ্য সেল করুন</a>
+                <a href="#" data-action="showDashboard" class="hover:text-yellow-500 transition" data-lang-key="nav_account">আমার অ্যাকাউন্ট</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative hidden md:block">
+                    <input type="text" id="search-bar" data-lang-key="search_placeholder" placeholder="প্রোডাক্ট খুঁজুন..." class="bg-gray-800 placeholder-gray-400 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 w-full">
+                    <svg class="w-5 h-5 text-gray-400 absolute top-1/2 left-3 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                </div>
+                <!-- Language Selector -->
+                <div class="flex items-center gap-1 glass-effect p-1 rounded-full">
+                    <button id="lang-bn" data-action="setLang" data-lang="bn" class="px-2 py-1 text-sm rounded-full bg-yellow-500 text-black">বাং</button>
+                    <button id="lang-en" data-action="setLang" data-lang="en" class="px-2 py-1 text-sm rounded-full">Eng</button>
+                </div>
+                <!-- Theme Toggle Button -->
+                <button data-action="toggleTheme" id="theme-toggle-btn" class="hover:text-yellow-500 transition">
+                    <svg id="moon-icon" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                    </svg>
+                    <svg id="sun-icon" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+                    </svg>
+                </button>
+                <button data-action="showFavorites" class="relative hover:text-yellow-500 transition">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
+                    <span id="favorite-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <button data-action="openModal" data-modal-id="cart-modal" class="relative hover:text-yellow-500 transition">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.814a.75.75 0 0 0-.693-.941H5.617l-.755-2.818A.75.75 0 0 0 3.86 3H2.25M8 21a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm10.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" /></svg>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <button id="auth-btn" data-action="authAction" class="bg-yellow-500 hover:bg-yellow-600 font-bold py-2 px-4 rounded-lg transition duration-300 text-sm" data-lang-key="login_btn">লগইন</button>
+            </div>
+        </nav>
+    </header>
 
-        <!-- Header Section (Customer) -->
-        <header id="customer-header" class="glass-effect sticky top-0 z-50">
-            <nav class="container mx-auto px-4 lg:px-6 py-3 flex justify-between items-center">
-                <h1 class="text-xl md:text-2xl font-bold" data-lang-key="site_title">পছন্দের শপ</h1>
-                <div class="hidden lg:flex items-center space-x-6">
-                    <a href="#" data-action="showHome" class="hover:text-yellow-500 transition" data-lang-key="nav_home">হোম</a>
-                    <a href="#products" class="hover:text-yellow-500 transition" data-lang-key="nav_products">প্রোডাক্টস</a>
-                    <a href="#" data-action="showSellProduct" class="hover:text-yellow-500 transition" data-lang-key="nav_sell">পণ্য সেল করুন</a>
-                    <a href="#" data-action="showDashboard" class="hover:text-yellow-500 transition" data-lang-key="nav_account">আমার অ্যাকাউন্ট</a>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="relative hidden md:block">
-                        <input type="text" id="search-bar" data-lang-key="search_placeholder" placeholder="প্রোডাক্ট খুঁজুন..." class="bg-gray-800 placeholder-gray-400 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 w-full">
-                        <svg class="w-5 h-5 text-gray-400 absolute top-1/2 left-3 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-                    </div>
-                    <!-- Language Selector -->
-                    <div class="flex items-center gap-1 glass-effect p-1 rounded-full">
-                        <button id="lang-bn" data-action="setLang" data-lang="bn" class="px-2 py-1 text-sm rounded-full bg-yellow-500 text-black">বাং</button>
-                        <button id="lang-en" data-action="setLang" data-lang="en" class="px-2 py-1 text-sm rounded-full">Eng</button>
-                    </div>
-                    <!-- Theme Toggle Button -->
-                    <button data-action="toggleTheme" id="theme-toggle-btn" class="hover:text-yellow-500 transition">
-                        <svg id="moon-icon" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-                        </svg>
-                        <svg id="sun-icon" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                        </svg>
-                    </button>
-                    <button data-action="showFavorites" class="relative hover:text-yellow-500 transition">
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
-                        <span id="favorite-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    </button>
-                    <button data-action="openModal" data-modal-id="cart-modal" class="relative hover:text-yellow-500 transition">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.814a.75.75 0 0 0-.693-.941H5.617l-.755-2.818A.75.75 0 0 0 3.86 3H2.25M8 21a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm10.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" /></svg>
-                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    </button>
-                    <button id="auth-btn" data-action="authAction" class="bg-yellow-500 hover:bg-yellow-600 font-bold py-2 px-4 rounded-lg transition duration-300 text-sm" data-lang-key="login_btn">লগইন</button>
-                </div>
-            </nav>
-        </header>
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Slider Section -->
+        <section id="slider" class="slider-container">
+            <!-- Slides will be dynamically generated here -->
+            <div class="slider-nav">
+                <button data-action="prevSlide">&lt;</button>
+                <button data-action="nextSlide">&gt;</button>
+            </div>
+        </section>
 
-        <!-- Main Content (Customer) -->
-        <div id="main-content">
-            <!-- Slider Section -->
-            <section id="slider" class="slider-container">
-                <!-- Slides will be dynamically generated here -->
-                <div class="slider-nav">
-                    <button data-action="prevSlide">&lt;</button>
-                    <button data-action="nextSlide">&gt;</button>
-                </div>
+        <!-- Hero Section -->
+        <main class="hero-gradient">
+            <section class="container mx-auto px-6 py-24 text-center">
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight" data-lang-key="hero_title">আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস</h2>
+                <p class="text-lg max-w-2xl mx-auto mb-8" data-lang-key="hero_subtitle">ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।</p>
+                <a href="#products" class="bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-8 rounded-lg text-lg transition duration-300" data-lang-key="hero_button">প্রোডাক্ট দেখুন</a>
             </section>
+        </main>
 
-            <!-- Hero Section -->
-            <main class="hero-gradient">
-                <section class="container mx-auto px-6 py-24 text-center">
-                    <h2 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight" data-lang-key="hero_title">আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস</h2>
-                    <p class="text-lg max-w-2xl mx-auto mb-8" data-lang-key="hero_subtitle">ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।</p>
-                    <a href="#products" class="bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-8 rounded-lg text-lg transition duration-300" data-lang-key="hero_button">প্রোডাক্ট দেখুন</a>
-                </section>
-            </main>
-
-            <!-- Products Section -->
-            <section id="products" class="py-20">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-3xl font-bold text-center mb-4" data-lang-key="products_title">আমাদের সেরা প্রোডাক্টস</h3>
-                    <div id="category-filters" class="flex justify-center flex-wrap gap-2 md:gap-4 mb-12"></div>
-                    <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                        <!-- Loading Indicator -->
-                        <div id="loading-indicator" class="col-span-full text-center py-10">
-                            <p class="text-lg" data-lang-key="loading_text">লোড হচ্ছে...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- User Dashboard Section (Customer) -->
-        <section id="dashboard" class="hidden py-20">
+        <!-- Products Section -->
+        <section id="products" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold mb-8" data-lang-key="dashboard_title">আমার অ্যাকাউন্ট ড্যাশবোর্ড</h2>
-                <div class="flex flex-col md:flex-row gap-8">
-                    <!-- Dashboard Navigation -->
-                    <div class="w-full md:w-1/4 glass-effect p-4 rounded-lg self-start">
-                        <nav id="dashboard-nav" class="flex flex-col space-y-2">
-                            <button data-action="switchDashboardTab" data-target="my-orders" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item active" data-lang-key="dashboard_nav_orders">আমার অর্ডার</button>
-                            <button data-action="switchDashboardTab" data-target="my-favorites" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_favorites">ফেভারিট পণ্য</button>
-                            <button data-action="switchDashboardTab" data-target="upload-product" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_upload">আপনার পণ্য আপলোড করুন</button>
-                            <button data-action="switchDashboardTab" data-target="settings" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_settings">সেটিংস</button>
-                        </nav>
-                    </div>
-                    <!-- Dashboard Content -->
-                    <div class="w-full md:w-3/4">
-                        <div id="my-orders" class="dashboard-content">
-                            <h3 class="text-2xl font-semibold mb-4" data-lang-key="orders_title">অর্ডার হিস্টোরি</h3>
-                            <div class="glass-effect p-6 rounded-lg" id="orders-list">
-                                <!-- Orders will be rendered here -->
-                            </div>
-                        </div>
-                        <div id="my-favorites" class="dashboard-content hidden">
-                             <h3 class="text-2xl font-semibold mb-4" data-lang-key="favorites_title">আপনার ফেভারিট পণ্য</h3>
-                             <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    <!-- Favorite items will be rendered here -->
-                             </div>
-                        </div>
-                        <div id="upload-product" class="dashboard-content hidden">
-                            <h3 class="text-2xl font-semibold mb-4" data-lang-key="upload_title">নতুন পণ্য যোগ করুন</h3>
-                            <div class="glass-effect p-6 rounded-lg">
-                                <form id="upload-form" class="space-y-4">
-                                    <input id="upload-name" type="text" placeholder="পণ্যের নাম" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                    <textarea id="upload-desc" placeholder="পণ্যের বিবরণ" rows="4" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
-                                    <input id="upload-price" type="number" placeholder="পণ্যের মূল্য (৳)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                    <input id="upload-category" type="text" placeholder="ক্যাটেগরি (যেমন: Web Templates)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                    <input id="upload-image" type="text" placeholder="পণ্যের ছবির URL" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                    <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="upload_button">পণ্য আপলোড করুন</button>
-                                </form>
-                            </div>
-                        </div>
-                         <div id="settings" class="dashboard-content hidden">
-                             <h3 class="text-2xl font-semibold mb-4" data-lang-key="settings_title">অ্যাকাউন্ট সেটিংস</h3>
-                              <div class="glass-effect p-6 rounded-lg">
-                               <div id="profile-display" class="mb-6">
-                                    <h4 id="profile-full-name" class="text-xl font-bold"></h4>
-                                    <p id="profile-email"></p>
-                                    <p id="profile-mobile"></p>
-                               </div>
-                               <h4 class="text-xl font-semibold mb-3" data-lang-key="payout_title">প্রোফাইল ও পেমেন্ট তথ্য</h4>
-                               <p class="text-sm mb-4" data-lang-key="payout_desc">আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।</p>
-                               <form id="settings-form" class="space-y-4">
-                                    <h5 class="text-lg font-semibold border-b border-gray-700 pb-2" data-lang-key="settings_optional_title">ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)</h5>
-                                    <textarea id="settings-address" placeholder="আপনার ঠিকানা" rows="3" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
-                                    <input id="settings-house" type="text" placeholder="বাড়ির নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                    <input id="settings-zip" type="text" placeholder="জিপ কোড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                    
-                                    <h5 class="text-lg font-semibold border-b border-gray-700 pb-2 pt-4" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h5>
-                                    <select id="payout-method" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                        <option value="bKash">বিকাশ</option>
-                                        <option value="Nagad">নগদ</option>
-                                        <option value="Rocket">রকেট</option>
-                                    </select>
-                                    <input id="payout-number" type="text" placeholder="আপনার অ্যাকাউন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
-                               </form>
-                             </div>
-                        </div>
+                <h3 class="text-3xl font-bold text-center mb-4" data-lang-key="products_title">আমাদের সেরা প্রোডাক্টস</h3>
+                <div id="category-filters" class="flex justify-center flex-wrap gap-2 md:gap-4 mb-12"></div>
+                <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Loading Indicator -->
+                    <div id="loading-indicator" class="col-span-full text-center py-10">
+                        <p class="text-lg" data-lang-key="loading_text">লোড হচ্ছে...</p>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Footer (Customer) -->
-        <footer id="customer-footer" class="bg-black py-8">
-            <div class="container mx-auto px-6 text-center">
-                <div class="flex justify-center items-center gap-6 mb-4">
-                    <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
-                    <a href="#" aria-label="YouTube" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM15.194 12 10 15.194V8.806L15.194 12Z" clip-rule="evenodd" /></svg></a>
-                    <a href="#" aria-label="TikTok" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.1 1.58-2.91 2.34-4.82 2.34-1.43 0-2.83-.53-3.91-1.48-1.58-1.38-2.26-3.39-2.18-5.34 0-.04.01-.08.01-.12.02-1.58.43-3.12 1.2-4.44.83-1.4 2.02-2.43 3.48-3.03.01-.05.02-.09.02-.14.01-2.24-.02-4.48-.01-6.72 0-.25.01-.5.01-.75.01-.68.01-1.37.02-2.05.02-.7.01-1.4-.01-2.1.01-.15.02-.3.02-.45.01-.1.02-.2.02-.31.02-.22.01-.44.01-.66 0-.08.01-.16.01-.24z"/></svg></a>
-                    <a href="#" aria-label="Telegram" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931L23.613 3.106c.338-1.393-.564-2.001-1.517-1.592L.617 10.431C-1.214 11.12-1.214 12.21.901 12.565l5.703.874 13.22-8.26C20.533 4.41 19.88 4.878 19.17 5.421z"/></svg></a>
-                </div>
-                <div class="flex justify-center gap-4 mb-4">
-                    <a href="#" data-action="openModal" data-modal-id="terms-modal" class="hover:text-yellow-400" data-lang-key="footer_terms">টার্মস এন্ড কন্ডিশনস</a>
-                    <span class="text-gray-500">|</span>
-                    <a href="#" class="hover:text-yellow-400" data-lang-key="footer_support">সাপোর্ট</a>
-                </div>
-                <p data-lang-key="footer_copyright">&copy; ২০২৫ পছন্দের শপ। সর্বসত্ত্ব সংরক্ষিত।</p>
-            </div>
-        </footer>
-
-        <!-- Main Admin Panel (Initially Hidden) -->
-        <div id="admin-panel" class="flex h-full w-full hidden">
-            <!-- Sidebar -->
-            <aside class="w-64 bg-gray-800 text-gray-300 flex flex-col">
-                <div class="p-4 text-center text-2xl font-bold text-white border-b border-gray-700">অ্যাডমিন</div>
-                <nav id="sidebar-nav" class="flex-1 p-4 space-y-2">
-                    <button data-target="dashboard" class="w-full text-left sidebar-item p-3 rounded-md hover:bg-gray-700 transition active">ড্যাশবোর্ড</button>
-                    <button data-target="users" class="w-full text-left sidebar-item p-3 rounded-md hover:bg-gray-700 transition">ব্যবহারকারী</button>
-                    <button data-target="products" class="w-full text-left sidebar-item p-3 rounded-md hover:bg-gray-700 transition">পণ্যসমূহ</button>
-                    <button data-target="seller-products" class="w-full text-left sidebar-item p-3 rounded-md hover:bg-gray-700 transition relative">বিক্রেতার পণ্য <span id="review-count" class="absolute right-2 top-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span></button>
-                    <button data-target="orders" class="w-full text-left sidebar-item p-3 rounded-md hover:bg-gray-700 transition">অর্ডার</button>
-                    <button data-target="promotions" class="w-full text-left sidebar-item p-3 rounded-md hover:bg-gray-700 transition">প্রমোশন</button>
-                    <button data-target="content" class="w-full text-left sidebar-item p-3 rounded-md hover:bg-gray-700 transition">কনটেন্ট</button>
-                    <button data-target="site-settings" class="w-full text-left sidebar-item p-3 rounded-md hover:bg-gray-700 transition">সাইট সেটিংস</button>
-                </nav>
-                <div class="p-4 border-t border-gray-700">
-                    <button id="logout-btn" class="w-full bg-red-600 hover:bg-red-700 text-white p-3 rounded-md transition">লগআউট</button>
-                </div>
-            </aside>
-
-            <!-- Main Content (Admin) -->
-            <main class="flex-1 p-6 md:p-10 overflow-y-auto">
-                <!-- Dashboard View -->
-                <div id="dashboard-view" class="admin-view">
-                    <h1 class="text-3xl font-bold text-white mb-8">ড্যাশবোর্ড</h1>
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <!-- Main Stats -->
-                        <div class="flex-grow">
-                            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                                <div class="stat-card p-6 rounded-lg shadow-lg">
-                                    <h3 class="text-gray-400 text-lg">মোট ব্যবহারকারী</h3>
-                                    <p id="total-users" class="text-3xl font-bold text-white mt-2">0</p>
-                                </div>
-                                <div class="stat-card p-6 rounded-lg shadow-lg">
-                                    <h3 class="text-gray-400 text-lg">মোট অর্ডার</h3>
-                                    <p id="total-orders" class="text-3xl font-bold text-white mt-2">0</p>
-                                </div>
-                                 <div class="stat-card p-6 rounded-lg shadow-lg">
-                                    <h3 class="text-gray-400 text-lg">আজকের আয়</h3>
-                                    <p id="daily-revenue" class="text-3xl font-bold text-green-400 mt-2">৳0</p>
-                                </div>
-                                <div class="stat-card p-6 rounded-lg shadow-lg">
-                                    <h3 class="text-gray-400 text-lg">এই মাসের আয়</h3>
-                                    <p id="monthly-revenue" class="text-3xl font-bold text-green-400 mt-2">৳0</p>
-                                </div>
-                                <div class="stat-card p-6 rounded-lg shadow-lg">
-                                    <h3 class="text-gray-400 text-lg">সাইট ভিজিট</h3>
-                                    <p id="site-visits" class="text-3xl font-bold text-white mt-2">0</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Calculator -->
-                        <div class="lg:w-auto">
-                            <div class="bg-gray-800 p-4 rounded-lg w-full max-w-xs mx-auto lg:mx-0">
-                                <h2 class="text-xl font-bold text-white mb-4">ক্যালকুলেটর</h2>
-                                <div class="bg-gray-900 p-3 rounded-md text-right text-2xl font-mono mb-3" id="calculator-display">0</div>
-                                <div id="calculator-keys" class="grid grid-cols-4 gap-2">
-                                    <button class="p-3 bg-gray-700 rounded-md text-lg hover:bg-gray-600 transition" data-action="clear">AC</button>
-                                    <button class="p-3 bg-gray-700 rounded-md text-lg hover:bg-gray-600 transition" data-action="delete">C</button>
-                                    <button class="p-3 bg-yellow-500 text-black rounded-md text-lg hover:bg-yellow-600 transition" data-operator="divide">/</button>
-                                    <button class="p-3 bg-yellow-500 text-black rounded-md text-lg hover:bg-yellow-600 transition" data-operator="multiply">*</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">7</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">8</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">9</button>
-                                    <button class="p-3 bg-yellow-500 text-black rounded-md text-lg hover:bg-yellow-600 transition" data-operator="subtract">-</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">4</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">5</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">6</button>
-                                    <button class="p-3 bg-yellow-500 text-black rounded-md text-lg hover:bg-yellow-600 transition" data-operator="add">+</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">1</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">2</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition">3</button>
-                                    <button class="p-3 bg-green-500 text-black rounded-md text-lg hover:bg-green-600 transition row-span-2" data-action="calculate">=</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition col-span-2">0</button>
-                                    <button class="p-3 bg-gray-600 rounded-md text-lg hover:bg-gray-500 transition" data-action="decimal">.</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Users View -->
-                <div id="users-view" class="admin-view hidden">
-                    <h1 class="text-3xl font-bold text-white mb-8">ব্যবহারকারী ব্যবস্থাপনা</h1>
-                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-x-auto">
-                        <table class="w-full text-left table-auto">
-                            <thead class="bg-gray-700">
-                                <tr><th class="p-4">নাম</th><th class="p-4">ইমেইল</th><th class="p-4">স্ট্যাটাস</th><th class="p-4">অ্যাকশন</th></tr>
-                            </thead>
-                            <tbody id="users-table-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Products View -->
-                <div id="products-view" class="admin-view hidden">
-                    <div class="flex justify-between items-center mb-8">
-                        <h1 class="text-3xl font-bold text-white">পণ্য ব্যবস্থাপনা</h1>
-                        <button id="add-product-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg">নতুন পণ্য যোগ করুন</button>
-                    </div>
-                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-x-auto">
-                        <table class="w-full text-left table-auto">
-                            <thead class="bg-gray-700">
-                                <tr><th class="p-4">নাম</th><th class="p-4">ক্যাটেগরি</th><th class="p-4">মূল্য</th><th class="p-4">অ্যাকশন</th></tr>
-                            </thead>
-                            <tbody id="products-table-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Seller Products View -->
-                <div id="seller-products-view" class="admin-view hidden">
-                     <h1 class="text-3xl font-bold text-white mb-8">বিক্রেতার পণ্য রিভিউ</h1>
-                     <div class="bg-gray-800 rounded-lg shadow-lg overflow-x-auto">
-                         <table class="w-full text-left table-auto">
-                             <thead class="bg-gray-700">
-                                 <tr><th class="p-4">নাম</th><th class="p-4">বিক্রেতা</th><th class="p-4">মূল্য</th><th class="p-4">স্ট্যাটাস</th><th class="p-4">অ্যাকশন</th></tr>
-                             </thead>
-                             <tbody id="seller-products-table-body"></tbody>
-                         </table>
-                    </div>
-                </div>
-
-                <!-- Orders View -->
-                <div id="orders-view" class="admin-view hidden">
-                    <h1 class="text-3xl font-bold text-white mb-8">অর্ডার ব্যবস্থাপনা</h1>
-                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-x-auto">
-                        <table class="w-full text-left table-auto">
-                            <thead class="bg-gray-700">
-                                 <tr><th class="p-4">অর্ডার আইডি</th><th class="p-4">ক্রেতার আইডি</th><th class="p-4">পরিমাণ</th><th class="p-4">TrxID</th><th class="p-4">স্ট্যাটাস</th></tr>
-                            </thead>
-                            <tbody id="orders-table-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Promotions View -->
-                <div id="promotions-view" class="admin-view hidden">
-                     <h1 class="text-3xl font-bold text-white mb-8">প্রমোশন ও কুপন</h1>
-                     <div class="bg-gray-800 p-6 rounded-lg mb-8">
-                           <h2 class="text-xl font-bold mb-4">নতুন কুপন তৈরি করুন</h2>
-                           <form id="coupon-form" class="flex gap-4 items-end">
-                                 <div class="flex-grow"><label>কুপন কোড</label><input id="coupon-code" type="text" class="w-full bg-gray-700 p-2 rounded mt-1" required></div>
-                                 <div><label>ডিসকাউন্ট (%)</label><input id="coupon-discount" type="number" class="w-full bg-gray-700 p-2 rounded mt-1" required></div>
-                                 <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg">তৈরি করুন</button>
-                           </form>
-                     </div>
-                     <div class="bg-gray-800 rounded-lg shadow-lg overflow-x-auto">
-                          <table class="w-full text-left table-auto"><thead class="bg-gray-700"><tr><th class="p-4">কোড</th><th class="p-4">ডিসকাউন্ট</th><th class="p-4">অ্যাকশন</th></tr></thead><tbody id="coupons-table-body"></tbody></table>
-                     </div>
-                </div>
-
-                <!-- Content View -->
-                <div id="content-view" class="admin-view hidden">
-                    <h1 class="text-3xl font-bold text-white mb-8">স্লাইডার ব্যানার ব্যবস্থাপনা</h1>
-                    <div class="bg-gray-800 p-6 rounded-lg mb-8">
-                           <h2 class="text-xl font-bold mb-4">নতুন ব্যানার যোগ করুন</h2>
-                           <form id="banner-form" class="space-y-4">
-                                <input id="banner-title" type="text" placeholder="ব্যানার টাইটেল" class="w-full bg-gray-700 p-2 rounded" required>
-                                <input id="banner-desc" type="text" placeholder="ছোট বিবরণ" class="w-full bg-gray-700 p-2 rounded" required>
-                                <input id="banner-img" type="text" placeholder="ছবির URL" class="w-full bg-gray-700 p-2 rounded" required>
-                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg">যোগ করুন</button>
-                           </form>
-                    </div>
-                     <div class="bg-gray-800 rounded-lg shadow-lg overflow-x-auto">
-                          <table class="w-full text-left table-auto"><thead class="bg-gray-700"><tr><th class="p-4">টাইটেল</th><th class="p-4">ছবি</th><th class="p-4">অ্যাকশন</th></tr></thead><tbody id="banners-table-body"></tbody></table>
-                     </div>
-                </div>
-                
-                <!-- Site Settings View -->
-                <div id="site-settings-view" class="admin-view hidden">
-                    <h1 class="text-3xl font-bold text-white mb-8">সাইট পেমেন্ট সেটিংস</h1>
-                    <div class="bg-gray-800 p-6 rounded-lg">
-                        <p class="text-gray-400 mb-4">গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।</p>
-                        <form id="admin-site-settings-form" class="space-y-4">
-                            <input id="site-payment-gateway" type="text" placeholder="পেমেন্ট গেটওয়ের নাম (যেমন: বিকাশ)" class="w-full bg-gray-700 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                            <input id="site-payment-number" type="text" placeholder="মার্চেন্ট/এজেন্ট নম্বর" class="w-full bg-gray-700 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg">তথ্য সেভ করুন</button>
-                        </form>
-                    </div>
-                </div>
-            </main>
-        </div>
     </div>
 
+    <!-- User Dashboard Section (Initially Hidden) -->
+    <section id="dashboard" class="hidden py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-8" data-lang-key="dashboard_title">আমার অ্যাকাউন্ট ড্যাশবোর্ড</h2>
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Dashboard Navigation -->
+                <div class="w-full md:w-1/4 glass-effect p-4 rounded-lg self-start">
+                    <nav id="dashboard-nav" class="flex flex-col space-y-2">
+                        <button data-action="switchDashboardTab" data-target="my-orders" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item active" data-lang-key="dashboard_nav_orders">আমার অর্ডার</button>
+                        <button data-action="switchDashboardTab" data-target="my-favorites" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_favorites">ফেভারিট পণ্য</button>
+                        <button data-action="switchDashboardTab" data-target="upload-product" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_upload">আপনার পণ্য আপলোড করুন</button>
+                        <button data-action="switchDashboardTab" data-target="settings" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_settings">সেটিংস</button>
+                        <button data-action="switchDashboardTab" data-target="site-settings" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_site_settings">সাইট সেটিংস</button>
+                        <button data-action="switchDashboardTab" data-target="all-orders" id="all-orders-nav-btn" class="hidden text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_all_orders">সকল অর্ডার</button>
+                    </nav>
+                </div>
+                <!-- Dashboard Content -->
+                <div class="w-full md:w-3/4">
+                    <div id="my-orders" class="dashboard-content">
+                        <h3 class="text-2xl font-semibold mb-4" data-lang-key="orders_title">অর্ডার হিস্টোরি</h3>
+                        <div class="glass-effect p-6 rounded-lg" id="orders-list">
+                            <!-- Orders will be rendered here -->
+                        </div>
+                    </div>
+                    <div id="all-orders" class="dashboard-content hidden">
+                        <h3 class="text-2xl font-semibold mb-4" data-lang-key="all_orders_title">সকল কাস্টমার অর্ডার</h3>
+                        <div class="glass-effect p-6 rounded-lg" id="all-orders-list">
+                            <!-- All orders for admin will be rendered here -->
+                        </div>
+                    </div>
+                    <div id="my-favorites" class="dashboard-content hidden">
+                         <h3 class="text-2xl font-semibold mb-4" data-lang-key="favorites_title">আপনার ফেভারিট পণ্য</h3>
+                         <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- Favorite items will be rendered here -->
+                         </div>
+                    </div>
+                    <div id="upload-product" class="dashboard-content hidden">
+                        <h3 class="text-2xl font-semibold mb-4" data-lang-key="upload_title">নতুন পণ্য যোগ করুন</h3>
+                        <div class="glass-effect p-6 rounded-lg">
+                            <form id="upload-form" class="space-y-4">
+                                <input id="upload-name" type="text" placeholder="পণ্যের নাম" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                <textarea id="upload-desc" placeholder="পণ্যের বিবরণ" rows="4" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
+                                <input id="upload-price" type="number" placeholder="পণ্যের মূল্য (৳)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                <input id="upload-category" type="text" placeholder="ক্যাটেগরি (যেমন: Web Templates)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                <input id="upload-image" type="text" placeholder="পণ্যের ছবির URL" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="upload_button">পণ্য আপলোড করুন</button>
+                            </form>
+                        </div>
+                    </div>
+                     <div id="settings" class="dashboard-content hidden">
+                         <h3 class="text-2xl font-semibold mb-4" data-lang-key="settings_title">অ্যাকাউন্ট সেটিংস</h3>
+                          <div class="glass-effect p-6 rounded-lg">
+                           <div id="profile-display" class="mb-6">
+                                <h4 id="profile-full-name" class="text-xl font-bold"></h4>
+                                <p id="profile-email"></p>
+                                <p id="profile-mobile"></p>
+                           </div>
+                           <h4 class="text-xl font-semibold mb-3" data-lang-key="payout_title">প্রোফাইল ও পেমেন্ট তথ্য</h4>
+                           <p class="text-sm mb-4" data-lang-key="payout_desc">আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।</p>
+                           <form id="settings-form" class="space-y-4">
+                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2" data-lang-key="settings_optional_title">ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)</h5>
+                                <textarea id="settings-address" placeholder="আপনার ঠিকানা" rows="3" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
+                                <input id="settings-house" type="text" placeholder="বাড়ির নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                <input id="settings-zip" type="text" placeholder="জিপ কোড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                
+                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2 pt-4" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h5>
+                                <select id="payout-method" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                    <option value="bKash">বিকাশ</option>
+                                    <option value="Nagad">নগদ</option>
+                                    <option value="Rocket">রকেট</option>
+                                </select>
+                                <input id="payout-number" type="text" placeholder="আপনার অ্যাকাউন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
+                           </form>
+                         </div>
+                    </div>
+                     <div id="site-settings" class="dashboard-content hidden">
+                        <h3 class="text-2xl font-semibold mb-4" data-lang-key="site_settings_title">সাইট পেমেন্ট সেটিংস</h3>
+                        <div class="glass-effect p-6 rounded-lg">
+                            <p class="text-sm mb-4" data-lang-key="site_settings_desc">গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।</p>
+                            <form id="site-settings-form" class="space-y-4">
+                                <input id="site-gateway-name" type="text" placeholder="পেমেন্ট গেটওয়ের নাম (যেমন: bKash)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                <input id="site-gateway-number" type="text" placeholder="পেমেন্ট গেটওয়ে নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- MODALS (Customer & Admin) -->
-    
-    <!-- Notification -->
+    <!-- Footer -->
+    <footer class="bg-black py-8">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex justify-center items-center gap-6 mb-4">
+                <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
+                <a href="#" aria-label="YouTube" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM15.194 12 10 15.194V8.806L15.194 12Z" clip-rule="evenodd" /></svg></a>
+                <a href="#" aria-label="TikTok" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.1 1.58-2.91 2.34-4.82 2.34-1.43 0-2.83-.53-3.91-1.48-1.58-1.38-2.26-3.39-2.18-5.34 0-.04.01-.08.01-.12.02-1.58.43-3.12 1.2-4.44.83-1.4 2.02-2.43 3.48-3.03.01-.05.02-.09.02-.14.01-2.24-.02-4.48-.01-6.72 0-.25.01-.5.01-.75.01-.68.01-1.37.02-2.05.02-.7.01-1.4-.01-2.1.01-.15.02-.3.02-.45.01-.1.02-.2.02-.31.02-.22.01-.44.01-.66 0-.08.01-.16.01-.24z"/></svg></a>
+                <a href="#" aria-label="Telegram" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931L23.613 3.106c.338-1.393-.564-2.001-1.517-1.592L.617 10.431C-1.214 11.12-1.214 12.21.901 12.565l5.703.874 13.22-8.26C2.533 4.41 19.88 4.878 19.17 5.421z"/></svg></a>
+            </div>
+            <div class="flex justify-center gap-4 mb-4">
+                <a href="#" data-action="openModal" data-modal-id="terms-modal" class="hover:text-yellow-400" data-lang-key="footer_terms">টার্মস এন্ড কন্ডিশনস</a>
+                <span class="text-gray-500">|</span>
+                <a href="#" class="hover:text-yellow-400" data-lang-key="footer_support">সাপোর্ট</a>
+            </div>
+            <p data-lang-key="footer_copyright">&copy; ২০২৫ পছন্দের শপ। সর্বসত্ত্ব সংরক্ষিত।</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
     <div id="notification" class="notification"></div>
     
-    <!-- Auth Modal (Customer) -->
+    <!-- Auth Modal -->
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-content">
             <button data-action="closeModal" data-modal-id="auth-modal" class="absolute top-4 right-4 hover:text-white text-2xl font-bold">&times;</button>
             <div id="login-view">
                  <h3 class="text-2xl font-bold text-center mb-6" data-lang-key="login_title">স্বাগতম!</h3>
-                 <form id="customer-login-form" class="space-y-4">
+                 <form id="login-form" class="space-y-4">
                      <input id="login-email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
                      <input id="login-password" type="password" placeholder="আপনার পাসওয়ার্ড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
                      <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="login_form_btn">লগইন করুন</button>
@@ -652,7 +478,7 @@
         </div>
     </div>
 
-    <!-- Product Details Modal (Customer) -->
+    <!-- Product Details Modal -->
     <div id="product-details-modal" class="modal-overlay">
         <div class="modal-content max-w-3xl">
             <button data-action="closeModal" data-modal-id="product-details-modal" class="absolute top-4 right-4 hover:text-white text-2xl font-bold">&times;</button>
@@ -669,46 +495,21 @@
                     <p class="text-2xl font-semibold text-yellow-400 mb-4"><span id="details-price"></span></p>
                     <p class="mb-4"><strong data-lang-key="details_category">ক্যাটেগরি:</strong> <span id="details-category"></span></p>
                     <p id="details-desc" class="text-gray-300 mb-6"></p>
+
+                    <!-- Reviews Section -->
                     <div class="border-t border-gray-700 pt-6">
                         <h4 class="text-xl font-semibold mb-4" data-lang-key="reviews_title">কাস্টমার রিভিউ</h4>
-                        <div id="reviews-list" class="space-y-4 mb-6"></div>
-                        <div id="review-form-container"></div>
+                        <div id="reviews-list" class="space-y-4 mb-6">
+                            <!-- Reviews will be rendered here -->
+                        </div>
+                        <div id="review-form-container">
+                            <!-- Review form for logged in users -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Product Add/Edit Modal (Admin) -->
-    <div id="product-modal" class="modal">
-        <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-lg modal-content">
-            <h2 id="product-modal-title" class="text-2xl font-bold mb-6">নতুন পণ্য</h2>
-            <form id="product-form" class="space-y-4">
-                <input type="hidden" id="product-id">
-                <input id="product-name" type="text" placeholder="পণ্যের নাম" class="w-full bg-gray-700 p-3 rounded" required>
-                <textarea id="product-desc" placeholder="পণ্যের বিবরণ" rows="3" class="w-full bg-gray-700 p-3 rounded"></textarea>
-                <input id="product-price" type="number" placeholder="মূল্য" class="w-full bg-gray-700 p-3 rounded" required>
-                <input id="product-category" type="text" placeholder="ক্যাটেগরি" class="w-full bg-gray-700 p-3 rounded" required>
-                <input id="product-image" type="text" placeholder="ছবির URL" class="w-full bg-gray-700 p-3 rounded" required>
-                <div class="flex justify-end gap-4 pt-4">
-                    <button type="button" data-action="closeModal" data-modal-id="product-modal" class="bg-gray-600 hover:bg-gray-700 py-2 px-4 rounded"> বাতিল</button>
-                    <button type="submit" class="bg-green-500 hover:bg-green-600 py-2 px-4 rounded">সেভ করুন</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-    <!-- User Details Modal (Admin) -->
-    <div id="user-details-modal" class="modal">
-        <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-lg modal-content">
-            <h2 class="text-2xl font-bold mb-6">ব্যবহারকারীর বিবরণ</h2>
-            <div id="user-details-content" class="space-y-2"></div>
-            <div class="flex justify-end pt-4">
-                <button type="button" data-action="closeModal" data-modal-id="user-details-modal" class="bg-gray-600 hover:bg-gray-700 py-2 px-4 rounded">বন্ধ করুন</button>
-            </div>
-        </div>
-    </div>
-
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -718,7 +519,7 @@
         // --- Configuration and Initialization ---
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfigString = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
-        const ADMIN_UID = "mjbmQXTqIKd3QBltUWnfBVDN8MF2";
+        const ADMIN_UID = "j2GRnToF2BM3s2u1lqG2yVf4Q5C2"; // Placeholder Admin UID
         
         const firebaseConfig = firebaseConfigString ? JSON.parse(firebaseConfigString) : { /* Fallback config */
             apiKey: "AIzaSyB6rH8V0TClZ_aigoUBPrS8BFzscG9_Dz8",
@@ -741,8 +542,7 @@
             currentCategory: 'All', searchTerm: '', checkoutItems: [], selectedCartItemIds: new Set(),
             currentOpenProduct: null,
             unsubscribers: {
-                reviews: () => {}, products: () => {}, banners: () => {}, cart: () => {}, favorites: () => {}, orders: () => {}, siteSettings: () => {}, allOrders: () => {},
-                adminUsers: () => {}, adminProducts: () => {}, adminSellerProducts: () => {}, adminOrders: () => {}, adminPromotions: () => {}, adminContent: () => {}, adminSiteSettings: () => {}, adminPendingReviews: () => {}
+                reviews: () => {}, products: () => {}, banners: () => {}, cart: () => {}, favorites: () => {}, orders: () => {}, siteSettings: () => {}, allOrders: () => {}
             }
         };
 
@@ -811,27 +611,13 @@
             } else {
                 authBtn.dataset.langKey = 'login_btn';
                 authBtn.innerText = translations[lang]['login_btn'];
+                document.getElementById('main-content').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
             }
+
+            document.getElementById('all-orders-nav-btn').classList.toggle('hidden', !user || user.uid !== ADMIN_UID);
         }
 
-        function showCustomerView() {
-            document.getElementById('customer-header').classList.remove('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-            document.getElementById('customer-footer').classList.remove('hidden');
-            document.getElementById('admin-panel').classList.add('hidden');
-            document.body.classList.remove('flex', 'h-screen');
-        }
-
-        function showAdminView() {
-            document.getElementById('customer-header').classList.add('hidden');
-            document.getElementById('main-content').classList.add('hidden');
-            document.getElementById('customer-footer').classList.add('hidden');
-            document.getElementById('admin-panel').classList.remove('hidden');
-            document.body.classList.add('flex', 'h-screen');
-            showAdminPage('dashboard');
-        }
-        
-        // --- CUSTOMER-FACING RENDER FUNCTIONS ---
         function renderProducts() {
             const listEl = document.getElementById('product-list');
             const loadingIndicator = document.getElementById('loading-indicator');
@@ -988,6 +774,41 @@
             });
         }
         
+        function renderAllOrders(orders) {
+            const listEl = document.getElementById('all-orders-list');
+            listEl.innerHTML = '';
+             if (orders.length === 0) {
+                 listEl.innerHTML = `<p>কোনো অর্ডার পাওয়া যায়নি।</p>`;
+                 return;
+             }
+            orders.sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
+            orders.forEach(order => {
+                const orderDate = order.createdAt ? order.createdAt.toDate().toLocaleString('bn-BD') : 'N/A';
+                const orderEl = document.createElement('div');
+                orderEl.className = 'border-b border-gray-700 py-4 last:border-b-0';
+                orderEl.innerHTML = `
+                    <div class="flex justify-between items-start flex-wrap gap-4">
+                        <div>
+                            <p class="text-xs">ID: ${order.id}</p>
+                            <p class="text-sm"><strong>Date:</strong> ${orderDate}</p>
+                            <p class="text-sm"><strong>User ID:</strong> ${order.userId}</p>
+                            <p class="text-sm"><strong>Phone:</strong> ${order.paymentPhone}</p>
+                            <p class="text-sm"><strong>TrxID:</strong> ${order.paymentTrxId}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-lg text-yellow-400">৳${order.totalAmount.toLocaleString('bn-BD')}</p>
+                            <select data-action="updateOrderStatus" data-order-id="${order.id}" class="status-select bg-gray-800 text-white rounded-md p-1 mt-2">
+                                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                listEl.appendChild(orderEl);
+            });
+        }
+        
         function renderBanners() {
             const sliderContainer = document.getElementById('slider');
             // Clear only slides, not nav buttons
@@ -1083,10 +904,11 @@
             setLanguage(localStorage.getItem('language') || 'bn');
         }
 
-        // --- CUSTOMER-FACING DATA LOGIC ---
+        // --- Firebase & Data Logic ---
         function listenForProductUpdates() {
+            const productsCol = collection(db, `artifacts/${appId}/public/data/products`);
             state.unsubscribers.products();
-            state.unsubscribers.products = onSnapshot(collection(db, `artifacts/${appId}/public/data/products`), (snapshot) => {
+            state.unsubscribers.products = onSnapshot(productsCol, (snapshot) => {
                 state.products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 const newCategories = ['All', ...new Set(state.products.map(p => p.category))];
                 const categoryContainer = document.getElementById('category-filters');
@@ -1102,8 +924,9 @@
         }
         
         function listenForBannerUpdates() {
+            const bannersCol = collection(db, `artifacts/${appId}/public/data/banners`);
             state.unsubscribers.banners();
-            state.unsubscribers.banners = onSnapshot(collection(db, `artifacts/${appId}/public/data/banners`), (snapshot) => {
+            state.unsubscribers.banners = onSnapshot(bannersCol, (snapshot) => {
                 state.banners = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderBanners();
             }, (error) => {
@@ -1113,12 +936,15 @@
         }
         
         function listenForSiteSettings() {
+            const settingsRef = doc(db, `artifacts/${appId}/public/data/site_settings/details`);
             state.unsubscribers.siteSettings();
-            state.unsubscribers.siteSettings = onSnapshot(doc(db, `artifacts/${appId}/public/data/site_settings/details`), (docSnap) => {
+            state.unsubscribers.siteSettings = onSnapshot(settingsRef, (docSnap) => {
                 if (docSnap.exists()) {
                     state.siteSettings = docSnap.data();
                     document.getElementById('gateway-number').innerText = state.siteSettings.gatewayNumber || 'N/A';
                     document.getElementById('gateway-name').innerText = state.siteSettings.gatewayName || 'N/A';
+                    document.getElementById('site-gateway-name').value = state.siteSettings.gatewayName || '';
+                    document.getElementById('site-gateway-number').value = state.siteSettings.gatewayNumber || '';
                 } else {
                     state.siteSettings = null;
                     document.getElementById('gateway-number').innerText = '01XXXXXXXXX';
@@ -1129,9 +955,21 @@
             });
         }
         
+        function listenForAllOrders() {
+            state.unsubscribers.allOrders();
+            const allOrdersCol = collection(db, `artifacts/${appId}/public/data/orders`);
+            state.unsubscribers.allOrders = onSnapshot(allOrdersCol, (snapshot) => {
+                state.allOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderAllOrders(state.allOrders);
+            }, (err) => {
+                console.error("Error fetching all orders:", err);
+            });
+        }
+        
         function listenForReviews(productId) {
             state.unsubscribers.reviews();
-            state.unsubscribers.reviews = onSnapshot(collection(db, `artifacts/${appId}/public/data/products/${productId}/reviews`), (snapshot) => {
+            const reviewsCol = collection(db, `artifacts/${appId}/public/data/products/${productId}/reviews`);
+            state.unsubscribers.reviews = onSnapshot(reviewsCol, (snapshot) => {
                 const reviews = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
                 renderReviews(reviews);
             });
@@ -1225,6 +1063,16 @@
             document.getElementById('payment-modal').classList.add('active');
         }
 
+        async function updateOrderStatus(orderId, status) {
+            try {
+                const orderRef = doc(db, `artifacts/${appId}/public/data/orders`, orderId);
+                await updateDoc(orderRef, { status });
+                showNotification('অর্ডারের স্ট্যাটাস আপডেট হয়েছে।');
+            } catch(err) {
+                showNotification('স্ট্যাটাস আপডেট করা যায়নি।', 'error');
+            }
+        }
+        
         function showDashboardPage(targetPageId) {
             document.getElementById('main-content').classList.add('hidden');
             const dashboard = document.getElementById('dashboard');
@@ -1285,229 +1133,10 @@
                 showNotification('রিভিউ জমা দিতে সমস্যা হয়েছে।', 'error');
             }
         }
-
-        // --- ADMIN PANEL FUNCTIONS ---
         
-        function showAdminPage(viewId) {
-             // Unsubscribe from previous listener
-            Object.values(state.unsubscribers).forEach(unsub => unsub && unsub());
-
-            document.querySelectorAll('.admin-view').forEach(view => view.classList.add('hidden'));
-            document.getElementById(`${viewId}-view`).classList.remove('hidden');
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.classList.toggle('active', item.dataset.target === viewId);
-            });
-            switch (viewId) {
-                case 'dashboard': loadDashboardData(); break;
-                case 'users': loadAdminUsers(); break;
-                case 'products': loadAdminProducts(); break;
-                case 'seller-products': loadSellerProducts(); break;
-                case 'orders': loadAdminOrders(); break;
-                case 'promotions': loadPromotions(); break;
-                case 'content': loadContent(); break;
-                case 'site-settings': loadAdminSiteSettings(); break;
-            }
-        }
-        
-        async function loadDashboardData() {
-            const usersSnapshot = await getDocs(collection(db, `artifacts/${appId}/users`));
-            document.getElementById('total-users').textContent = usersSnapshot.size;
-            
-            const ordersQuery = query(collection(db, `artifacts/${appId}/public/data/orders`));
-            const ordersSnapshot = await getDocs(ordersQuery);
-            document.getElementById('total-orders').textContent = ordersSnapshot.size;
-
-            let dailyRevenue = 0;
-            let monthlyRevenue = 0;
-            const now = new Date();
-            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
-            ordersSnapshot.forEach(doc => {
-                const order = doc.data();
-                if (order.createdAt) { 
-                    const orderDate = order.createdAt.toDate();
-                    if (order.status === 'completed') {
-                        if (orderDate >= todayStart) dailyRevenue += order.totalAmount;
-                        if (orderDate >= monthStart) monthlyRevenue += order.totalAmount;
-                    }
-                }
-            });
-            document.getElementById('daily-revenue').textContent = `৳${dailyRevenue.toLocaleString('bn-BD')}`;
-            document.getElementById('monthly-revenue').textContent = `৳${monthlyRevenue.toLocaleString('bn-BD')}`;
-
-            const statsRef = doc(db, `artifacts/${appId}/public/data/stats/visits`);
-            const statsSnap = await getDoc(statsRef);
-            document.getElementById('site-visits').textContent = statsSnap.exists() ? statsSnap.data().count : 0;
-        }
-
-        function loadAdminUsers() {
-            const tableBody = document.getElementById('users-table-body');
-            const q = query(collection(db, `artifacts/${appId}/users`));
-            state.unsubscribers.adminUsers();
-            state.unsubscribers.adminUsers = onSnapshot(q, async (snapshot) => {
-                let html = '';
-                for (const userDoc of snapshot.docs) {
-                    const profileSnap = await getDoc(doc(db, `artifacts/${appId}/users/${userDoc.id}/profile/details`));
-                    if (profileSnap.exists()) {
-                        const user = profileSnap.data();
-                        const isBlocked = user.status === 'blocked';
-                        html += `
-                            <tr class="border-b border-gray-700 hover:bg-gray-900">
-                                <td class="p-4">${user.fullName || 'N/A'}</td>
-                                <td class="p-4">${user.email}</td>
-                                <td class="p-4"><span class="px-2 py-1 rounded-full text-xs ${isBlocked ? 'bg-red-500 text-white' : 'bg-green-500 text-black'}">${isBlocked ? 'Blocked' : 'Active'}</span></td>
-                                <td class="p-4 space-x-2">
-                                    <button data-action="view-user" data-uid="${userDoc.id}" class="text-blue-400 hover:underline">বিস্তারিত</button>
-                                    <button data-action="toggle-block" data-uid="${userDoc.id}" data-status="${isBlocked ? 'active' : 'blocked'}" class="${isBlocked ? 'text-green-400' : 'text-red-400'} hover:underline">${isBlocked ? 'Unblock' : 'Block'}</button>
-                                </td>
-                            </tr>`;
-                    }
-                }
-                tableBody.innerHTML = html || '<tr><td colspan="4" class="p-4 text-center">কোনো ব্যবহারকারী নেই।</td></tr>';
-            });
-        }
-        
-        function loadAdminProducts() {
-            const tableBody = document.getElementById('products-table-body');
-            const q = query(collection(db, `artifacts/${appId}/public/data/products`));
-            state.unsubscribers.adminProducts();
-            state.unsubscribers.adminProducts = onSnapshot(q, (snapshot) => {
-                let html = '';
-                snapshot.forEach(doc => {
-                    const product = doc.data();
-                    html += `
-                        <tr class="border-b border-gray-700 hover:bg-gray-900">
-                            <td class="p-4">${product.name}</td>
-                            <td class="p-4">${product.category}</td>
-                            <td class="p-4">৳${product.price}</td>
-                            <td class="p-4 space-x-2">
-                                <button data-action="edit-product" data-id="${doc.id}" class="text-blue-400 hover:underline">সম্পাদনা</button>
-                                <button data-action="delete-product" data-id="${doc.id}" class="text-red-400 hover:underline">ডিলিট</button>
-                            </td>
-                        </tr>`;
-                });
-                tableBody.innerHTML = html || '<tr><td colspan="4" class="p-4 text-center">কোনো পণ্য নেই।</td></tr>';
-            });
-        }
-        
-        function loadSellerProducts() {
-            const tableBody = document.getElementById('seller-products-table-body');
-            const q = query(collection(db, `artifacts/${appId}/public/data/sellerProducts`));
-            state.unsubscribers.adminSellerProducts();
-            state.unsubscribers.adminSellerProducts = onSnapshot(q, async (snapshot) => {
-                let html = '';
-                for (const docRef of snapshot.docs) {
-                     const product = docRef.data();
-                     if (!product.sellerId) continue;
-                     const userDoc = await getDoc(doc(db, `artifacts/${appId}/users/${product.sellerId}/profile/details`));
-                     const sellerName = userDoc.exists() ? userDoc.data().fullName : 'Unknown';
-                     html += `
-                         <tr class="border-b border-gray-700 hover:bg-gray-900">
-                              <td class="p-4">${product.name}</td>
-                              <td class="p-4">${sellerName}</td>
-                              <td class="p-4">৳${product.price}</td>
-                              <td class="p-4">${product.status}</td>
-                              <td class="p-4 space-x-2">
-                                   ${product.status === 'pending' ? `<button data-action="approve-product" data-id="${docRef.id}" class="text-green-400 hover:underline">Approve</button> <button data-action="reject-product" data-id="${docRef.id}" class="text-red-400 hover:underline">Reject</button>` : ''}
-                              </td>
-                         </tr>`;
-                }
-                tableBody.innerHTML = html || '<tr><td colspan="5" class="p-4 text-center">রিভিউয়ের জন্য কোনো পণ্য নেই।</td></tr>';
-            });
-        }
-        
-        function loadAdminOrders() {
-            const tableBody = document.getElementById('orders-table-body');
-            const q = query(collection(db, `artifacts/${appId}/public/data/orders`));
-            state.unsubscribers.adminOrders();
-            state.unsubscribers.adminOrders = onSnapshot(q, (snapshot) => {
-                let html = '';
-                snapshot.forEach(doc => {
-                    const order = doc.data();
-                    html += `
-                        <tr class="border-b border-gray-700 hover:bg-gray-900">
-                            <td class="p-4 text-xs">${doc.id}</td>
-                            <td class="p-4 text-xs">${order.userId}</td>
-                            <td class="p-4">৳${order.totalAmount}</td>
-                            <td class="p-4">${order.paymentTrxId}</td>
-                            <td class="p-4">
-                                 <select data-action="updateOrderStatus" data-order-id="${doc.id}" class="status-select bg-gray-700 rounded p-1">
-                                      <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                      <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
-                                      <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                                 </select>
-                            </td>
-                        </tr>`;
-                });
-                tableBody.innerHTML = html || '<tr><td colspan="5" class="p-4 text-center">কোনো অর্ডার নেই।</td></tr>';
-            });
-        }
-
-        function loadPromotions() {
-            const tableBody = document.getElementById('coupons-table-body');
-            const q = query(collection(db, `artifacts/${appId}/public/data/coupons`));
-            state.unsubscribers.adminPromotions();
-            state.unsubscribers.adminPromotions = onSnapshot(q, (snapshot) => {
-                let html = '';
-                snapshot.forEach(doc => {
-                    const coupon = doc.data();
-                    html += `
-                        <tr class="border-b border-gray-700 hover:bg-gray-900">
-                            <td class="p-4">${coupon.code}</td>
-                            <td class="p-4">${coupon.discount}%</td>
-                            <td class="p-4"><button data-action="delete-coupon" data-id="${doc.id}" class="text-red-400 hover:underline">ডিলিট</button></td>
-                        </tr>`;
-                });
-                tableBody.innerHTML = html || '<tr><td colspan="3" class="p-4 text-center">কোনো কুপন নেই।</td></tr>';
-            });
-        }
-
-        function loadContent() {
-            const tableBody = document.getElementById('banners-table-body');
-            const q = query(collection(db, `artifacts/${appId}/public/data/banners`));
-            state.unsubscribers.adminContent();
-            state.unsubscribers.adminContent = onSnapshot(q, (snapshot) => {
-                let html = '';
-                snapshot.forEach(doc => {
-                    const banner = doc.data();
-                    html += `
-                        <tr class="border-b border-gray-700 hover:bg-gray-900">
-                            <td class="p-4">${banner.title}</td>
-                            <td class="p-4"><img src="${banner.image}" class="h-10 w-20 object-cover rounded"></td>
-                            <td class="p-4"><button data-action="delete-banner" data-id="${doc.id}" class="text-red-400 hover:underline">ডিলিট</button></td>
-                        </tr>`;
-                });
-                tableBody.innerHTML = html || '<tr><td colspan="3" class="p-4 text-center">কোনো ব্যানার নেই।</td></tr>';
-            });
-        }
-        
-        function loadAdminSiteSettings() {
-            const settingsRef = doc(db, `artifacts/${appId}/public/data/site_settings/details`);
-            state.unsubscribers.adminSiteSettings();
-            state.unsubscribers.adminSiteSettings = onSnapshot(settingsRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const settings = docSnap.data();
-                    document.getElementById('site-payment-gateway').value = settings.gatewayName || '';
-                    document.getElementById('site-payment-number').value = settings.gatewayNumber || '';
-                } else {
-                    document.getElementById('site-payment-gateway').value = '';
-                    document.getElementById('site-payment-number').value = '';
-                }
-            });
-        }
-        
-        function listenForPendingReviews() {
-            const q = query(collection(db, `artifacts/${appId}/public/data/sellerProducts`), where("status", "==", "pending"));
-            state.unsubscribers.adminPendingReviews();
-            state.unsubscribers.adminPendingReviews = onSnapshot(q, (snapshot) => {
-                document.getElementById('review-count').textContent = snapshot.size;
-            });
-        }
-
-        // --- Event Delegation & Action Router ---
+        // --- Event Handlers & Action Router ---
         function handleAction(action, data = {}) {
-            const { productId, modalId, lang, category, target, cartItemId, cartId, value, orderId, uid, status, id } = data;
+            const { productId, modalId, lang, category, target, cartItemId, cartId, value, orderId } = data;
 
             if (!state.user || state.user.isAnonymous) {
                 const protectedActions = ['addToCart', 'buyNow', 'toggleFavorite', 'showDashboard', 'showSellProduct', 'showFavorites'];
@@ -1520,11 +1149,21 @@
             
             switch (action) {
                 // UI Actions
-                case 'toggleTheme': applyTheme(localStorage.getItem('theme') === 'dark' ? 'light' : 'dark'); break;
-                case 'setLang': setLanguage(lang); break;
-                case 'openModal': document.getElementById(modalId).classList.add('active'); break;
-                case 'closeModal': document.getElementById(modalId).classList.remove('active');
-                    if (modalId === 'product-details-modal') { state.unsubscribers.reviews(); state.currentOpenProduct = null; }
+                case 'toggleTheme':
+                    applyTheme(localStorage.getItem('theme') === 'dark' ? 'light' : 'dark');
+                    break;
+                case 'setLang':
+                    setLanguage(lang);
+                    break;
+                case 'openModal':
+                    document.getElementById(modalId).classList.add('active');
+                    break;
+                case 'closeModal':
+                    document.getElementById(modalId).classList.remove('active');
+                    if (modalId === 'product-details-modal') {
+                        state.unsubscribers.reviews();
+                        state.currentOpenProduct = null;
+                    }
                     if (modalId === 'payment-modal') state.checkoutItems = [];
                     break;
                 case 'showLoginView':
@@ -1536,12 +1175,15 @@
                     document.getElementById('register-view').classList.remove('hidden');
                     break;
                 case 'authAction':
-                    if (state.user && !state.user.isAnonymous) { signOut(auth); }
-                    else { document.getElementById('auth-modal').classList.add('active'); }
+                    if (state.user && !state.user.isAnonymous) signOut(auth);
+                    else document.getElementById('auth-modal').classList.add('active');
                     break;
 
                 // Navigation
-                case 'showHome': showCustomerView(); break;
+                case 'showHome':
+                     document.getElementById('main-content').classList.remove('hidden');
+                     document.getElementById('dashboard').classList.add('hidden');
+                    break;
                 case 'showDashboard': showDashboardPage('my-orders'); break;
                 case 'showSellProduct': showDashboardPage('upload-product'); break;
                 case 'showFavorites': showDashboardPage('my-favorites'); break;
@@ -1552,8 +1194,11 @@
                     document.getElementById(target).classList.remove('hidden');
                     break;
 
-                // Product & Cart Actions (Customer)
-                case 'setCategory': state.currentCategory = category; renderProducts(); break;
+                // Product & Cart Actions
+                case 'setCategory':
+                    state.currentCategory = category;
+                    renderProducts();
+                    break;
                 case 'openDetails': openProductDetailsModal(productId); break;
                 case 'addToCart': addToCart(productId || state.currentOpenProduct.id); break;
                 case 'buyNow': buyNow(productId || state.currentOpenProduct.id); break;
@@ -1568,41 +1213,10 @@
                 case 'setRating':
                     const ratingContainer = document.querySelector('#review-form .star-rating');
                     ratingContainer.dataset.rating = value;
-                    ratingContainer.querySelectorAll('.star').forEach(s => s.classList.toggle('selected', s.dataset.value <= value));
+                    ratingContainer.querySelectorAll('.star').forEach(s => {
+                        s.classList.toggle('selected', s.dataset.value <= value);
+                    });
                     break;
-
-                // Admin Actions
-                case 'toggle-block': updateDoc(doc(db, `artifacts/${appId}/users/${uid}/profile/details`), { status }); break;
-                case 'view-user': (async () => {
-                    const userSnap = await getDoc(doc(db, `artifacts/${appId}/users/${uid}/profile/details`));
-                    const content = document.getElementById('user-details-content');
-                    content.innerHTML = userSnap.exists() ? `<p><strong>নাম:</strong> ${userSnap.data().fullName}</p>...` : 'User not found.';
-                    document.getElementById('user-details-modal').classList.add('active');
-                })(); break;
-                case 'edit-product': (async () => {
-                     const productSnap = await getDoc(doc(db, `artifacts/${appId}/public/data/products`, id));
-                     if(productSnap.exists()) {
-                         const p = productSnap.data();
-                         document.getElementById('product-id').value = id;
-                         document.getElementById('product-name').value = p.name;
-                         // ... fill rest of form ...
-                         document.getElementById('product-modal').classList.add('active');
-                     }
-                })(); break;
-                case 'delete-product': if(confirm('Are you sure?')) deleteDoc(doc(db, `artifacts/${appId}/public/data/products`, id)); break;
-                case 'approve-product': (async () => {
-                    const productRef = doc(db, `artifacts/${appId}/public/data/sellerProducts`, id);
-                    const productSnap = await getDoc(productRef);
-                    if(productSnap.exists()) {
-                        const data = productSnap.data();
-                        delete data.status;
-                        await addDoc(collection(db, `artifacts/${appId}/public/data/products`), data);
-                        await updateDoc(productRef, {status: 'approved'});
-                    }
-                })(); break;
-                case 'reject-product': updateDoc(doc(db, `artifacts/${appId}/public/data/sellerProducts`, id), { status: 'rejected' }); break;
-                case 'delete-coupon': if(confirm('Are you sure?')) deleteDoc(doc(db, `artifacts/${appId}/public/data/coupons`, id)); break;
-                case 'delete-banner': if(confirm('Are you sure?')) deleteDoc(doc(db, `artifacts/${appId}/public/data/banners`, id)); break;
                  case 'updateOrderStatus':
                     const selectEl = document.querySelector(`[data-order-id="${orderId}"]`);
                     updateOrderStatus(orderId, selectEl.value);
@@ -1613,9 +1227,13 @@
                     if (slides.length <=1) return;
                     let current = [...slides].findIndex(s => s.classList.contains('active'));
                     slides[current].classList.remove('active');
-                    if (action === 'nextSlide') current = (current + 1) % slides.length;
-                    else current = (current - 1 + slides.length) % slides.length;
+                    if (action === 'nextSlide') {
+                        current = (current + 1) % slides.length;
+                    } else {
+                        current = (current - 1 + slides.length) % slides.length;
+                    }
                     slides[current].classList.add('active');
+                    // Reset interval
                     initializeSlider();
                     break;
             }
@@ -1632,7 +1250,7 @@
                 applyTheme(localStorage.getItem('theme') || 'dark');
                 setLanguage(localStorage.getItem('language') || 'bn');
                 
-                // --- GLOBAL EVENT LISTENERS ---
+                // Central Event Listener for Clicks
                 document.body.addEventListener('click', e => {
                     const actionTarget = e.target.closest('[data-action]');
                     if (actionTarget) {
@@ -1646,24 +1264,18 @@
                     }
                 });
                 
-                document.getElementById('sidebar-nav').addEventListener('click', (e) => {
-                     if (e.target.tagName === 'BUTTON') {
-                         showAdminPage(e.target.dataset.target);
-                     }
-                 });
-
                 // Form submissions and other specific listeners
                 document.getElementById('search-bar').addEventListener('input', e => {
                     state.searchTerm = e.target.value.toLowerCase();
                     renderProducts();
                 });
 
-                // Login for BOTH customer and admin
-                document.getElementById('customer-login-form').addEventListener('submit', async e => {
+                document.getElementById('login-form').addEventListener('submit', async e => {
                     e.preventDefault();
                     try {
                         await signInWithEmailAndPassword(auth, e.target['login-email'].value, e.target['login-password'].value);
-                         document.getElementById('auth-modal').classList.remove('active');
+                        document.getElementById('auth-modal').classList.remove('active');
+                        showNotification('সফলভাবে লগইন করেছেন।');
                     } catch (err) { showNotification('ইমেইল বা পাসওয়ার্ড ভুল।', 'error'); }
                 });
 
@@ -1673,13 +1285,19 @@
                     const mobile = e.target['register-mobile'].value;
                     const email = e.target['register-email'].value;
                     const password = e.target['register-password'].value;
-                    if (password !== e.target['register-confirm-password'].value) { showNotification('পাসওয়ার্ড মেলেনি।', 'error'); return; }
-                    if (!e.target['register-terms'].checked) { showNotification('শর্তাবলীতে সম্মত হতে হবে।', 'error'); return; }
+                    if (password !== e.target['register-confirm-password'].value) {
+                        showNotification('পাসওয়ার্ড মেলেনি।', 'error'); return;
+                    }
+                    if (!e.target['register-terms'].checked) {
+                        showNotification('শর্তাবলীতে সম্মত হতে হবে।', 'error'); return;
+                    }
                     try {
                         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                         const user = userCredential.user;
                         const profileRef = doc(db, `artifacts/${appId}/users/${user.uid}/profile/details`);
-                        await setDoc(profileRef, { fullName: name, mobile: mobile, email: email, createdAt: serverTimestamp() });
+                        await setDoc(profileRef, {
+                            fullName: name, mobile: mobile, email: email, createdAt: serverTimestamp()
+                        });
                         document.getElementById('auth-modal').classList.remove('active');
                         showNotification('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।');
                     } catch (err) { 
@@ -1724,29 +1342,32 @@
                         showNotification('আপনার তথ্য সেভ করা হয়েছে।');
                     } catch (err) { showNotification('তথ্য সেভ করা যায়নি।', 'error');}
                 });
-                
-                document.getElementById('admin-site-settings-form').addEventListener('submit', async (e) => {
+
+                document.getElementById('site-settings-form').addEventListener('submit', async e => {
                     e.preventDefault();
-                    const gatewayName = document.getElementById('site-payment-gateway').value;
-                    const gatewayNumber = document.getElementById('site-payment-number').value;
+                    if(!state.user || state.user.isAnonymous) return;
                     try {
-                        await setDoc(doc(db, `artifacts/${appId}/public/data/site_settings/details`), { gatewayName, gatewayNumber }, { merge: true });
-                        showNotification('সাইট সেটিংস সফলভাবে সেভ হয়েছে।', 'success');
-                    } catch (err) {
-                        showNotification('সেটিংস সেভ করতে সমস্যা হয়েছে।', 'error');
-                    }
+                        const docRef = doc(db, `artifacts/${appId}/public/data/site_settings/details`);
+                        await setDoc(docRef, {
+                            gatewayName: document.getElementById('site-gateway-name').value,
+                            gatewayNumber: document.getElementById('site-gateway-number').value,
+                        }, { merge: true });
+                        showNotification('সাইট সেটিংস সেভ করা হয়েছে।');
+                    } catch (err) { showNotification('সেটিংস সেভ করা যায়নি।', 'error'); }
                 });
 
                 document.getElementById('payment-form').addEventListener('submit', async e => {
                     e.preventDefault();
                     if (!state.checkoutItems || state.checkoutItems.length === 0) return;
+
                     const totalAmount = state.checkoutItems.reduce((acc, item) => {
                         const product = state.products.find(p => p.id === item.productId);
                         return acc + (product ? product.price * item.quantity : 0);
                     }, 0);
+
                     const orderDetails = {
                         items: state.checkoutItems.map(item => ({productId: item.productId, quantity: item.quantity})),
-                        totalAmount,
+                        totalAmount: totalAmount,
                         paymentPhone: document.getElementById('payment-phone').value,
                         paymentTrxId: document.getElementById('payment-trxid').value,
                         status: 'pending',
@@ -1755,12 +1376,17 @@
                     };
                     try {
                         await addDoc(collection(db, `artifacts/${appId}/public/data/orders`), orderDetails);
+                        
                         const purchasedCartItemIds = new Set(state.checkoutItems.filter(item => item.id).map(item => item.id));
                         if (purchasedCartItemIds.size > 0) {
                             const batch = writeBatch(db);
-                            purchasedCartItemIds.forEach(cartId => batch.delete(doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId)));
+                            purchasedCartItemIds.forEach(cartId => {
+                                const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
+                                batch.delete(docRef);
+                            });
                             await batch.commit();
                         }
+
                         state.checkoutItems = [];
                         state.selectedCartItemIds.clear();
                         document.getElementById('payment-modal').classList.remove('active');
@@ -1768,5 +1394,98 @@
                         e.target.reset();
                         showDashboardPage('my-orders');
                     } catch (err) {
-                        showNotification('অর্ডার কনফার্ম করা
+                        showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
+                    }
+                });
+
+                document.body.addEventListener('submit', e => {
+                     if (e.target.id === 'review-form') {
+                        e.preventDefault();
+                        handleReviewSubmit(e);
+                     }
+                });
+
+                document.getElementById('checkout-btn').addEventListener('click', () => {
+                     if (state.selectedCartItemIds.size > 0) {
+                         const itemsToCheckout = state.cart.filter(item => state.selectedCartItemIds.has(item.id));
+                         startCheckoutProcess(itemsToCheckout);
+                     } else {
+                         showNotification('অনুগ্রহ করে কেনার জন্য পণ্য নির্বাচন করুন।', 'error');
+                     }
+                 });
+
+                // Authenticate user
+                onAuthStateChanged(auth, async (user) => {
+                    // Clear all previous user-specific listeners to prevent memory leaks
+                    Object.values(state.unsubscribers).forEach(unsub => unsub());
+                    state.unsubscribers = { reviews: () => {}, products: () => {}, banners: () => {}, cart: () => {}, favorites: () => {}, orders: () => {}, siteSettings: () => {}, allOrders: () => {} };
+                    
+                    state.user = user;
+                    updateUIForAuthState(user);
+                    
+                    // Re-initialize global listeners that don't depend on the user
+                    listenForProductUpdates();
+                    listenForBannerUpdates();
+                    listenForSiteSettings();
+
+                    if (user && !user.isAnonymous) {
+                        await fetchUserProfile();
+                        
+                        // Set up listeners for user-specific data
+                        state.unsubscribers.cart = onSnapshot(collection(db, `artifacts/${appId}/users/${user.uid}/cart`), s => {
+                            state.cart = s.docs.map(d => ({ id: d.id, ...d.data() }));
+                            document.getElementById('cart-count').textContent = state.cart.length;
+                            renderCart();
+                        });
+                        state.unsubscribers.favorites = onSnapshot(collection(db, `artifacts/${appId}/users/${user.uid}/favorites`), s => {
+                            state.favorites = s.docs.map(d => d.data().productId);
+                            document.getElementById('favorite-count').textContent = state.favorites.length;
+                            renderProducts(); // Re-render to show correct favorite icons
+                        });
+                        // Listen to the public orders collection and filter for this user's orders
+                        state.unsubscribers.orders = onSnapshot(collection(db, `artifacts/${appId}/public/data/orders`), (snapshot) => {
+                             const userOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).filter(order => order.userId === user.uid);
+                             renderOrders(userOrders);
+                        });
+                        
+                        // If user is admin, set up the listener for all orders
+                        if (user.uid === ADMIN_UID) {
+                            listenForAllOrders();
+                        }
+                    } else {
+                        // Reset state for logged-out or anonymous users
+                        state.cart = []; 
+                        state.favorites = []; 
+                        state.userProfile = null;
+                        document.getElementById('cart-count').textContent = 0;
+                        document.getElementById('favorite-count').textContent = 0;
+                        renderProducts();
+                        renderOrders([]); // Clear personal orders view
+                    }
+                });
+
+                (async () => {
+                    try {
+                        if (initialAuthToken) await signInWithCustomToken(auth, initialAuthToken);
+                        else await signInAnonymously(auth);
+                    } catch (error) { console.error("Anonymous sign-in failed:", error); }
+                })();
+
+            } catch(e) {
+                console.error("Initialization failed:", e);
+                showNotification("অ্যাপ্লিকেশন শুরু করা যায়নি।", "error");
+            }
+        }
+        
+        // --- Let's run the app ---
+        if (!firebaseConfig || !firebaseConfig.apiKey) {
+            console.error("Firebase config is not available or invalid.");
+            document.body.innerHTML = `<div class="h-screen w-screen flex items-center justify-center bg-red-900 text-white text-2xl p-8 text-center">সাইট কনফিগারেশন ত্রুটিপূর্ণ। এটি লোড করা সম্ভব নয়।</div>`;
+        } else {
+             document.addEventListener('DOMContentLoaded', init);
+        }
+
+    </script>
+</body>
+</html>
 
