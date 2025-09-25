@@ -294,7 +294,7 @@
                     <div id="my-favorites" class="dashboard-content hidden">
                          <h3 class="text-2xl font-semibold mb-4" data-lang-key="favorites_title">আপনার ফেভারিট পণ্য</h3>
                          <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                              <!-- Favorite items will be rendered here -->
+                               <!-- Favorite items will be rendered here -->
                          </div>
                     </div>
                     <div id="upload-product" class="dashboard-content hidden">
@@ -314,26 +314,26 @@
                          <h3 class="text-2xl font-semibold mb-4" data-lang-key="settings_title">অ্যাকাউন্ট সেটিংস</h3>
                           <div class="glass-effect p-6 rounded-lg">
                            <div id="profile-display" class="mb-6">
-                               <h4 id="profile-full-name" class="text-xl font-bold"></h4>
-                               <p id="profile-email"></p>
-                               <p id="profile-mobile"></p>
+                                <h4 id="profile-full-name" class="text-xl font-bold"></h4>
+                                <p id="profile-email"></p>
+                                <p id="profile-mobile"></p>
                            </div>
                            <h4 class="text-xl font-semibold mb-3" data-lang-key="payout_title">প্রোফাইল ও পেমেন্ট তথ্য</h4>
                            <p class="text-sm mb-4" data-lang-key="payout_desc">আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।</p>
                            <form id="settings-form" class="space-y-4">
-                               <h5 class="text-lg font-semibold border-b border-gray-700 pb-2" data-lang-key="settings_optional_title">ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)</h5>
-                               <textarea id="settings-address" placeholder="আপনার ঠিকানা" rows="3" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
-                               <input id="settings-house" type="text" placeholder="বাড়ির নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                               <input id="settings-zip" type="text" placeholder="জিপ কোড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                               
-                               <h5 class="text-lg font-semibold border-b border-gray-700 pb-2 pt-4" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h5>
-                               <select id="payout-method" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                   <option value="bKash">বিকাশ</option>
-                                   <option value="Nagad">নগদ</option>
-                                   <option value="Rocket">রকেট</option>
-                               </select>
-                               <input id="payout-number" type="text" placeholder="আপনার অ্যাকাউন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                               <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
+                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2" data-lang-key="settings_optional_title">ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)</h5>
+                                <textarea id="settings-address" placeholder="আপনার ঠিকানা" rows="3" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
+                                <input id="settings-house" type="text" placeholder="বাড়ির নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                <input id="settings-zip" type="text" placeholder="জিপ কোড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                
+                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2 pt-4" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h5>
+                                <select id="payout-method" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                    <option value="bKash">বিকাশ</option>
+                                    <option value="Nagad">নগদ</option>
+                                    <option value="Rocket">রকেট</option>
+                                </select>
+                                <input id="payout-number" type="text" placeholder="আপনার অ্যাকাউন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
                            </form>
                           </div>
                      </div>
@@ -442,9 +442,10 @@
     </div>
     
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, setDoc, getDoc, query, where, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        // UPDATE: Updated Firebase SDK version to 11.6.1 for latest features and security.
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, setDoc, getDoc, query, where, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfigString = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
@@ -536,7 +537,7 @@
                     card.innerHTML = `
                         ${p.originalPrice ? `<span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">SALE</span>` : ''}
                         <button data-action="toggleFavorite" class="favorite-btn absolute top-4 right-4 hover:text-red-500 transition ${isFav ? 'favorited' : ''}">
-                           <svg class="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg" ${isFav ? 'fill="currentColor"' : 'fill="none"'} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
+                            <svg class="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg" ${isFav ? 'fill="currentColor"' : 'fill="none"'} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
                         </button>
                         <img class="w-full h-52 object-cover rounded-md mb-4" src="${p.image}" alt="${p.name}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1e293b/ffffff?text=Image+Error';">
                         <div class="flex-grow">
@@ -807,7 +808,7 @@
                     const itemsToCheckout = [{ productId: product.id, quantity: 1 }];
                     startCheckoutProcess(itemsToCheckout);
                 } else {
-                    showNotification('প্রোডাক্ট খুঁজে পাওয়া যায়নি।', 'error');
+                    showNotification('প্রোডাক্ট খুঁজে পাওয়া যায়নি।', 'error');
                 }
             }
             
@@ -913,7 +914,8 @@
                         renderFavoritesInDashboard();
                     });
                     
-                    const ordersCol = collection(db, `artifacts/${appId}/public/data/orders`, where("userId", "==", user.uid));
+                    // FIX: Changed order path to user-specific subcollection to avoid indexing issues.
+                    const ordersCol = collection(db, `artifacts/${appId}/users/${user.uid}/orders`);
                     state.unsubscribeOrders = onSnapshot(ordersCol, (snapshot) => {
                         const orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                         renderOrders(orders);
@@ -1011,7 +1013,12 @@
                     document.getElementById('close-auth-modal').addEventListener('click', () => authModal.classList.remove('active'));
                     document.getElementById('close-cart-modal').addEventListener('click', () => cartModal.classList.remove('active'));
                     document.getElementById('close-terms-modal').addEventListener('click', () => termsModal.classList.remove('active'));
-                    document.getElementById('close-payment-modal').addEventListener('click', () => document.getElementById('payment-modal').classList.remove('active'));
+                    
+                    // ADD: Clear checkout state when payment modal is closed without purchase
+                    document.getElementById('close-payment-modal').addEventListener('click', () => {
+                        document.getElementById('payment-modal').classList.remove('active');
+                        state.checkoutItems = [];
+                    });
 
                     document.getElementById('show-register-view').addEventListener('click', () => {
                         document.getElementById('login-view').classList.add('hidden');
@@ -1128,55 +1135,63 @@
                         } catch (err) { showNotification('তথ্য সেভ করা যায়নি।', 'error');}
                     });
                     
-                     document.getElementById('payment-form').addEventListener('submit', async e => {
-                             e.preventDefault();
-                             const paymentModal = document.getElementById('payment-modal');
-                             const totalAmountForOrder = state.checkoutItems.reduce((acc, item) => {
+                      document.getElementById('payment-form').addEventListener('submit', async e => {
+                            e.preventDefault();
+                            
+                            // ADD: Guard clause to ensure there are items to check out
+                            if (!state.checkoutItems || state.checkoutItems.length === 0) {
+                                showNotification('চেকআউট করার জন্য কোনো আইটেম নেই।', 'error');
+                                return;
+                            }
+
+                            const paymentModal = document.getElementById('payment-modal');
+                            const totalAmountForOrder = state.checkoutItems.reduce((acc, item) => {
                                 const product = state.products.find(p => p.id === item.productId);
                                 return acc + (product ? product.price * item.quantity : 0);
-                             }, 0);
+                            }, 0);
 
-                             const orderDetails = {
-                                 userId: state.user.uid,
-                                 items: state.checkoutItems.map(item => ({productId: item.productId, quantity: item.quantity})),
-                                 totalAmount: totalAmountForOrder,
-                                 paymentPhone: e.target['payment-phone'].value,
-                                 paymentTrxId: e.target['payment-trxid'].value,
-                                 status: 'pending',
-                                 createdAt: serverTimestamp()
-                             };
-                             try {
-                                 const ordersCol = collection(db, `artifacts/${appId}/public/data/orders`);
-                                 await addDoc(ordersCol, orderDetails);
-                                 
-                                 const purchasedCartItemIds = new Set(
-                                     state.checkoutItems
-                                         .filter(item => item.id)
-                                         .map(item => item.id)
-                                 );
+                            const orderDetails = {
+                                // REMOVED: userId from here as it's now in the path
+                                items: state.checkoutItems.map(item => ({productId: item.productId, quantity: item.quantity})),
+                                totalAmount: totalAmountForOrder,
+                                paymentPhone: e.target['payment-phone'].value,
+                                paymentTrxId: e.target['payment-trxid'].value,
+                                status: 'pending',
+                                createdAt: serverTimestamp()
+                            };
+                            try {
+                                // FIX: Storing order in a user-specific subcollection
+                                const ordersCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/orders`);
+                                await addDoc(ordersCol, orderDetails);
+                                
+                                const purchasedCartItemIds = new Set(
+                                    state.checkoutItems
+                                        .filter(item => item.id) // This correctly filters for items that came from cart
+                                        .map(item => item.id)
+                                );
 
-                                 if (purchasedCartItemIds.size > 0) {
-                                     const batch = writeBatch(db);
-                                     purchasedCartItemIds.forEach(cartId => {
-                                         const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
-                                         batch.delete(docRef);
-                                     });
-                                     await batch.commit();
-                                 }
+                                if (purchasedCartItemIds.size > 0) {
+                                    const batch = writeBatch(db);
+                                    purchasedCartItemIds.forEach(cartId => {
+                                        const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
+                                        batch.delete(docRef);
+                                    });
+                                    await batch.commit();
+                                }
 
-                                 state.checkoutItems = [];
-                                 state.selectedCartItemIds.clear();
+                                state.checkoutItems = [];
+                                state.selectedCartItemIds.clear();
 
-                                 paymentModal.classList.remove('active');
-                                 showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
-                                 e.target.reset();
-                                 showDashboardPage('my-orders');
+                                paymentModal.classList.remove('active');
+                                showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
+                                e.target.reset();
+                                showDashboardPage('my-orders');
 
-                             } catch (err) {
-                                 console.error("Order submission error:", err);
-                                 showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
-                             }
-                         });
+                            } catch (err) {
+                                console.error("Order submission error:", err);
+                                showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
+                            }
+                        });
                     
                     document.getElementById('product-list').addEventListener('click', e => {
                         const button = e.target.closest('button[data-action]');
@@ -1185,48 +1200,36 @@
                         }
                     });
 
-                     document.getElementById('cart-items').addEventListener('click', async e => {
-                             const checkbox = e.target.closest('.cart-item-checkbox');
-                             if (checkbox) {
-                                const cartItemId = checkbox.dataset.cartItemId;
-                                if (checkbox.checked) {
-                                    state.selectedCartItemIds.add(cartItemId);
-                                } else {
-                                    state.selectedCartItemIds.delete(cartItemId);
+                       document.getElementById('cart-items').addEventListener('click', async e => {
+                                const checkbox = e.target.closest('.cart-item-checkbox');
+                                if (checkbox) {
+                                    const cartItemId = checkbox.dataset.cartItemId;
+                                    if (checkbox.checked) {
+                                        state.selectedCartItemIds.add(cartItemId);
+                                    } else {
+                                        state.selectedCartItemIds.delete(cartItemId);
+                                    }
+                                    renderCart();
+                                    return;
                                 }
-                                renderCart();
-                                return;
-                             }
-                             
-                             const button = e.target.closest('button[data-cart-id]');
-                             if (button) {
-                                 const cartId = button.dataset.cartId;
-                                 try {
-                                     const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
-                                     await deleteDoc(docRef);
-                                     state.selectedCartItemIds.delete(cartId);
-                                     showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
-                                 } catch (err) {
-                                      showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
-                                 }
-                             }
-                         });
+                                
+                                const button = e.target.closest('button[data-cart-id]');
+                                if (button) {
+                                    const cartId = button.dataset.cartId;
+                                    try {
+                                        const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
+                                        await deleteDoc(docRef);
+                                        state.selectedCartItemIds.delete(cartId);
+                                        showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
+                                    } catch (err) {
+                                         showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
+                                    }
+                                }
+                            });
 
                     document.getElementById('lang-bn').addEventListener('click', () => setLanguage('bn'));
                     document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
                     
-                    const setupDashboardLink = (id) => {
-                         document.getElementById(id).addEventListener('click', e => {
-                            e.preventDefault();
-                            if(!state.user || state.user.isAnonymous) { 
-                                showNotification('অনুগ্রহ করে প্রথমে লগইন করুন।', 'error'); 
-                                authModal.classList.add('active'); 
-                                return; 
-                            }
-                            showDashboardPage(e.currentTarget.dataset.targetPage || 'my-orders');
-                        });
-                    }
-
                     document.getElementById('dashboard-link').addEventListener('click', e => {
                         e.preventDefault();
                         if(!state.user || state.user.isAnonymous) { showNotification('অনুগ্রহ করে প্রথমে লগইন করুন।', 'error'); authModal.classList.add('active'); return; }
@@ -1289,4 +1292,3 @@
     </script>
 </body>
 </html>
-
