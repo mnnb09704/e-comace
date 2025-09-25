@@ -378,7 +378,7 @@
                 <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
                 <a href="#" aria-label="YouTube" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM15.194 12 10 15.194V8.806L15.194 12Z" clip-rule="evenodd" /></svg></a>
                 <a href="#" aria-label="TikTok" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.1 1.58-2.91 2.34-4.82 2.34-1.43 0-2.83-.53-3.91-1.48-1.58-1.38-2.26-3.39-2.18-5.34 0-.04.01-.08.01-.12.02-1.58.43-3.12 1.2-4.44.83-1.4 2.02-2.43 3.48-3.03.01-.05.02-.09.02-.14.01-2.24-.02-4.48-.01-6.72 0-.25.01-.5.01-.75.01-.68.01-1.37.02-2.05.02-.7.01-1.4-.01-2.1.01-.15.02-.3.02-.45.01-.1.02-.2.02-.31.02-.22.01-.44.01-.66 0-.08.01-.16.01-.24z"/></svg></a>
-                <a href="#" aria-label="Telegram" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931L23.613 3.106c.338-1.393-.564-2.001-1.517-1.592L.617 10.431C-1.214 11.12-1.214 12.21.901 12.565l5.703.874 13.22-8.26C20.533 4.41 19.88 4.878 19.17 5.421z"/></svg></a>
+                <a href="#" aria-label="Telegram" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931L23.613 3.106c.338-1.393-.564-2.001-1.517-1.592L.617 10.431C-1.214 11.12-1.214 12.21.901 12.565l5.703.874 13.22-8.26C2.533 4.41 19.88 4.878 19.17 5.421z"/></svg></a>
             </div>
             <div class="flex justify-center gap-4 mb-4">
                 <a href="#" data-action="openModal" data-modal-id="terms-modal" class="hover:text-yellow-400" data-lang-key="footer_terms">টার্মস এন্ড কন্ডিশনস</a>
@@ -1255,7 +1255,12 @@
                     const actionTarget = e.target.closest('[data-action]');
                     if (actionTarget) {
                         e.preventDefault();
-                        handleAction(actionTarget.dataset.action, actionTarget.dataset);
+                        const productCard = actionTarget.closest('[data-product-id]');
+                        const combinedData = {
+                            ...actionTarget.dataset,
+                            ...(productCard ? { productId: productCard.dataset.productId } : {})
+                        };
+                        handleAction(actionTarget.dataset.action, combinedData);
                     }
                 });
                 
