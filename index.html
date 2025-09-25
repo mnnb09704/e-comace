@@ -118,16 +118,6 @@
         .cart-item-checkbox {
             accent-color: #f59e0b;
         }
-        .star-rating .star {
-            color: #4b5563; /* gray-600 */
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .star-rating .star:hover,
-        .star-rating .star.selected {
-            color: var(--color-primary);
-        }
-
         /* Color variable applications */
         .text-gray-300, .text-gray-400 { color: var(--color-text-muted); }
         h1, h2, h3, h4, h5, h6, .text-white { color: var(--color-text); }
@@ -198,11 +188,33 @@
             color: white;
             cursor: pointer;
         }
+        /* Star Rating */
+        .star-rating {
+            display: flex;
+            direction: rtl;
+            justify-content: center;
+        }
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 2rem;
+            color: #4a5568; /* gray-600 */
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating input[type="radio"]:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: var(--color-primary);
+        }
+        .light-mode .star-rating label {
+             color: #d1d5db; /* gray-300 */
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
     <header class="glass-effect sticky top-0 z-50">
         <nav class="container mx-auto px-4 lg:px-6 py-3 flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-bold" data-lang-key="site_title">পছন্দের শপ</h1>
@@ -217,12 +229,10 @@
                     <input type="text" id="search-bar" data-lang-key="search_placeholder" placeholder="প্রোডাক্ট খুঁজুন..." class="bg-gray-800 placeholder-gray-400 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 w-full">
                     <svg class="w-5 h-5 text-gray-400 absolute top-1/2 left-3 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
                 </div>
-                <!-- Language Selector -->
                 <div class="flex items-center gap-1 glass-effect p-1 rounded-full">
                     <button id="lang-bn" class="px-2 py-1 text-sm rounded-full bg-yellow-500 text-black">বাং</button>
                     <button id="lang-en" class="px-2 py-1 text-sm rounded-full">Eng</button>
                 </div>
-                <!-- Theme Toggle Button -->
                 <button id="theme-toggle-btn" class="hover:text-yellow-500 transition">
                     <svg id="moon-icon" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
@@ -244,148 +254,65 @@
         </nav>
     </header>
 
-    <!-- Main Content -->
     <div id="main-content">
-        <!-- Slider Section -->
-        <section id="slider" class="slider-container">
-            <!-- Slides will be dynamically generated here -->
-            <div class="slider-nav">
-                <button id="prev-slide">&lt;</button>
-                <button id="next-slide">&gt;</button>
-            </div>
-        </section>
+       </div>
 
-        <!-- Hero Section -->
-        <main class="hero-gradient">
-            <section class="container mx-auto px-6 py-24 text-center">
-                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight" data-lang-key="hero_title">আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস</h2>
-                <p class="text-lg max-w-2xl mx-auto mb-8" data-lang-key="hero_subtitle">ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।</p>
-                <a href="#products" class="bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-8 rounded-lg text-lg transition duration-300" data-lang-key="hero_button">প্রোডাক্ট দেখুন</a>
-            </section>
-        </main>
-
-        <!-- Products Section -->
-        <section id="products" class="py-20">
-            <div class="container mx-auto px-6">
-                <h3 class="text-3xl font-bold text-center mb-4" data-lang-key="products_title">আমাদের সেরা প্রোডাক্টস</h3>
-                <div id="category-filters" class="flex justify-center flex-wrap gap-2 md:gap-4 mb-12"></div>
-                <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    <!-- Loading Indicator -->
-                    <div id="loading-indicator" class="col-span-full text-center py-10">
-                        <p class="text-lg" data-lang-key="loading_text">লোড হচ্ছে...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- User Dashboard Section (Initially Hidden) -->
-    <section id="dashboard" class="hidden py-20">
+    <div id="dashboard-template" class="hidden">
+      <section class="py-20">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold mb-8" data-lang-key="dashboard_title">আমার অ্যাকাউন্ট ড্যাশবোর্ড</h2>
             <div class="flex flex-col md:flex-row gap-8">
-                <!-- Dashboard Navigation -->
                 <div class="w-full md:w-1/4 glass-effect p-4 rounded-lg self-start">
                     <nav id="dashboard-nav" class="flex flex-col space-y-2">
                         <button data-target="my-orders" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item active" data-lang-key="dashboard_nav_orders">আমার অর্ডার</button>
                         <button data-target="my-favorites" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_favorites">ফেভারিট পণ্য</button>
-                        <button data-target="upload-product" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_upload">আপনার পণ্য আপলোড করুন</button>
                         <button data-target="settings" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_settings">সেটিংস</button>
-                        <button data-target="site-settings" class="text-left p-3 rounded-md hover:bg-gray-700 transition dashboard-nav-item" data-lang-key="dashboard_nav_site_settings">সাইট সেটিংস</button>
                     </nav>
                 </div>
-                <!-- Dashboard Content -->
                 <div class="w-full md:w-3/4">
                     <div id="my-orders" class="dashboard-content">
                         <h3 class="text-2xl font-semibold mb-4" data-lang-key="orders_title">অর্ডার হিস্টোরি</h3>
                         <div class="glass-effect p-6 rounded-lg" id="orders-list">
-                            <!-- Orders will be rendered here -->
-                        </div>
+                            </div>
                     </div>
                     <div id="my-favorites" class="dashboard-content hidden">
                          <h3 class="text-2xl font-semibold mb-4" data-lang-key="favorites_title">আপনার ফেভারিট পণ্য</h3>
                          <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                               <!-- Favorite items will be rendered here -->
-                         </div>
-                    </div>
-                    <div id="upload-product" class="dashboard-content hidden">
-                        <h3 class="text-2xl font-semibold mb-4" data-lang-key="upload_title">নতুন পণ্য যোগ করুন</h3>
-                        <div class="glass-effect p-6 rounded-lg">
-                            <form id="upload-form" class="space-y-4">
-                                <input id="upload-name" type="text" placeholder="পণ্যের নাম" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <textarea id="upload-desc" placeholder="পণ্যের বিবরণ" rows="4" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
-                                <input id="upload-price" type="number" placeholder="পণ্যের মূল্য (৳)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <input id="upload-category" type="text" placeholder="ক্যাটেগরি (যেমন: Web Templates)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <input id="upload-image" type="text" placeholder="পণ্যের ছবির URL" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="upload_button">পণ্য আপলোড করুন</button>
-                            </form>
-                        </div>
+                             </div>
                     </div>
                      <div id="settings" class="dashboard-content hidden">
                          <h3 class="text-2xl font-semibold mb-4" data-lang-key="settings_title">অ্যাকাউন্ট সেটিংস</h3>
                           <div class="glass-effect p-6 rounded-lg">
                            <div id="profile-display" class="mb-6">
-                                <h4 id="profile-full-name" class="text-xl font-bold"></h4>
-                                <p id="profile-email"></p>
-                                <p id="profile-mobile"></p>
+                               <h4 id="profile-full-name" class="text-xl font-bold"></h4>
+                               <p id="profile-email"></p>
+                               <p id="profile-mobile"></p>
                            </div>
-                           <h4 class="text-xl font-semibold mb-3" data-lang-key="payout_title">প্রোফাইল ও পেমেন্ট তথ্য</h4>
-                           <p class="text-sm mb-4" data-lang-key="payout_desc">আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।</p>
-                           <form id="settings-form" class="space-y-4">
-                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2" data-lang-key="settings_optional_title">ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)</h5>
-                                <textarea id="settings-address" placeholder="আপনার ঠিকানা" rows="3" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
-                                <input id="settings-house" type="text" placeholder="বাড়ির নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                <input id="settings-zip" type="text" placeholder="জিপ কোড" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                
-                                <h5 class="text-lg font-semibold border-b border-gray-700 pb-2 pt-4" data-lang-key="payout_title">পেমেন্ট পাওয়ার তথ্য</h5>
-                                <select id="payout-method" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                    <option value="bKash">বিকাশ</option>
-                                    <option value="Nagad">নগদ</option>
-                                    <option value="Rocket">রকেট</option>
-                                </select>
-                                <input id="payout-number" type="text" placeholder="আপনার অ্যাকাউন্ট নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
-                           </form>
-                          </div>
-                     </div>
-                     <div id="site-settings" class="dashboard-content hidden">
-                        <h3 class="text-2xl font-semibold mb-4" data-lang-key="site_settings_title">সাইট পেমেন্ট সেটিংস</h3>
-                        <div class="glass-effect p-6 rounded-lg">
-                            <p class="text-sm mb-4" data-lang-key="site_settings_desc">গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।</p>
-                            <form id="site-settings-form" class="space-y-4">
-                                <input id="site-gateway-name" type="text" placeholder="পেমেন্ট গেটওয়ের নাম (যেমন: bKash)" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <input id="site-gateway-number" type="text" placeholder="পেমেন্ট গেটওয়ে নম্বর" class="w-full bg-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition" data-lang-key="payout_save_btn">তথ্য সেভ করুন</button>
-                            </form>
-                        </div>
+                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+      </section>
+    </div>
 
-    <!-- Footer -->
     <footer class="bg-black py-8">
         <div class="container mx-auto px-6 text-center">
-            <div class="flex justify-center items-center gap-6 mb-4">
-                <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
-                <a href="#" aria-label="YouTube" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM15.194 12 10 15.194V8.806L15.194 12Z" clip-rule="evenodd" /></svg></a>
-                <a href="#" aria-label="TikTok" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.1 1.58-2.91 2.34-4.82 2.34-1.43 0-2.83-.53-3.91-1.48-1.58-1.38-2.26-3.39-2.18-5.34 0-.04.01-.08.01-.12.02-1.58.43-3.12 1.2-4.44.83-1.4 2.02-2.43 3.48-3.03.01-.05.02-.09.02-.14.01-2.24-.02-4.48-.01-6.72 0-.25.01-.5.01-.75.01-.68.01-1.37.02-2.05.02-.7.01-1.4-.01-2.1.01-.15.02-.3.02-.45.01-.1.02-.2.02-.31.02-.22.01-.44.01-.66 0-.08.01-.16.01-.24z"/></svg></a>
-                <a href="#" aria-label="Telegram" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931L23.613 3.106c.338-1.393-.564-2.001-1.517-1.592L.617 10.431C-1.214 11.12-1.214 12.21.901 12.565l5.703.874 13.22-8.26C20.533 4.41 19.88 4.878 19.17 5.421z"/></svg></a>
+             <div class="flex justify-center gap-6 mb-4 text-2xl">
+                <a href="https://facebook.com" target="_blank" class="hover:text-yellow-400" title="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>
+                <a href="https://youtube.com" target="_blank" class="hover:text-yellow-400" title="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+                <a href="https://tiktok.com" target="_blank" class="hover:text-yellow-400" title="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .53.07v3.51a6.34 6.34 0 0 0-2.84-.87A6.35 6.35 0 0 0 5 19.35a6.36 6.36 0 0 0 6.34 6.34 6.36 6.36 0 0 0 6.34-6.34V10.12a4.83 4.83 0 0 1 4.31-3.43h.01Z"/></svg></a>
+                <a href="#" id="support-link" class="hover:text-yellow-400" title="Support"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg></a>
             </div>
             <div class="flex justify-center gap-4 mb-4">
                 <a href="#" id="terms-link" class="hover:text-yellow-400" data-lang-key="footer_terms">টার্মস এন্ড কন্ডিশনস</a>
-                <span class="text-gray-500">|</span>
-                <a href="#" id="support-link" class="hover:text-yellow-400" data-lang-key="footer_support">সাপোর্ট</a>
             </div>
             <p data-lang-key="footer_copyright">&copy; ২০২৫ পছন্দের শপ। সর্বসত্ত্ব সংরক্ষিত।</p>
         </div>
     </footer>
 
-    <!-- Modals -->
     <div id="notification" class="notification"></div>
     
-    <!-- Auth Modal -->
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="close-auth-modal" class="absolute top-4 right-4 hover:text-white text-2xl font-bold">&times;</button>
@@ -423,17 +350,15 @@
         </div>
     </div>
     
-    <!-- Cart Modal -->
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-content max-w-md">
             <button id="close-cart-modal" class="absolute top-4 right-4 hover:text-white text-2xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-6" data-lang-key="cart_title">আপনার কার্ট</h3>
             <div id="cart-items" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                <!-- Cart items will be injected here -->
-            </div>
+                </div>
             <div class="mt-6 border-t border-gray-700 pt-4">
                 <div class="flex justify-between items-center font-bold text-lg">
-                    <span data-lang-key="cart_total">নির্বাচিত মোট:</span>
+                    <span data-lang-key="cart_total">সর্বমোট:</span>
                     <span id="cart-total">৳০</span>
                 </div>
                 <button id="checkout-btn" class="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 font-bold py-3 px-4 rounded-lg transition duration-300" data-lang-key="cart_checkout">চেকআউট করুন</button>
@@ -441,7 +366,6 @@
         </div>
     </div>
     
-    <!-- Payment Modal -->
     <div id="payment-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="close-payment-modal" class="absolute top-4 right-4 hover:text-white text-2xl font-bold">&times;</button>
@@ -459,7 +383,6 @@
         </div>
     </div>
 
-    <!-- Terms Modal -->
     <div id="terms-modal" class="modal-overlay">
         <div class="modal-content max-w-2xl">
             <button id="close-terms-modal" class="absolute top-4 right-4 hover:text-white text-2xl font-bold">&times;</button>
@@ -470,45 +393,11 @@
             </div>
         </div>
     </div>
-
-    <!-- Product Details Modal -->
-    <div id="product-details-modal" class="modal-overlay">
-        <div class="modal-content max-w-3xl">
-            <button id="close-product-details-modal" class="absolute top-4 right-4 hover:text-white text-2xl font-bold">&times;</button>
-            <div id="product-details-content" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                    <img id="details-img" src="https://placehold.co/600x400/1e293b/ffffff?text=Product" class="w-full h-auto object-cover rounded-lg mb-4">
-                     <div class="grid grid-cols-2 gap-2">
-                        <button id="details-add-to-cart-btn" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="add_to_cart_btn"></button>
-                        <button id="details-buy-now-btn" class="w-full bg-gray-600 hover:bg-gray-700 font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="buy_now_btn"></button>
-                    </div>
-                </div>
-                <div class="max-h-[70vh] overflow-y-auto pr-4">
-                    <h3 id="details-name" class="text-3xl font-bold mb-2"></h3>
-                    <p class="text-2xl font-semibold text-yellow-400 mb-4"><span id="details-price"></span></p>
-                    <p class="mb-4"><strong data-lang-key="details_category">ক্যাটেগরি:</strong> <span id="details-category"></span></p>
-                    <p id="details-desc" class="text-gray-300 mb-6"></p>
-
-                    <!-- Reviews Section -->
-                    <div class="border-t border-gray-700 pt-6">
-                        <h4 class="text-xl font-semibold mb-4" data-lang-key="reviews_title">কাস্টমার রিভিউ</h4>
-                        <div id="reviews-list" class="space-y-4 mb-6">
-                            <!-- Reviews will be rendered here -->
-                        </div>
-                        <div id="review-form-container">
-                            <!-- Review form for logged in users -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <script type="module">
-        // UPDATE: Updated Firebase SDK version to 11.6.1 for latest features and security.
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, setDoc, getDoc, query, where, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, setDoc, getDoc, query, where, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfigString = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
@@ -518,7 +407,7 @@
             authDomain: "e-site-62560.firebaseapp.com",
             databaseURL: "https://e-site-62560-default-rtdb.firebaseio.com",
             projectId: "e-site-62560",
-            storageBucket: "e-site-62560.firebasestorage.app",
+            storageBucket: "e-site-62560.appspot.com",
             messagingSenderId: "823317877501",
             appId: "1:823317877501:web:112d400e1f45533613a494",
             measurementId: "G-V5933K4NYK"
@@ -539,8 +428,7 @@
 
         if (!firebaseConfig || !firebaseConfig.apiKey) {
             console.error("Firebase config is not available or invalid.");
-            const loadingIndicator = document.getElementById('loading-indicator');
-            if (loadingIndicator) loadingIndicator.querySelector('p').innerText = "সাইট লোড করা যায়নি।";
+            document.getElementById('main-content').innerHTML = `<p class="text-center text-red-500 text-lg">সাইট লোড করা যায়নি। কনফিগারেশনে সমস্যা হয়েছে।</p>`;
             showNotification("সাইট লোড হতে একটি গুরুতর সমস্যা হয়েছে।", "error");
         } else {
             const app = initializeApp(firebaseConfig);
@@ -548,15 +436,14 @@
             const db = getFirestore(app);
 
             let state = {
-                products: [], banners: [], cart: [], favorites: [], user: null, userProfile: null, siteSettings: null,
+                products: [], banners: [], cart: [], favorites: [], user: null, siteSettings: null,
                 currentCategory: 'All', searchTerm: '', checkoutItems: [], selectedCartItemIds: new Set(),
-                currentOpenProduct: null, unsubscribeReviews: () => {},
                 unsubscribeProducts: () => {}, unsubscribeBanners: () => {}, unsubscribeCart: () => {}, unsubscribeFavorites: () => {}, unsubscribeOrders: () => {}, unsubscribeSiteSettings: () => {}
             };
             
             const translations = {
-                bn: { site_title: "পছন্দের শপ", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_sell: "পণ্য সেল করুন", nav_account: "আমার অ্যাকাউন্ট", search_placeholder: "প্রোডাক্ট খুঁজুন...", login_btn: "লগইন", logout_btn: "লগআউট", hero_title: "আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস", hero_subtitle: "ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।", hero_button: "প্রোডাক্ট দেখুন", products_title: "আমাদের সেরা প্রোডাক্টস", footer_terms: "টার্মস এন্ড কন্ডিশনস", footer_copyright: "© ২০২৫ পছন্দের শপ। সর্বসত্ত্ব সংরক্ষিত।", footer_support: "সাপোর্ট", terms_title: "টার্মস এন্ড কন্ডিশনস", terms_p1: "আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।", terms_p2: "যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।", slide1_title: "সকল ওয়েব টেমপ্লেটে ৫০% ছাড়!", slide1_desc: "আপনার স্বপ্নের ওয়েবসাইট বানান আমাদের প্রিমিয়াম টেমপ্লেট দিয়ে।", slide2_title: "এসে গেছে নতুন গ্রাফিক্স ডিজাইন কালেকশন", slide2_desc: "আপনার প্রজেক্টকে ফুটিয়ে তুলুন নতুন আঙ্গিকে।", login_title: "স্বাগতম!", login_form_btn: "লগইন করুন", login_no_account: "অ্যাকাউন্ট নেই?", login_create_account: "এখনি তৈরি করুন", register_title: "অ্যাকাউন্ট তৈরি করুন", register_form_btn: "রেজিস্টার করুন", register_has_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?", register_login: "লগইন করুন", register_terms_agree: "আমি", dashboard_title: "আমার অ্যাকাউন্ট ড্যাশবোর্ড", dashboard_nav_orders: "আমার অর্ডার", dashboard_nav_favorites: "ফেভারিট পণ্য", dashboard_nav_upload: "আপনার পণ্য আপলোড করুন", dashboard_nav_settings: "সেটিংস", dashboard_nav_site_settings: "সাইট সেটিংস", site_settings_title: "সাইট পেমেন্ট সেটিংস", site_settings_desc: "গ্রাহকদের কাছ থেকে পেমেন্ট গ্রহণের জন্য এখানে আপনার পেমেন্ট গেটওয়ের তথ্য দিন।", orders_title: "অর্ডার হিস্টোরি", orders_none: "আপনার কোনো অর্ডার নেই।", favorites_title: "আপনার ফেভারিট পণ্য", favorites_none: "আপনার পছন্দের তালিকা খালি।", upload_title: "নতুন পণ্য যোগ করুন", upload_button: "পণ্য আপলোড করুন", settings_title: "অ্যাকাউন্ট সেটিংস", settings_optional_title: "ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)", payout_title: "পেমেন্ট পাওয়ার তথ্য", payout_desc: "আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।", payout_save_btn: "তথ্য সেভ করুন", add_to_cart_btn: "কার্টে যোগ করুন", buy_now_btn: "এখনই কিনুন", cart_title: "আপনার কার্ট", cart_total: "নির্বাচিত মোট:", cart_checkout: "চেকআউট করুন", cart_empty: "আপনার কার্ট খালি।", payment_title: "পেমেন্ট সম্পন্ন করুন", payment_instruction_1: "নিচের নম্বরে সর্বমোট", payment_instruction_2: "(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)", payment_confirm_btn: "অর্ডার কনফার্ম করুন", loading_text: "লোড হচ্ছে...", critical_error: "একটি গুরুতর সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।", details_category: "ক্যাটেগরি", reviews_title: "কাস্টমার রিভিউ", reviews_none: "এখনো কোনো রিভিউ নেই।", review_form_title: "আপনার রিভিউ দিন", review_form_placeholder: "আপনার মতামত লিখুন...", review_form_submit: "রিভিউ জমা দিন" },
-                en: { site_title: "Pochonder Shop", nav_home: "Home", nav_products: "Products", nav_sell: "Sell Product", nav_account: "My Account", search_placeholder: "Search for products...", login_btn: "Login", logout_btn: "Logout", hero_title: "All The Digital Products You Need", hero_subtitle: "Web templates, graphic designs, software, and much more, all in one place.", hero_button: "Browse Products", products_title: "Our Best Products", footer_terms: "Terms & Conditions", footer_copyright: "© 2025 Pochonder Shop. All rights reserved.", footer_support: "Support", terms_title: "Terms & Conditions", terms_p1: "Welcome to our website. By using this site, you agree to our terms and conditions.", terms_p2: "Please read the product descriptions carefully before purchasing. As these are digital products, there are no refunds. Copying our content is prohibited.", slide1_title: "50% Off On All Web Templates!", slide1_desc: "Build your dream website with our premium templates.", slide2_title: "New Graphics Design Collection Arrived", slide2_desc: "Elevate your project with a fresh new look.", login_title: "Welcome!", login_form_btn: "Log In", login_no_account: "No account?", login_create_account: "Create one now", register_title: "Create Account", register_form_btn: "Register", register_has_account: "Already have an account?", register_login: "Log In", register_terms_agree: "I agree to the", dashboard_title: "My Account Dashboard", dashboard_nav_orders: "My Orders", dashboard_nav_favorites: "Favorite Products", dashboard_nav_upload: "Upload Your Product", dashboard_nav_settings: "Settings", dashboard_nav_site_settings: "Site Settings", site_settings_title: "Site Payment Settings", site_settings_desc: "Provide your payment gateway information here to receive payments from customers.", orders_title: "Order History", orders_none: "You have no orders.", favorites_title: "Your Favorite Products", favorites_none: "Your favorites list is empty.", upload_title: "Add New Product", upload_button: "Upload Product", settings_title: "Account Settings", settings_optional_title: "Optional Info (Complete Profile)", payout_title: "Payout Information", payout_desc: "When your product sells, we will send the payment to the details below.", payout_save_btn: "Save Information", add_to_cart_btn: "Add to Cart", buy_now_btn: "Buy Now", cart_title: "Your Cart", cart_total: "Selected Total:", cart_checkout: "Checkout", cart_empty: "Your cart is empty.", payment_title: "Complete Payment", payment_instruction_1: "Please send a total of", payment_instruction_2: "(This is a merchant number, please use the Payment option)", payment_confirm_btn: "Confirm Order", loading_text: "Loading...", critical_error: "A critical error has occurred. Please refresh the page.", details_category: "Category", reviews_title: "Customer Reviews", reviews_none: "No reviews yet.", review_form_title: "Leave a Review", review_form_placeholder: "Write your opinion...", review_form_submit: "Submit Review" }
+                bn: { site_title: "পছন্দের শপ", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_sell: "পণ্য সেল করুন", nav_account: "আমার অ্যাকাউন্ট", search_placeholder: "প্রোডাক্ট খুঁজুন...", login_btn: "লগইন", logout_btn: "লগআউট", hero_title: "আপনার প্রয়োজনীয় সকল ডিজিটাল প্রোডাক্টস", hero_subtitle: "ওয়েব টেমপ্লেট, গ্রাফিক্স ডিজাইন, সফটওয়্যার এবং আরও অনেক কিছু, সবই এক জায়গায়।", hero_button: "প্রোডাক্ট দেখুন", products_title: "আমাদের সেরা প্রোডাক্টস", footer_terms: "টার্মস এন্ড কন্ডিশনস", footer_copyright: "© ২০২৫ পছন্দের শপ। সর্বসত্ত্ব সংরক্ষিত।", terms_title: "টার্মস এন্ড কন্ডিশনস", terms_p1: "আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। এই সাইট ব্যবহার করার মাধ্যমে, আপনি আমাদের শর্তাবলীর সাথে একমত হচ্ছেন।", terms_p2: "যেকোনো পণ্য কেনার আগে তার বিবরণ ভালোভাবে পড়ে নিন। ডিজিটাল পণ্য হওয়ায় কোনো রিফান্ডের ব্যবস্থা নেই। আমাদের কন্টেন্ট কপি করা নিষিদ্ধ।", login_title: "স্বাগতম!", login_form_btn: "লগইন করুন", login_no_account: "অ্যাকাউন্ট নেই?", login_create_account: "এখনি তৈরি করুন", register_title: "অ্যাকাউন্ট তৈরি করুন", register_form_btn: "রেজিস্টার করুন", register_has_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?", register_login: "লগইন করুন", register_terms_agree: "আমি", dashboard_title: "আমার অ্যাকাউন্ট ড্যাশবোর্ড", dashboard_nav_orders: "আমার অর্ডার", dashboard_nav_favorites: "ফেভারিট পণ্য", dashboard_nav_upload: "আপনার পণ্য আপলোড করুন", dashboard_nav_settings: "সেটিংস", orders_title: "অর্ডার হিস্টোরি", orders_none: "আপনার কোনো অর্ডার নেই।", favorites_title: "আপনার ফেভারিট পণ্য", favorites_none: "আপনার পছন্দের তালিকা খালি।", upload_title: "নতুন পণ্য যোগ করুন", upload_button: "পণ্য আপলোড করুন", settings_title: "অ্যাকাউন্ট সেটিংস", settings_optional_title: "ঐচ্ছিক তথ্য (প্রোফাইল পূর্ণ করুন)", payout_title: "পেমেন্ট পাওয়ার তথ্য", payout_desc: "আপনার পণ্য বিক্রি হলে, আমরা নিচের তথ্যে আপনাকে পেমেন্ট পাঠাব।", payout_save_btn: "তথ্য সেভ করুন", add_to_cart_btn: "কার্টে যোগ করুন", buy_now_btn: "এখনই কিনুন", cart_title: "আপনার কার্ট", cart_total: "নির্বাচিত মোট:", cart_checkout: "চেকআউট করুন", cart_empty: "আপনার কার্ট খালি।", payment_title: "পেমেন্ট সম্পন্ন করুন", payment_instruction_1: "নিচের নম্বরে সর্বমোট", payment_instruction_2: "(এটি একটি মার্চেন্ট নম্বর, পেমেন্ট অপশন ব্যবহার করুন)", payment_confirm_btn: "অর্ডার কনফার্ম করুন", loading_text: "লোড হচ্ছে...", critical_error: "একটি গুরুতর সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।" },
+                en: { site_title: "Pochonder Shop", nav_home: "Home", nav_products: "Products", nav_sell: "Sell Product", nav_account: "My Account", search_placeholder: "Search for products...", login_btn: "Login", logout_btn: "Logout", hero_title: "All The Digital Products You Need", hero_subtitle: "Web templates, graphic designs, software, and much more, all in one place.", hero_button: "Browse Products", products_title: "Our Best Products", footer_terms: "Terms & Conditions", footer_copyright: "© 2025 Pochonder Shop. All rights reserved.", terms_title: "Terms & Conditions", terms_p1: "Welcome to our website. By using this site, you agree to our terms and conditions.", terms_p2: "Please read the product descriptions carefully before purchasing. As these are digital products, there are no refunds. Copying our content is prohibited.", login_title: "Welcome!", login_form_btn: "Log In", login_no_account: "No account?", login_create_account: "Create one now", register_title: "Create Account", register_form_btn: "Register", register_has_account: "Already have an account?", register_login: "Log In", register_terms_agree: "I agree to the", dashboard_title: "My Account Dashboard", dashboard_nav_orders: "My Orders", dashboard_nav_favorites: "Favorite Products", dashboard_nav_upload: "Upload Your Product", dashboard_nav_settings: "Settings", orders_title: "Order History", orders_none: "You have no orders.", favorites_title: "Your Favorite Products", favorites_none: "Your favorites list is empty.", upload_title: "Add New Product", upload_button: "Upload Product", settings_title: "Account Settings", settings_optional_title: "Optional Info (Complete Profile)", payout_title: "Payout Information", payout_desc: "When your product sells, we will send the payment to the details below.", payout_save_btn: "Save Information", add_to_cart_btn: "Add to Cart", buy_now_btn: "Buy Now", cart_title: "Your Cart", cart_total: "Selected Total:", cart_checkout: "Checkout", cart_empty: "Your cart is empty.", payment_title: "Complete Payment", payment_instruction_1: "Please send a total of", payment_instruction_2: "(This is a merchant number, please use the Payment option)", payment_confirm_btn: "Confirm Order", loading_text: "Loading...", critical_error: "A critical error has occurred. Please refresh the page." }
             };
 
             function setLanguage(lang) {
@@ -581,6 +468,10 @@
                 document.getElementById('lang-en').classList.toggle('text-black', lang === 'en');
             }
 
+            function renderMainContent(html) {
+                document.getElementById('main-content').innerHTML = html;
+            }
+
             function renderProducts() {
                 const listEl = document.getElementById('product-list');
                 const loadingIndicator = document.getElementById('loading-indicator');
@@ -589,33 +480,33 @@
                 listEl.innerHTML = '';
                 const filtered = state.products.filter(p => (state.currentCategory === 'All' || p.category === state.currentCategory) && p.name.toLowerCase().includes(state.searchTerm.toLowerCase()));
                 if (filtered.length === 0) {
-                     listEl.innerHTML = `<p class="text-center col-span-full">কোনো প্রোডাক্ট পাওয়া যায়নি।</p>`;
-                     return;
+                    listEl.innerHTML = `<p class="text-center col-span-full">কোনো প্রোডাক্ট পাওয়া যায়নি।</p>`;
+                    return;
                 }
                 filtered.forEach(p => {
                     const isFav = state.favorites.includes(p.id);
                     const originalPriceHTML = p.originalPrice ? `<del class="text-sm">৳${p.originalPrice.toLocaleString('bn-BD')}</del>` : '';
                     const card = document.createElement('div');
-                    card.className = "glass-effect rounded-lg overflow-hidden shadow-lg p-5 flex flex-col transform hover:scale-105 transition-transform duration-300 cursor-pointer";
+                    card.className = "glass-effect rounded-lg overflow-hidden shadow-lg p-5 flex flex-col transform hover:scale-105 transition-transform duration-300 relative cursor-pointer product-card";
                     card.dataset.productId = p.id;
                     card.innerHTML = `
-                        ${p.originalPrice ? `<span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">SALE</span>` : ''}
-                        <button data-action="toggleFavorite" class="favorite-btn absolute top-4 right-4 hover:text-red-500 transition ${isFav ? 'favorited' : ''} z-10">
-                            <svg class="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg" ${isFav ? 'fill="currentColor"' : 'fill="none"'} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
-                        </button>
-                        <div data-action="openDetails" class="flex-grow flex flex-col">
+                        <div class="pointer-events-none">
+                            ${p.originalPrice ? `<span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">SALE</span>` : ''}
                             <img class="w-full h-52 object-cover rounded-md mb-4" src="${p.image}" alt="${p.name}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1e293b/ffffff?text=Image+Error';">
                             <div class="flex-grow">
-                                <h4 class="text-lg font-bold mb-2">${p.name}</h4>
+                                <h4 class="text-lg font-bold mb-2 truncate">${p.name}</h4>
                                 <div class="flex items-baseline gap-2">
                                     <p class="text-xl font-semibold text-yellow-400">৳${p.price.toLocaleString('bn-BD')}</p>
                                     ${originalPriceHTML}
                                 </div>
                             </div>
                         </div>
+                        <button data-action="toggleFavorite" class="favorite-btn absolute top-4 right-4 hover:text-red-500 transition ${isFav ? 'favorited' : ''}">
+                           <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" ${isFav ? 'fill="currentColor"' : 'fill="none"'} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
+                        </button>
                         <div class="mt-4 grid grid-cols-2 gap-2">
-                            <button data-action="addToCart" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="add_to_cart_btn"></button>
-                            <button data-action="buyNow" class="w-full bg-gray-600 hover:bg-gray-700 font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="buy_now_btn"></button>
+                            <button data-action="addToCart" data-product-id="${p.id}" class="w-full bg-yellow-500 hover:bg-yellow-600 font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="add_to_cart_btn"></button>
+                            <button data-action="buyNow" data-product-id="${p.id}" class="w-full bg-gray-600 hover:bg-gray-700 font-bold py-2 px-3 rounded-lg transition duration-300 text-sm" data-lang-key="buy_now_btn"></button>
                         </div>`;
                     listEl.appendChild(card);
                 });
@@ -649,7 +540,7 @@
                                 <h5 class="font-semibold">${product.name}</h5>
                                 <p class="text-sm">${item.quantity} x ৳${product.price.toLocaleString('bn-BD')}</p>
                             </div>
-                            <button data-cart-id="${item.id}" class="text-red-500 hover:text-red-400 text-2xl">&times;</button>
+                            <button data-action="removeFromCart" data-cart-id="${item.id}" class="text-red-500 hover:text-red-400 text-2xl">&times;</button>
                         `;
                         itemsEl.appendChild(itemEl);
                     });
@@ -663,6 +554,7 @@
             
             function renderFavoritesInDashboard() {
                 const favListEl = document.getElementById('favorites-list');
+                if(!favListEl) return;
                 favListEl.innerHTML = '';
                 const favoritedProducts = state.products.filter(p => state.favorites.includes(p.id));
                 if (favoritedProducts.length === 0) {
@@ -670,7 +562,8 @@
                 } else {
                     favoritedProducts.forEach(p => {
                         const card = document.createElement('div');
-                        card.className = "glass-effect rounded-lg p-4 flex flex-col";
+                        card.className = "glass-effect rounded-lg p-4 flex flex-col cursor-pointer product-card";
+                        card.dataset.productId = p.id;
                         card.innerHTML = `
                             <img src="${p.image}" class="w-full h-32 object-cover rounded-md mb-3">
                             <h5 class="font-semibold flex-grow">${p.name}</h5>
@@ -696,7 +589,7 @@
                 orders.forEach(order => {
                     const orderDate = order.createdAt ? order.createdAt.toDate().toLocaleString('bn-BD', { dateStyle: 'long', timeStyle: 'short' }) : 'N/A';
                     
-                    const itemsDetails = order.items.map(item => {
+                    const itemsDetails = (order.items || []).map(item => {
                         const product = state.products.find(p => p.id === item.productId);
                         return product ? `<li>${product.name} (x${item.quantity})</li>` : `<li>Product ID: ${item.productId}</li>`;
                     }).join('');
@@ -714,7 +607,7 @@
                                 <p class="text-sm">তারিখ: ${orderDate}</p>
                             </div>
                             <div class="text-right mt-2 sm:mt-0">
-                                <p class="font-bold text-lg text-yellow-400">৳${order.totalAmount.toLocaleString('bn-BD')}</p>
+                                <p class="font-bold text-lg text-yellow-400">৳${(order.totalAmount || 0).toLocaleString('bn-BD')}</p>
                                 <span class="text-xs font-semibold px-2 py-1 rounded-full ${statusClass}">${statusText}</span>
                             </div>
                         </div>
@@ -731,8 +624,10 @@
 
             function renderBanners() {
                 const sliderContainer = document.getElementById('slider');
-                const existingSlides = sliderContainer.querySelectorAll('.slide');
-                existingSlides.forEach(slide => slide.remove());
+                if(!sliderContainer) return;
+                const existingNav = sliderContainer.querySelector('.slider-nav');
+                sliderContainer.innerHTML = '';
+                if(existingNav) sliderContainer.appendChild(existingNav);
 
                 if (state.banners.length === 0) {
                     sliderContainer.insertAdjacentHTML('afterbegin', `
@@ -745,7 +640,7 @@
                         </div>
                     `);
                 } else {
-                    [...state.banners].reverse().forEach((banner, index) => {
+                    state.banners.forEach((banner, index) => {
                         const slideHTML = `
                             <div class="slide ${index === 0 ? 'active' : ''}">
                                 <img src="${banner.image}" alt="${banner.title}" onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/1e293b/ffffff?text=Image+Error';">
@@ -755,7 +650,7 @@
                                 </div>
                             </div>
                         `;
-                        sliderContainer.insertAdjacentHTML('beforeend', slideHTML);
+                        sliderContainer.insertAdjacentHTML('afterbegin', slideHTML);
                     });
                 }
                 initializeSlider();
@@ -804,13 +699,10 @@
                     state.products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                     const newCategories = ['All', ...new Set(state.products.map(p => p.category))];
                     const categoryContainer = document.getElementById('category-filters');
-                    if (categoryContainer.children.length !== newCategories.length) {
-                        categoryContainer.innerHTML = newCategories.map(c => `<button class="category-btn px-4 py-2 rounded-full text-sm font-semibold transition ${c === state.currentCategory ? 'active' : ''}" data-category="${c}">${c}</button>`).join('');
+                    if(categoryContainer){
+                         categoryContainer.innerHTML = newCategories.map(c => `<button class="category-btn px-4 py-2 rounded-full text-sm font-semibold transition ${c === state.currentCategory ? 'active' : ''}" data-category="${c}">${c}</button>`).join('');
                     }
-                    renderProducts();
-                    if (!document.getElementById('dashboard').classList.contains('hidden')) {
-                        renderFavoritesInDashboard();
-                    }
+                    renderCurrentPage();
                 }, (error) => {
                     console.error("Error listening to product updates:", error);
                     showNotification("প্রোডাক্টের তালিকা আপডেট করা সম্ভব হয়নি।", "error");
@@ -832,30 +724,67 @@
                 const settingsRef = doc(db, `artifacts/${appId}/public/data/site_settings/details`);
                 if (state.unsubscribeSiteSettings) state.unsubscribeSiteSettings();
                 state.unsubscribeSiteSettings = onSnapshot(settingsRef, (docSnap) => {
+                    const gatewayNumberEl = document.getElementById('gateway-number');
+                    const gatewayNameEl = document.getElementById('gateway-name');
                     if (docSnap.exists()) {
                         state.siteSettings = docSnap.data();
-                        document.getElementById('gateway-number').innerText = state.siteSettings.gatewayNumber || 'N/A';
-                        document.getElementById('gateway-name').innerText = state.siteSettings.gatewayName || 'N/A';
-                         // Populate site settings form
-                        document.getElementById('site-gateway-name').value = state.siteSettings.gatewayName || '';
-                        document.getElementById('site-gateway-number').value = state.siteSettings.gatewayNumber || '';
+                        if (gatewayNumberEl) gatewayNumberEl.innerText = state.siteSettings.gatewayNumber || 'N/A';
+                        if (gatewayNameEl) gatewayNameEl.innerText = state.siteSettings.gatewayName || 'N/A';
                     } else {
-                        state.siteSettings = null;
-                        document.getElementById('gateway-number').innerText = '01XXXXXXXXX';
-                        document.getElementById('gateway-name').innerText = 'Not Set';
+                        if (gatewayNumberEl) gatewayNumberEl.innerText = '01XXXXXXXXX';
+                        if (gatewayNameEl) gatewayNameEl.innerText = 'bKash/Nagad';
                     }
                 }, (error) => {
                     console.error("Error fetching site settings:", error);
-                    document.getElementById('gateway-number').innerText = 'Unavailable';
-                    document.getElementById('gateway-name').innerText = 'Error';
                 });
             }
 
-            const handleUserAction = (action, productId) => {
-                 if (action === 'openDetails') {
-                    openProductDetailsModal(productId);
+            async function submitReview(productId, reviewData) {
+                if (!state.user || state.user.isAnonymous) {
+                    showNotification('রিভিউ দিতে লগইন করুন।', 'error');
+                    document.getElementById('auth-modal').classList.add('active');
                     return;
                 }
+                if (!reviewData.rating) {
+                     showNotification('অনুগ্রহ করে একটি রেটিং দিন।', 'error');
+                     return;
+                }
+                 if (!reviewData.comment) {
+                     showNotification('অনুগ্রহ করে একটি মন্তব্য লিখুন।', 'error');
+                     return;
+                }
+                const reviewRef = collection(db, `artifacts/${appId}/public/data/products/${productId}/reviews`);
+                await addDoc(reviewRef, {
+                    ...reviewData,
+                    author: state.user.displayName || 'Anonymous',
+                    userId: state.user.uid,
+                    createdAt: serverTimestamp()
+                });
+                showNotification('রিভিউ জমা দেওয়া হয়েছে!');
+                renderCurrentPage(); // Re-render to show the new review
+            }
+
+            async function renderReviews(productId) {
+                 const reviewsContainer = document.getElementById('reviews-container');
+                 if (!reviewsContainer) return;
+                 const q = query(collection(db, `artifacts/${appId}/public/data/products/${productId}/reviews`));
+                 const snapshot = await getDocs(q);
+                 if (snapshot.empty) {
+                     reviewsContainer.innerHTML = '<p>এখনও কোনো রিভিউ নেই।</p>';
+                 } else {
+                     reviewsContainer.innerHTML = snapshot.docs.map(doc => {
+                         const review = doc.data();
+                         const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                         return `<div class="border-t border-gray-700 py-4">
+                                     <p class="font-bold">${review.author} <span class="text-yellow-400 text-sm ml-2">${stars}</span></p>
+                                     <p class="text-sm mt-1">${review.comment}</p>
+                                 </div>`;
+                     }).join('');
+                 }
+            }
+
+
+            const handleUserAction = (action, productId) => {
                 if (!state.user || state.user.isAnonymous) {
                     showNotification('এই ফিচারটি ব্যবহার করতে লগইন করুন।', 'error');
                     document.getElementById('auth-modal').classList.add('active');
@@ -898,11 +827,6 @@
                     return;
                 }
 
-                if (!state.siteSettings || !state.siteSettings.gatewayNumber) {
-                    showNotification('সাইটের পেমেন্ট পদ্ধতি এখনো সেট করা হয়নি।', 'error');
-                    return;
-                }
-
                 const totalAmount = items.reduce((acc, item) => {
                     const product = state.products.find(p => p.id === item.productId);
                     return acc + (product ? product.price * item.quantity : 0);
@@ -914,10 +838,9 @@
                 }
 
                 state.checkoutItems = items;
-                
-                document.getElementById('cart-modal').classList.remove('active');
-                document.getElementById('product-details-modal').classList.remove('active');
 
+                document.getElementById('cart-modal').classList.remove('active');
+                
                 const paymentModal = document.getElementById('payment-modal');
                 document.getElementById('payment-amount').innerText = `৳${totalAmount.toLocaleString('bn-BD')}`;
                 paymentModal.classList.add('active');
@@ -939,31 +862,25 @@
             }
             
             async function fetchUserProfile() {
-                if (!state.user || state.user.isAnonymous) {
-                    state.userProfile = null;
-                    return;
-                }
+                if (!state.user || state.user.isAnonymous) return;
+                const profileNameEl = document.getElementById('profile-full-name');
+                if(!profileNameEl) return;
+                
                 const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/profile/details`);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
-                    state.userProfile = docSnap.data();
-                    document.getElementById('profile-full-name').innerText = state.userProfile.fullName || '';
-                    document.getElementById('profile-email').innerText = state.userProfile.email || '';
-                    document.getElementById('profile-mobile').innerText = state.userProfile.mobile || '';
-                    document.getElementById('settings-address').value = state.userProfile.address || '';
-                    document.getElementById('settings-house').value = state.userProfile.houseNumber || '';
-                    document.getElementById('settings-zip').value = state.userProfile.zipCode || '';
-                    document.getElementById('payout-method').value = state.userProfile.payoutMethod || 'bKash';
-                    document.getElementById('payout-number').value = state.userProfile.payoutNumber || '';
-                } else {
-                    state.userProfile = null;
+                    const data = docSnap.data();
+                    profileNameEl.innerText = data.fullName || '';
+                    document.getElementById('profile-email').innerText = data.email || '';
+                    document.getElementById('profile-mobile').innerText = data.mobile || '';
                 }
             }
             
             function showDashboardPage(targetPageId) {
-                document.getElementById('main-content').classList.add('hidden');
-                const dashboard = document.getElementById('dashboard');
-                dashboard.classList.remove('hidden');
+                const dashboardTemplate = document.getElementById('dashboard-template').innerHTML;
+                renderMainContent(dashboardTemplate);
+
+                const dashboard = document.getElementById('dashboard'); // This is now inside mainContent
                 
                 dashboard.querySelectorAll('.dashboard-nav-item').forEach(el => el.classList.remove('active'));
                 dashboard.querySelectorAll('.dashboard-content').forEach(el => el.classList.add('hidden'));
@@ -974,122 +891,26 @@
                 if (navItem) navItem.classList.add('active');
                 if (contentPane) contentPane.classList.remove('hidden');
 
-                dashboard.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            // --- Product Details & Reviews ---
-            function openProductDetailsModal(productId) {
-                const product = state.products.find(p => p.id === productId);
-                if (!product) return;
-                state.currentOpenProduct = product;
-
-                document.getElementById('details-img').src = product.image;
-                document.getElementById('details-name').innerText = product.name;
-                document.getElementById('details-price').innerText = `৳${product.price.toLocaleString('bn-BD')}`;
-                document.getElementById('details-category').innerText = product.category;
-                document.getElementById('details-desc').innerText = product.description || 'No description available.';
-
-                listenForReviews(productId);
-                renderReviewForm();
-
-                document.getElementById('product-details-modal').classList.add('active');
-            }
-
-            function listenForReviews(productId) {
-                if (state.unsubscribeReviews) state.unsubscribeReviews();
-                const reviewsCol = collection(db, `artifacts/${appId}/public/data/products/${productId}/reviews`);
-                state.unsubscribeReviews = onSnapshot(reviewsCol, (snapshot) => {
-                    const reviews = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-                    renderReviews(reviews);
-                });
-            }
-            
-            function renderReviews(reviews) {
-                const container = document.getElementById('reviews-list');
-                container.innerHTML = '';
-                if(reviews.length === 0) {
-                    container.innerHTML = `<p data-lang-key="reviews_none"></p>`;
-                    setLanguage(localStorage.getItem('language') || 'bn');
-                    return;
-                }
-                reviews.sort((a,b) => b.createdAt.toMillis() - a.createdAt.toMillis()).forEach(review => {
-                    const date = review.createdAt ? review.createdAt.toDate().toLocaleDateString('bn-BD') : '';
-                    let starsHTML = '';
-                    for(let i=1; i<=5; i++) {
-                        starsHTML += `<svg class="w-4 h-4 ${i <= review.rating ? 'text-yellow-400' : 'text-gray-500'}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>`;
-                    }
-                    const reviewEl = document.createElement('div');
-                    reviewEl.className = 'border-b border-gray-800 pb-3';
-                    reviewEl.innerHTML = `
-                        <div class="flex items-center mb-1">
-                            <p class="font-semibold mr-2">${review.userName || 'Anonymous'}</p>
-                            <div class="flex">${starsHTML}</div>
-                        </div>
-                        <p class="text-sm text-gray-400">${review.comment}</p>
-                        <p class="text-xs text-gray-500 text-right">${date}</p>
-                    `;
-                    container.appendChild(reviewEl);
-                });
-            }
-
-            function renderReviewForm() {
-                const container = document.getElementById('review-form-container');
-                if (state.user && !state.user.isAnonymous) {
-                     container.innerHTML = `
-                        <h5 class="text-lg font-semibold mb-3" data-lang-key="review_form_title"></h5>
-                        <form id="review-form">
-                            <div class="star-rating flex items-center mb-2" data-rating="0">
-                                ${[1,2,3,4,5].map(i => `<span class="star" data-value="${i}"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg></span>`).join('')}
-                            </div>
-                            <textarea id="review-comment" class="w-full bg-gray-800 p-3 rounded-md" rows="3" data-lang-key="review_form_placeholder" required></textarea>
-                            <button type="submit" class="mt-2 bg-yellow-500 hover:bg-yellow-600 font-bold py-2 px-4 rounded-lg text-sm" data-lang-key="review_form_submit"></button>
-                        </form>`;
-                } else {
-                    container.innerHTML = '';
-                }
-                setLanguage(localStorage.getItem('language') || 'bn');
-            }
-
-            async function handleReviewSubmit(e) {
-                e.preventDefault();
-                const rating = e.target.querySelector('.star-rating').dataset.rating;
-                const comment = e.target.querySelector('#review-comment').value;
-
-                if (rating === '0' || !comment) {
-                    showNotification('অনুগ্রহ করে রেটিং এবং মন্তব্য দিন।', 'error');
-                    return;
-                }
-
-                try {
-                    const reviewData = {
-                        userId: state.user.uid,
-                        userName: state.userProfile?.fullName || state.user.email,
-                        rating: parseInt(rating),
-                        comment,
-                        createdAt: serverTimestamp()
-                    };
-                    const reviewsCol = collection(db, `artifacts/${appId}/public/data/products/${state.currentOpenProduct.id}/reviews`);
-                    await addDoc(reviewsCol, reviewData);
-                    showNotification('আপনার রিভিউ সফলভাবে জমা হয়েছে।');
-                    e.target.reset();
-                    e.target.querySelector('.star-rating').dataset.rating = 0;
-                    renderReviewForm(); // Re-render to clear state
-                } catch (err) {
-                    console.error("Review submission error:", err);
-                    showNotification('রিভিউ জমা দিতে সমস্যা হয়েছে।', 'error');
+                // Re-fetch data for the dashboard view
+                if (state.user) {
+                    fetchUserProfile();
+                    renderFavoritesInDashboard();
+                    
+                    const ordersCol = query(collection(db, `artifacts/${appId}/public/data/orders`), where("userId", "==", state.user.uid));
+                     onSnapshot(ordersCol, (snapshot) => {
+                        const orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        renderOrders(orders);
+                    });
                 }
             }
-            // --- End Product Details & Reviews ---
 
-            onAuthStateChanged(auth, async user => {
+            onAuthStateChanged(auth, user => {
                 state.unsubscribeCart();
                 state.unsubscribeFavorites();
                 if (state.unsubscribeOrders) state.unsubscribeOrders();
                 state.user = user;
                 
-                await fetchUserProfile(); // Fetch profile right after auth state changes
-
-                if (user && !user.isAnonymous) {
+                if (user && !state.user.isAnonymous) {
                     setLanguage(localStorage.getItem('language') || 'bn'); 
                     const cartCol = collection(db, `artifacts/${appId}/users/${user.uid}/cart`);
                     state.unsubscribeCart = onSnapshot(cartCol, s => {
@@ -1101,25 +922,21 @@
                     state.unsubscribeFavorites = onSnapshot(favCol, s => {
                         state.favorites = s.docs.map(d => d.data().productId);
                         document.getElementById('favorite-count').textContent = state.favorites.length;
-                        renderProducts();
-                        renderFavoritesInDashboard();
+                        renderCurrentPage();
                     });
                     
-                    const ordersCol = collection(db, `artifacts/${appId}/users/${user.uid}/orders`);
+                    const ordersCol = query(collection(db, `artifacts/${appId}/public/data/orders`), where("userId", "==", user.uid));
                     state.unsubscribeOrders = onSnapshot(ordersCol, (snapshot) => {
                         const orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                         renderOrders(orders);
-                    }, (err) => {
-                        console.error("Error fetching orders:", err);
-                        showNotification("অর্ডার তালিকা লোড করা যায়নি।", "error");
-                    });
+                    }, (err) => console.error("Error fetching orders:", err));
+
+                    fetchUserProfile();
                 } else {
                     state.cart = []; state.favorites = [];
                     document.getElementById('cart-count').textContent = 0;
                     document.getElementById('favorite-count').textContent = 0;
-                    document.getElementById('main-content').classList.remove('hidden');
-                    document.getElementById('dashboard').classList.add('hidden');
-                    renderProducts();
+                    renderCurrentPage();
                     renderOrders([]);
                     setLanguage(localStorage.getItem('language') || 'bn');
                 }
@@ -1132,6 +949,31 @@
                 } catch (error) { console.error("Auth error:", error); }
             })();
             
+            let currentPage = 'home';
+            let currentPageData = null;
+
+            function navigate(page, data) {
+                currentPage = page;
+                currentPageData = data;
+                renderCurrentPage();
+            }
+
+            function renderCurrentPage() {
+                if (currentPage === 'home') {
+                    renderMainContent(HomePage(state.banners[0])); // Passing first banner for now
+                    renderBanners();
+                    listenForProductUpdates(); // This will trigger renderProducts
+                } else if (currentPage === 'product') {
+                    const product = state.products.find(p => p.id === currentPageData.id);
+                    if (product) {
+                        renderMainContent(ProductDetailPage(product));
+                        renderReviews(product.id);
+                    } else {
+                         navigate('home'); // Go home if product not found
+                    }
+                }
+            }
+
             document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const themeToggleBtn = document.getElementById('theme-toggle-btn');
@@ -1174,13 +1016,20 @@
                     const authModal = document.getElementById('auth-modal');
                     const cartModal = document.getElementById('cart-modal');
                     const termsModal = document.getElementById('terms-modal');
-                    const detailsModal = document.getElementById('product-details-modal');
                     
                     document.getElementById('auth-btn').addEventListener('click', () => {
                          if (state.user && !state.user.isAnonymous) signOut(auth);
                          else authModal.classList.add('active');
                     });
-                    document.getElementById('cart-icon').addEventListener('click', () => cartModal.classList.add('active'));
+                    document.getElementById('cart-icon').addEventListener('click', () => {
+                         if (!state.user || state.user.isAnonymous) {
+                             showNotification('কার্ট দেখতে লগইন করুন।', 'error');
+                             authModal.classList.add('active');
+                         } else {
+                             cartModal.classList.add('active');
+                         }
+                    });
+
                     document.getElementById('terms-link').addEventListener('click', e => { e.preventDefault(); termsModal.classList.add('active'); });
                     
                     document.body.addEventListener('click', e => {
@@ -1188,18 +1037,9 @@
                             e.preventDefault();
                             termsModal.classList.add('active');
                         }
-                        const star = e.target.closest('.star-rating .star');
-                        if (star) {
-                            const ratingContainer = star.parentElement;
-                            const value = star.dataset.value;
-                            ratingContainer.dataset.rating = value;
-                            ratingContainer.querySelectorAll('.star').forEach(s => {
-                                s.classList.toggle('selected', s.dataset.value <= value);
-                            });
-                        }
                     });
 
-                    document.getElementById('checkout-btn').addEventListener('click', () => {
+                     document.getElementById('checkout-btn').addEventListener('click', () => {
                         if (state.selectedCartItemIds.size > 0) {
                             const itemsToCheckout = state.cart.filter(item => state.selectedCartItemIds.has(item.id));
                             startCheckoutProcess(itemsToCheckout);
@@ -1211,16 +1051,7 @@
                     document.getElementById('close-auth-modal').addEventListener('click', () => authModal.classList.remove('active'));
                     document.getElementById('close-cart-modal').addEventListener('click', () => cartModal.classList.remove('active'));
                     document.getElementById('close-terms-modal').addEventListener('click', () => termsModal.classList.remove('active'));
-                    document.getElementById('close-product-details-modal').addEventListener('click', () => {
-                        detailsModal.classList.remove('active');
-                        if (state.unsubscribeReviews) state.unsubscribeReviews();
-                        state.currentOpenProduct = null;
-                    });
-                    
-                    document.getElementById('close-payment-modal').addEventListener('click', () => {
-                        document.getElementById('payment-modal').classList.remove('active');
-                        state.checkoutItems = [];
-                    });
+                    document.getElementById('close-payment-modal').addEventListener('click', () => document.getElementById('payment-modal').classList.remove('active'));
 
                     document.getElementById('show-register-view').addEventListener('click', () => {
                         document.getElementById('login-view').classList.add('hidden');
@@ -1249,14 +1080,8 @@
                         const confirmPassword = e.target['register-confirm-password'].value;
                         const terms = e.target['register-terms'].checked;
 
-                        if (password !== confirmPassword) {
-                            showNotification('পাসওয়ার্ড মেলেনি।', 'error');
-                            return;
-                        }
-                        if (!terms) {
-                            showNotification('শর্তাবলীতে সম্মত হতে হবে।', 'error');
-                            return;
-                        }
+                        if (password !== confirmPassword) { showNotification('পাসওয়ার্ড মেলেনি।', 'error'); return; }
+                        if (!terms) { showNotification('শর্তাবলীতে সম্মত হতে হবে।', 'error'); return; }
 
                         try {
                             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -1274,7 +1099,7 @@
                             showNotification('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।');
                         } catch (err) { 
                             console.error("Registration error:", err);
-                            if (err.code === 'auth/email-already-in-use') {
+                             if (err.code === 'auth/email-already-in-use') {
                                 showNotification('এই ইমেইলটি ஏற்கனவே ব্যবহৃত হয়েছে।', 'error');
                             } else if (err.code === 'auth/weak-password') {
                                 showNotification('পাসওয়ার্ডটি দুর্বল। কমপক্ষে ৬টি অক্ষর ব্যবহার করুন।', 'error');
@@ -1284,213 +1109,126 @@
                         }
                     });
 
-                    document.getElementById('upload-form').addEventListener('submit', async e => {
-                        e.preventDefault();
-                        if(!state.user || state.user.isAnonymous) {
-                            showNotification('পণ্য আপলোড করতে লগইন করুন।', 'error');
-                            return;
-                        }
-                        const name = document.getElementById('upload-name').value;
-                        const description = document.getElementById('upload-desc').value;
-                        const price = parseFloat(document.getElementById('upload-price').value);
-                        const category = document.getElementById('upload-category').value;
-                        const image = document.getElementById('upload-image').value;
+                       document.getElementById('payment-form').addEventListener('submit', async e => {
+                             e.preventDefault();
+                             const paymentModal = document.getElementById('payment-modal');
+                             const totalAmountForOrder = state.checkoutItems.reduce((acc, item) => {
+                                 const product = state.products.find(p => p.id === item.productId);
+                                 return acc + (product ? product.price * item.quantity : 0);
+                             }, 0);
 
-                        if (!name || !price || !category || !image) {
-                            showNotification('অনুগ্রহ করে সকল প্রয়োজনীয় ফিল্ড পূরণ করুন।', 'error');
-                            return;
-                        }
+                             const orderDetails = {
+                                 userId: state.user.uid,
+                                 items: state.checkoutItems.map(item => ({productId: item.productId, quantity: item.quantity})),
+                                 totalAmount: totalAmountForOrder,
+                                 paymentPhone: e.target['payment-phone'].value,
+                                 paymentTrxId: e.target['payment-trxid'].value,
+                                 status: 'pending',
+                                 createdAt: serverTimestamp()
+                             };
+                             try {
+                                 const ordersCol = collection(db, `artifacts/${appId}/public/data/orders`);
+                                 await addDoc(ordersCol, orderDetails);
+                                 
+                                 const purchasedCartItemIds = new Set(
+                                     state.checkoutItems
+                                         .filter(item => item.id) // Filter items that came from cart (have a cart ID)
+                                         .map(item => item.id)
+                                 );
 
-                        try {
-                            const productsCol = collection(db, `artifacts/${appId}/public/data/products`);
-                            await addDoc(productsCol, {
-                                name,
-                                description,
-                                price,
-                                category,
-                                image,
-                                sellerId: state.user.uid,
-                                createdAt: serverTimestamp()
-                            });
-                            showNotification('আপনার পণ্য সফলভাবে আপলোড হয়েছে।');
-                            e.target.reset();
-                            showDashboardPage('my-orders');
-                        } catch (err) {
-                            console.error("Product upload error: ", err);
-                            showNotification('পণ্য আপলোড করতে সমস্যা হয়েছে।', 'error');
-                        }
-                    });
+                                 if (purchasedCartItemIds.size > 0) {
+                                     const batch = writeBatch(db);
+                                     purchasedCartItemIds.forEach(cartId => {
+                                         const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
+                                         batch.delete(docRef);
+                                     });
+                                     await batch.commit();
+                                 }
+
+                                 state.checkoutItems = [];
+                                 state.selectedCartItemIds.clear();
+
+                                 paymentModal.classList.remove('active');
+                                 showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
+                                 e.target.reset();
+                                 showDashboardPage('my-orders');
+
+                             } catch (err) {
+                                 console.error("Order submission error:", err);
+                                 showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
+                             }
+                         });
                     
-                    document.getElementById('settings-form').addEventListener('submit', async e => {
-                        e.preventDefault();
-                        if(!state.user || state.user.isAnonymous) { showNotification('প্রথমে লগইন করুন।', 'error'); return; }
-                        try {
-                            const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/profile/details`);
-                            await setDoc(docRef, {
-                                address: e.target['settings-address'].value,
-                                houseNumber: e.target['settings-house'].value,
-                                zipCode: e.target['settings-zip'].value,
-                                payoutMethod: e.target['payout-method'].value,
-                                payoutNumber: e.target['payout-number'].value,
-                            }, { merge: true }); 
-                            showNotification('আপনার তথ্য সেভ করা হয়েছে।');
-                        } catch (err) { showNotification('তথ্য সেভ করা যায়নি।', 'error');}
-                    });
-
-                    document.getElementById('site-settings-form').addEventListener('submit', async e => {
-                        e.preventDefault();
-                        if(!state.user || state.user.isAnonymous) { showNotification('প্রথমে লগইন করুন।', 'error'); return; }
-                         try {
-                            const docRef = doc(db, `artifacts/${appId}/public/data/site_settings/details`);
-                            await setDoc(docRef, {
-                                gatewayName: e.target['site-gateway-name'].value,
-                                gatewayNumber: e.target['site-gateway-number'].value,
-                            }, { merge: true });
-                            showNotification('সাইট সেটিংস সেভ করা হয়েছে।');
-                        } catch (err) {
-                            console.error("Site settings save error:", err);
-                            showNotification('সেটিংস সেভ করা যায়নি।', 'error');
+                    document.body.addEventListener('click', e => {
+                        const actionTarget = e.target.closest('[data-action]');
+                        if(actionTarget){
+                             const { action, productId } = actionTarget.dataset;
+                             if(action && productId) handleUserAction(action, productId);
                         }
-                    });
-                    
-                      document.getElementById('payment-form').addEventListener('submit', async e => {
+
+                        const productCard = e.target.closest('.product-card');
+                        if (productCard && !actionTarget) {
+                            navigate('product', { id: productCard.dataset.productId });
+                        }
+
+                        const homeLink = e.target.closest('#home-link');
+                        if(homeLink){
                             e.preventDefault();
-                            
-                            if (!state.checkoutItems || state.checkoutItems.length === 0) {
-                                showNotification('চেকআউট করার জন্য কোনো আইটেম নেই।', 'error');
-                                return;
+                            navigate('home');
+                        }
+
+                         const dashboardLink = e.target.closest('#dashboard-link');
+                        if(dashboardLink){
+                            e.preventDefault();
+                             if(!state.user || state.user.isAnonymous) { showNotification('অনুগ্রহ করে প্রথমে লগইন করুন।', 'error'); authModal.classList.add('active'); return; }
+                             showDashboardPage('my-orders');
+                        }
+                         const dashboardNav = e.target.closest('#dashboard-nav button');
+                        if(dashboardNav){
+                             showDashboardPage(dashboardNav.dataset.target);
+                        }
+                        
+                         const submitReviewBtn = e.target.closest('#submit-review-btn');
+                        if (submitReviewBtn) {
+                            const productId = submitReviewBtn.dataset.productId;
+                            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+                            const comment = document.getElementById('review-comment').value;
+                            submitReview(productId, { rating, comment });
+                        }
+                    });
+
+                     document.getElementById('cart-items').addEventListener('change', e => {
+                        const checkbox = e.target.closest('.cart-item-checkbox');
+                        if (checkbox) {
+                            const cartItemId = checkbox.dataset.cartItemId;
+                            if (checkbox.checked) {
+                                state.selectedCartItemIds.add(cartItemId);
+                            } else {
+                                state.selectedCartItemIds.delete(cartItemId);
                             }
+                            renderCart(); // Update total and button state
+                        }
+                    });
 
-                            const paymentModal = document.getElementById('payment-modal');
-                            const totalAmountForOrder = state.checkoutItems.reduce((acc, item) => {
-                                const product = state.products.find(p => p.id === item.productId);
-                                return acc + (product ? product.price * item.quantity : 0);
-                            }, 0);
-
-                            const orderDetails = {
-                                items: state.checkoutItems.map(item => ({productId: item.productId, quantity: item.quantity})),
-                                totalAmount: totalAmountForOrder,
-                                paymentPhone: e.target['payment-phone'].value,
-                                paymentTrxId: e.target['payment-trxid'].value,
-                                status: 'pending',
-                                createdAt: serverTimestamp()
-                            };
+                     document.getElementById('cart-items').addEventListener('click', async e => {
+                        const button = e.target.closest('button[data-action="removeFromCart"]');
+                        if (button) {
+                            const cartId = button.dataset.cartId;
                             try {
-                                const ordersCol = collection(db, `artifacts/${appId}/users/${state.user.uid}/orders`);
-                                await addDoc(ordersCol, orderDetails);
-                                
-                                const purchasedCartItemIds = new Set(
-                                    state.checkoutItems
-                                        .filter(item => item.id) 
-                                        .map(item => item.id)
-                                );
-
-                                if (purchasedCartItemIds.size > 0) {
-                                    const batch = writeBatch(db);
-                                    purchasedCartItemIds.forEach(cartId => {
-                                        const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
-                                        batch.delete(docRef);
-                                    });
-                                    await batch.commit();
-                                }
-
-                                state.checkoutItems = [];
-                                state.selectedCartItemIds.clear();
-
-                                paymentModal.classList.remove('active');
-                                showNotification('আপনার অর্ডারটি গ্রহণ করা হয়েছে।');
-                                e.target.reset();
-                                showDashboardPage('my-orders');
-
+                                const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
+                                await deleteDoc(docRef);
+                                state.selectedCartItemIds.delete(cartId);
+                                showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
                             } catch (err) {
-                                console.error("Order submission error:", err);
-                                showNotification('অর্ডার কনফার্ম করা যায়নি।', 'error');
-                            }
-                        });
-                    
-                    document.getElementById('product-list').addEventListener('click', e => {
-                        const target = e.target.closest('[data-action]');
-                        if (target) {
-                             handleUserAction(target.dataset.action, target.closest('[data-product-id]').dataset.productId);
-                        }
-                    });
-
-                    document.getElementById('product-details-content').addEventListener('click', e => {
-                        const button = e.target.closest('button');
-                        if (button && state.currentOpenProduct) {
-                            if (button.id === 'details-add-to-cart-btn') {
-                                handleUserAction('addToCart', state.currentOpenProduct.id);
-                            } else if (button.id === 'details-buy-now-btn') {
-                                handleUserAction('buyNow', state.currentOpenProduct.id);
+                                showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
                             }
                         }
-                        if (e.target.closest('#review-form')) {
-                            e.target.closest('#review-form').addEventListener('submit', handleReviewSubmit);
-                        }
                     });
-
-                       document.getElementById('cart-items').addEventListener('click', async e => {
-                                const checkbox = e.target.closest('.cart-item-checkbox');
-                                if (checkbox) {
-                                    const cartItemId = checkbox.dataset.cartItemId;
-                                    if (checkbox.checked) {
-                                        state.selectedCartItemIds.add(cartItemId);
-                                    } else {
-                                        state.selectedCartItemIds.delete(cartItemId);
-                                    }
-                                    renderCart();
-                                    return;
-                                }
-                                
-                                const button = e.target.closest('button[data-cart-id]');
-                                if (button) {
-                                    const cartId = button.dataset.cartId;
-                                    try {
-                                        const docRef = doc(db, `artifacts/${appId}/users/${state.user.uid}/cart`, cartId);
-                                        await deleteDoc(docRef);
-                                        state.selectedCartItemIds.delete(cartId);
-                                        showNotification('কার্ট থেকে পণ্য মুছে ফেলা হয়েছে।');
-                                    } catch (err) {
-                                         showNotification('পণ্যটি মুছতে সমস্যা হয়েছে।', 'error');
-                                    }
-                                }
-                            });
 
                     document.getElementById('lang-bn').addEventListener('click', () => setLanguage('bn'));
                     document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
                     
-                    document.getElementById('dashboard-link').addEventListener('click', e => {
-                        e.preventDefault();
-                        if(!state.user || state.user.isAnonymous) { showNotification('অনুগ্রহ করে প্রথমে লগইন করুন।', 'error'); authModal.classList.add('active'); return; }
-                        showDashboardPage('my-orders');
-                    });
-                    document.getElementById('sell-product-link').addEventListener('click', e => {
-                        e.preventDefault();
-                        if(!state.user || state.user.isAnonymous) { showNotification('আপনার পণ্য সেল করতে লগইন করুন।', 'error'); authModal.classList.add('active'); return; }
-                        showDashboardPage('upload-product');
-                    });
-                    document.getElementById('favorite-icon').addEventListener('click', e => {
-                        e.preventDefault();
-                        if(!state.user || state.user.isAnonymous) { showNotification('অনুগ্রহ করে প্রথমে লগইন করুন।', 'error'); authModal.classList.add('active'); return; }
-                        showDashboardPage('my-favorites');
-                    });
-
-                    document.getElementById('home-link').addEventListener('click', e => {
-                        e.preventDefault();
-                        document.getElementById('main-content').classList.remove('hidden');
-                        document.getElementById('dashboard').classList.add('hidden');
-                    });
-
-                    document.getElementById('dashboard-nav').addEventListener('click', e => {
-                        if(e.target.tagName === 'BUTTON') {
-                            const targetId = e.target.dataset.target;
-                            document.querySelectorAll('.dashboard-nav-item').forEach(el => el.classList.remove('active'));
-                            e.target.classList.add('active');
-                            document.querySelectorAll('.dashboard-content').forEach(el => el.classList.add('hidden'));
-                            document.getElementById(targetId).classList.remove('hidden');
-                        }
-                    });
-                    document.getElementById('category-filters').addEventListener('click', e => {
+                    document.getElementById('category-filters')?.addEventListener('click', e => {
                         if(e.target.tagName === 'BUTTON') {
                             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
                             e.target.classList.add('active');
@@ -1503,6 +1241,7 @@
                         renderProducts();
                     });
                     
+                    navigate('home');
                     listenForProductUpdates();
                     listenForBannerUpdates();
                     listenForSiteSettings();
@@ -1521,4 +1260,3 @@
     </script>
 </body>
 </html>
-
